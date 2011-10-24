@@ -4,6 +4,10 @@
 from djangoappengine.settings_base import *
 
 import os
+import os.path
+
+DEBUG = True
+TEMPLATE_DEBUG = DEBUG
 
 # Activate django-dbindexer for the default database
 DATABASES['native'] = DATABASES['default']
@@ -23,6 +27,7 @@ INSTALLED_APPS = (
 
     # djangoappengine should come last, so it can override a few manage.py commands
     'djangoappengine',
+    'mapper'
 )
 
 MIDDLEWARE_CLASSES = (
@@ -40,11 +45,23 @@ TEMPLATE_CONTEXT_PROCESSORS = (
     'django.core.context_processors.media',
 )
 
+STATICFILES_FINDERS = (
+    'django.contrib.staticfiles.finders.FileSystemFinder',
+    'django.contrib.staticfiles.finders.AppDirectoriesFinder',
+)
+
+TEMPLATE_LOADERS = (
+    'django.template.loaders.filesystem.Loader',
+    'django.template.loaders.app_directories.Loader',
+)
+
 # This test runner captures stdout and associates tracebacks with their
 # corresponding output. Helps a lot with print-debugging.
 TEST_RUNNER = 'djangotoolbox.test.CapturingTestSuiteRunner'
 
 ADMIN_MEDIA_PREFIX = '/media/admin/'
-TEMPLATE_DIRS = (os.path.join(os.path.dirname(__file__), 'templates'),os.path.join(os.path.dirname(__file__), 'mapper/templates'))
+TEMPLATE_DIRS = (
+    os.path.join(os.path.dirname(__file__), 'templates'),
+)
 
 ROOT_URLCONF = 'urls'
