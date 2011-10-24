@@ -16,11 +16,14 @@ AUTOLOAD_SITECONF = 'indexes'
 
 SECRET_KEY = '=r-aasydj98789*(87gmd86%87qw00(*kjcnshw00u&*ebtyy$%2ddd7yd0dbrakhvi'
 
+STATIC_URL = '/static/'
+
 INSTALLED_APPS = (
     'django.contrib.admin',
     'django.contrib.contenttypes',
     'django.contrib.auth',
     'django.contrib.sessions',
+    'django.contrib.staticfiles',
     'djangotoolbox',
     'autoload',
     'dbindexer',
@@ -43,6 +46,7 @@ TEMPLATE_CONTEXT_PROCESSORS = (
     'django.contrib.auth.context_processors.auth',
     'django.core.context_processors.request',
     'django.core.context_processors.media',
+    'django.core.context_processors.static',
 )
 
 STATICFILES_FINDERS = (
