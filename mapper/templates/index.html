@@ -2,14 +2,19 @@
 <html>
     <head>
         <meta charset="UTF-8" />
-        <title>jQTouch &beta;</title>
+        <meta name="apple-mobile-web-app-capable" content="yes" />
+        <title>Foodpedia &alpha;</title>
 		<style>@import "/static/jqtouch/jqtouch.css";</style>
         <style>@import "/static/themes/apple/theme.css";</style>
 		<style>@import "/static/extensions/jqt.scroll.css";</style>
 		
+		
         <script src="/static/jqtouch/jquery-1.4.2.min.js"></script>
         <script src="/static/jqtouch/jqtouch.js"></script>
 		<script src="/static/extensions/jqt.scroll.js"></script>
+		
+		<link rel="stylesheet" type="text/css" href="/static/index.css" />
+		<script src="/static/index.js"></script>
 
         <script>
             var jQT = new $.jQTouch({
@@ -32,36 +37,65 @@
     </head>
     <body>
 		<div id="jqt">
-	        <div id="map" class="content current">
+	        <div id="map" class="content">
 				<div class="toolbar">
-					<h1></h1>
-					<a class="button slideup" id="infoButton" href="#about">Filter</a>
+					<a class="button leftButton" id="mapTimeSelector">Select Time</a>
+					<h1>All Events</h1>
+					<a class="button slideup" id="mapFilterSelector">Filter</a>
 				</div>
-
+				<img src="/static/imgs/map.png" class=imgcenter alt="map" />
 			</div>
 		
-			<div id="list" class="content">
+			<div id="list" class="content current">
 				<div class="toolbar">
 					<h1>List View</h1>
 
 				</div>
-				<ul class="edgetoedge">
-					<li class="sep">Today</li>
-					<li><a href="#">Event One </a></li>
-					<li><a href="#">Event Two </a></li>
-					<li><a href="#">Event Three </a></li>
-					<li class="sep">Tomorrow</li>
-					<li><a href="#">Event Four </a></li>
-					<li><a href="#">Event Five </a></li>
-					<li><a href="#">Event Six </a></li>
-					<li class="sep">The Next Day</li>
-					<li><a href="#">Event Seven </a></li>
-					<li><a href="#">Event Eight </a></li>
-					<li><a href="#">Event Nine </a></li>
-					
-    			</ul>
+				<div class="scroll">
+					<ul class="edgetoedge">
+						<li class="sep">Today</li>
+						<li class="slide arrow"><a href="#event">Event One </a></li>
+						<li class="slide arrow"><a href="#event">Event Two </a></li>
+						<li class="slide arrow"><a href="#event">Event Three </a></li>
+						<li class="sep">Tomorrow</li>
+						<li class="slide arrow"><a href="#event">Event Four </a></li>
+						<li class="slide arrow"><a href="#event">Event Five </a></li>
+						<li class="slide arrow"><a href="#event">Event Six </a></li>
+						<li class="sep">The Next Day</li>
+						<li class="slide arrow"><a href="#event">Event Seven </a></li>
+						<li class="slide arrow"><a href="#event">Event Eight </a></li>
+						<li class="slide arrow"><a href="#event">Event Nine </a></li>
+					</ul>
+    			</div>
 			</div>
-		
+			
+			<div id="event" class="content">
+				<div class="toolbar">
+					<a class="back" href="#list">Back</a>
+					<h1> Event X </h1>
+				</div>
+
+						
+				<div class="scroll">
+					<ul class="edgetoedge">
+						<li>Burger Giveaway</li>
+						<li class="sep">Description</li>
+						<li> Lorem ipsum dolor sit amet, consectetur adipiscing elit. Duis in augue massa, vitae hendrerit enim. Aliquam eget urna massa, quis facilisis leo. Morbi non augue eget dolor commodo auctor a ut lacus. Suspendisse at lectus mauris. </li>
+						<li class="sep">Tags</li>
+						<li>Burgers, American </li>
+						<li class="sep">Time</li>
+						<li>Friday, November 4 2011</li>
+						<li class="sep">Location</li>
+						<li>512 Campus Drive </li>
+					</ul>
+				<ul class="individual">
+					<li>Get Directions</li>
+					<li>Add to My Events</li>
+				</ul>		 
+				</div>
+				
+			</div>
+			
 			<div id="profile" class="content">
 				<div class="toolbar">
 					<h1>Profile</h1>
@@ -76,8 +110,8 @@
 			</div>
 			<nav id="tabbar">
 				<ul>
-					<li><a href="#map" class="fade current">Map</a></li>
-					<li><a href="#list" class="fade">List</a></li>
+					<li><a href="#map" class="fade">Map</a></li>
+					<li><a href="#list" class="fade current">List</a></li>
 					<li><a href="#profile" class="fade">Profile</a></li>
 					<li><a href="add" class="fade">Add Event</a></li>
 				</ul>
