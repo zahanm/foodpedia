@@ -1,2 +1,87 @@
-<h1> hello world </h1>
-<p> &copy; Rex Kirshner </p>
+<!doctype html>
+<html>
+    <head>
+        <meta charset="UTF-8" />
+        <title>jQTouch &beta;</title>
+		<style>@import "/static/jqtouch/jqtouch.css";</style>
+        <style>@import "/static/themes/apple/theme.css";</style>
+		<style>@import "/static/extensions/jqt.scroll.css";</style>
+		
+        <script src="/static/jqtouch/jquery-1.4.2.min.js"></script>
+        <script src="/static/jqtouch/jqtouch.js"></script>
+		<script src="/static/extensions/jqt.scroll.js"></script>
+
+        <script>
+            var jQT = new $.jQTouch({
+                icon: 'jqtouch.png',
+                addGlossToIcon: false,
+                startupScreen: 'jqt_startup.png',
+                statusBar: 'black',
+                preloadImages: [
+                    '/static/themes/jqt/img/back_button.png',
+                    '/static/themes/jqt/img/back_button_clicked.png',
+                    '/static/themes/jqt/img/button_clicked.png',
+                    '/static/themes/jqt/img/grayButton.png',
+                    '/static/themes/jqt/img/whiteButton.png',
+                    '/static/themes/jqt/img/loading.gif'
+                    ],
+				slideSelector: '.slide'
+            });
+
+        </script>
+    </head>
+    <body>
+		<div id="jqt">
+	        <div id="map" class="content current">
+				<div class="toolbar">
+					<h1></h1>
+					<a class="button slideup" id="infoButton" href="#about">Filter</a>
+				</div>
+
+			</div>
+		
+			<div id="list" class="content">
+				<div class="toolbar">
+					<h1>List View</h1>
+
+				</div>
+				<ul class="edgetoedge">
+					<li class="sep">Today</li>
+					<li><a href="#">Event One </a></li>
+					<li><a href="#">Event Two </a></li>
+					<li><a href="#">Event Three </a></li>
+					<li class="sep">Tomorrow</li>
+					<li><a href="#">Event Four </a></li>
+					<li><a href="#">Event Five </a></li>
+					<li><a href="#">Event Six </a></li>
+					<li class="sep">The Next Day</li>
+					<li><a href="#">Event Seven </a></li>
+					<li><a href="#">Event Eight </a></li>
+					<li><a href="#">Event Nine </a></li>
+					
+    			</ul>
+			</div>
+		
+			<div id="profile" class="content">
+				<div class="toolbar">
+					<h1>Profile</h1>
+				</div>
+
+			</div>
+			<div id="add" class="content">
+				<div class="toolbar">
+					<h1>Add Event</h1>
+				</div>
+
+			</div>
+			<nav id="tabbar">
+				<ul>
+					<li><a href="#map" class="fade current">Map</a></li>
+					<li><a href="#list" class="fade">List</a></li>
+					<li><a href="#profile" class="fade">Profile</a></li>
+					<li><a href="add" class="fade">Add Event</a></li>
+				</ul>
+			</nav>
+		</div>
+    </body>
+</html>
