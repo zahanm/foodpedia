@@ -4,14 +4,17 @@
         <meta charset="UTF-8" />
         <meta name="apple-mobile-web-app-capable" content="yes" />
         <title>Foodpedia &alpha;</title>
-		<style>@import "/static/jqtouch/jqtouch.css";</style>
-        <style>@import "/static/themes/apple/theme.css";</style>
-		<style>@import "/static/extensions/jqt.scroll.css";</style>
+		<style>@import "/static/jqtscroll/jqtouch/jqtouch.css";</style>
+        <style>@import "/static/jqtscroll/themes/apple/theme.css";</style>
+		<style>@import "/static/jqtscroll/extensions/jqt.scroll.css";</style>
 		
 		
-        <script src="/static/jqtouch/jquery-1.4.2.min.js"></script>
-        <script src="/static/jqtouch/jqtouch.js"></script>
-		<script src="/static/extensions/jqt.scroll.js"></script>
+        <script src="/static/jqtscroll/jqtouch/jquery-1.4.2.min.js"></script>
+        <script src="/static/jqtscroll/jqtouch/jqtouch.js"></script>
+		<script src="/static/jqtscroll/extensions/jqt.scroll.js"></script>
+		
+		<script src="/static/sw/spinningwheel.js"></script>
+		<link rel="stylesheet" type="text/css" href="/static/sw/spinningwheel.css" />
 		
 		<link rel="stylesheet" type="text/css" href="/static/index.css" />
 		<script src="/static/index.js"></script>
@@ -43,7 +46,7 @@
 					<h1>All Events</h1>
 					<a class="button slideup" id="mapFilterSelector">Filter</a>
 				</div>
-				<img src="/static/imgs/map.png" class=imgcenter alt="map" />
+				<img src="/static/imgs/map.png" alt="map" />
 			</div>
 		
 			<div id="list" class="content current">
@@ -89,8 +92,8 @@
 						<li>512 Campus Drive </li>
 					</ul>
 				<ul class="individual">
-					<li>Get Directions</li>
-					<li>Add to My Events</li>
+					<li><a href="http://maps.google.com/maps?saddr=37.426905,-122.171615&daddr=512+Campus+Drive,+Stanford,+CA&hl=en&ll=37.425457,-122.165437&spn=0.025867,0.022058&sll=37.42544,-122.16546&sspn=0.025867,0.022058&geocode=FdkWOwIdIc-3-A%3BFZ4VOwIdqv-3-CmPXrJj2bqPgDEGzRttnV93gw&vpsrc=0&dirflg=w&mra=ltm&glp=1&t=m&z=15"> Get Directions</a></li>
+					<li><a href="#profile">Add to My Events</a></li>
 				</ul>		 
 				</div>
 				
@@ -98,22 +101,48 @@
 			
 			<div id="profile" class="content">
 				<div class="toolbar">
-					<h1>Profile</h1>
+					<h1>My Interests</h1>
+				</div>
+				<div class="scroll">
+					<ul class="plastic">
+						<li class="slide arrow"><a href="#interest">Hamburger</a></li>
+						<li class="slide arrow"><a href="#interest">CS</a></li>
+						<li class="slide arrow"><a href="#interest">Ice Cream</a></li>
+					</ul>
 				</div>
 
 			</div>
+			
+			<div id="interest" class="content">
+				<div class="toolbar">
+					<h1>Interest</h1>
+				</div>
+				<ul class="individual">
+					<li><a href="#map">See on map</a></li>
+					<li><a href="#profile">Remove from my events</a></li>
+				</ul>
+			</div>			
+			
+			
 			<div id="add" class="content">
 				<div class="toolbar">
 					<h1>Add Event</h1>
 				</div>
-
+				<div class="scroll">
+				<form>
+				
+					<ul class="edit rounded">
+						<input type="text" name="name" placeholder="Event Name" id="name">
+					</ul>
+				</form>
+				</div>
 			</div>
 			<nav id="tabbar">
 				<ul>
 					<li><a href="#map" class="fade">Map</a></li>
 					<li><a href="#list" class="fade current">List</a></li>
 					<li><a href="#profile" class="fade">Profile</a></li>
-					<li><a href="add" class="fade">Add Event</a></li>
+					<li><a href="#add" class="fade">Add Event</a></li>
 				</ul>
 			</nav>
 		</div>
