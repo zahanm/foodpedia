@@ -70,6 +70,7 @@ class StubManager(object):
                     connection.remote_api_path = handler.url.split('(', 1)[0]
                     break
         server = '%s.%s' % (connection.remote_app_id, connection.domain)
+        connection.remote_api_path = '/_ah/remote_api/' # XXX HACK
         remote_url = 'https://%s%s' % (server, connection.remote_api_path)
         logging.info('Setting up remote_api for "%s" at %s' %
                      (connection.remote_app_id, remote_url))
