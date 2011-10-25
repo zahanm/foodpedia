@@ -122,9 +122,9 @@
 					<h1>Home</h1>
 				</div>
 				<ul class="rounded">
-					<li class="arrow"><a href="#map">Map</a></li>
-					<li class="arrow"><a href="#list">List</a></li>
-					<li class="arrow"><a href="#profile">Profile</a></li>
+					<li class="arrow"><a href="#map">Map View</a></li>
+					<li class="arrow"><a href="#list">List View</a></li>
+					<li class="arrow"><a href="#profile">My Profile</a></li>
 					<li class="arrow"><a href="#location_choice">Add Event</a></li>
 				</ul>
 			</div>	
@@ -133,9 +133,18 @@
         		<div class="toolbar">
 					<a class="back" href="#">Back</a>
 					<h1>All Events</h1>
-					<a class="button slideup" id="mapFilterSelector">Filter</a>
+					<a class="button slideup" id="mapFilterSelector" href="#" onclick="alert('Filter Selector');">Filter</a>
 				</div>		
 				<img src="/static/imgs/map.png" alt="map" />
+				<div class="info">
+					<a href="#" onclick="alert('Time Picker');">
+					
+						2:00 PM on 10/24/2011
+					<p />
+						(click to change)
+					</a>	
+				</div>
+				
         	</div>
         	
         	<div id="list">
@@ -165,20 +174,22 @@
         	<div id="event">
 				<div class="toolbar">
 					<a class="back" href="#">Back</a>
-					<h1> Burger Giveaway </h1>
+					<h1>Burger Party</h1>
 				</div>
 				<ul class="edgetoedge">
 						<li class="sep">Description</li>
 						<li> Lorem ipsum dolor sit amet, consectetur adipiscing elit. Duis in augue massa, vitae hendrerit enim. Aliquam eget urna massa, quis facilisis leo. Morbi non augue eget dolor commodo auctor a ut lacus. Suspendisse at lectus mauris. </li>
 						<li class="sep">Tags</li>
-						<li>Burgers, American </li>
+						<li><a href="#old_interest">Burgers</a></li>
+						<li><a href="#new_interest">American</a> </li>
 						<li class="sep">Time</li>
 						<li>Friday, November 4 2011</li>
 						<li class="sep">Location</li>
-						<li>512 Campus Drive </li>
+						<li><a href="http://maps.google.com/maps?saddr=37.426905,-122.171615&daddr=512+Campus+Drive,+Stanford,+CA&hl=en&ll=37.425457,-122.165437&spn=0.025867,0.022058&sll=37.42544,-122.16546&sspn=0.025867,0.022058&geocode=FdkWOwIdIc-3-A%3BFZ4VOwIdqv-3-CmPXrJj2bqPgDEGzRttnV93gw&vpsrc=0&dirflg=w&mra=ltm&glp=1&t=m&z=15">512 Campus Drive </a></li>
 					</ul>
 					<ul class="individual">
 						<li><a href="http://maps.google.com/maps?saddr=37.426905,-122.171615&daddr=512+Campus+Drive,+Stanford,+CA&hl=en&ll=37.425457,-122.165437&spn=0.025867,0.022058&sll=37.42544,-122.16546&sspn=0.025867,0.022058&geocode=FdkWOwIdIc-3-A%3BFZ4VOwIdqv-3-CmPXrJj2bqPgDEGzRttnV93gw&vpsrc=0&dirflg=w&mra=ltm&glp=1&t=m&z=15"> Get Directions</a></li>
+						
 						<li><a href="#profile">Add to My Events</a></li>
 					</ul>		 
 				</div>
@@ -191,38 +202,77 @@
 			
 					<h2>My Events</h2>
 					<ul class="plastic">
-						<li class="slide arrow"><a href="#event">Burger Giveaway</a></li>
+						<li class="slide arrow"><a href="#event">Burger Party</a></li>
 					</ul>
 					<h2>My tags</h2>
 					<ul class="plastic">
-						<li class="arrow"><a href="#interest">Hamburger</a></li>
-						<li class="arrow"><a href="#interest">CS</a></li>
-						<li class="arrow"><a href="#interest">Ice Cream</a></li>
-						<li class="forward"><a href="#add_interests">Add Interests</a></li>
+						<li class="arrow"><a href="#old_interest">Hamburger</a></li>
+						<li class="arrow"><a href="#old_interest">CS</a></li>
+						<li class="arrow"><a href="#old_interest">Ice Cream</a></li>
+						<li class="forward"><a href="#add_interest">Add Interests</a></li>
 					</ul>
 
 			</div>
         
-        	<div id="interest">
+        	<div id="old_interest">
 				<div class="toolbar">
 					<a href="#" class="back">Back</a>
-					<h1>Interest</h1>
+					<h1>Interest (Old) </h1>
 				</div>
-					<ul class="individual">
-						<li><a href="http://maps.google.com/maps?saddr=37.426905,-122.171615&daddr=512+Campus+Drive,+Stanford,+CA&hl=en&ll=37.425457,-122.165437&spn=0.025867,0.022058&sll=37.42544,-122.16546&sspn=0.025867,0.022058&geocode=FdkWOwIdIc-3-A%3BFZ4VOwIdqv-3-CmPXrJj2bqPgDEGzRttnV93gw&vpsrc=0&dirflg=w&mra=ltm&glp=1&t=m&z=15"> Get Directions</a></li>
-						<li><a href="#profile">Remove from my interests</a></li>
-					</ul>		 
+						<a style="margin:0 10px;color:rgba(0,0,0,.9)" href="#profile" class="whiteButton">Remove from my interests</a>
 
 			</div>	
+			<div id="new_interest">
+				<div class="toolbar">
+					<a href="#" class="back">Back</a>
+					<h1>Interest (New)</h1>
+				</div>
+						<a style="margin:0 10px;color:rgba(0,0,0,.9)" href="#profile" class="whiteButton">Add to my interests</a>
+
+			</div>
+			<div id="add_interest">
+				<div class="toolbar">
+					<a href="#" class="back">Back</a>
+					<h1>Browse Tags</h1>
+				</div>
+				
+				<ul class="edgetoedge">
+					<li class="sep">C</li>
+					<li><a href="#new_interest">Cake</a></li>
+					<li><a href="#old_interest">CS</a></li>
+					<li class="sep">H</li>
+					<li><a href="#old_interest">Hamburger</a></li>
+					<li class="sep">I</li>
+					<li><a href="#old_interest">Ice Cream</a></li>
+					<li class="sep">S</li>
+					<li><a href="#new_interest">Supper</a></li>
+			</div>
+			
+			
         
         	<div id="location_choice">
 				<div class="toolbar">
 					<a href="#" class="back">Back</a>
 				</div>        		
         		<a style="margin:0 10px;color:rgba(0,0,0,.9)" href="#add_info" class="whiteButton">Here and now!</a>
-        		<a style="margin:0 10px;color:rgba(0,0,0,.9)" href="#home" class="whiteButton">Enter a time and location.</a>
+        		<a style="margin:0 10px;color:rgba(0,0,0,.9)" href="#date_location_chooser" class="whiteButton">Enter a time and location.</a>
         	</div>
-        		
+        	
+        	<div id="date_location_chooser">
+        		<div class="toolbar">
+        			<a href="#" class="back">Back</a>
+        			<h1>Date and Time</h1>
+        			<a href="#add_info" class="button">Continue</a>
+        		</div>
+        		<form>
+        			<ul class="edit rounded">
+        				<li><textarea placeholder="Location" ></textarea></li>
+        				<li><input type="text" placeholder="Time" /></li>
+        				
+        			</ul>
+        			
+        		</form>
+        	</div>
         		
         	<div id="add_info">
 				<div class="toolbar">
@@ -232,12 +282,12 @@
 				<form>
 					<ul class="edit rounded">
 						<li><input type="text" name="name" placeholder="Event Name" id="name" /></li>
-						<li><input type="text" name="location" placeholder="Event Location" id="location" /></li>
+						<li><input type="text" name="location" placeholder="Event Location" id="location"/></li>
 						<li><input type="text" name="time" placeholder="Time" id="time"  /></li>
 						<li>Repeating <span class="toggle"><input type="checkbox" /></span></li>
 						<li><textarea placeholder="Description" ></textarea></li>
 						<li><textarea placeholder="Add tags" ></textarea></li>
-						<li><a style="margin:0 10px;color:rgba(0,0,0,.9)" href="#home" class="whiteButton">Submit</a></li>
+						<li><a style="margin:0 10px;color:rgba(0,0,0,.9)" href="#home" class="whiteButton fade">Submit</a></li>
 					</ul>
 					
 				</form>
