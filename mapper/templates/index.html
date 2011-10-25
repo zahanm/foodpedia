@@ -3,54 +3,145 @@
     <head>
         <meta charset="UTF-8" />
         <meta name="apple-mobile-web-app-capable" content="yes" />
+<!--
+        <script src="http://jsconsole.com/remote.js?"></script>
+        <script src="http://192.168.1.2:8080/target/target-script-min.js"></script>
+-->
         <title>Foodpedia &alpha;</title>
-		<style>@import "/static/jqtscroll/jqtouch/jqtouch.css";</style>
-        <style>@import "/static/jqtscroll/themes/apple/theme.css";</style>
-		<style>@import "/static/jqtscroll/extensions/jqt.scroll.css";</style>
-		
-		
-        <script src="/static/jqtscroll/jqtouch/jquery-1.4.2.min.js"></script>
-        <script src="/static/jqtscroll/jqtouch/jqtouch.js"></script>
-		<script src="/static/jqtscroll/extensions/jqt.scroll.js"></script>
-		
-		<script src="/static/sw/spinningwheel.js"></script>
-		<link rel="stylesheet" type="text/css" href="/static/sw/spinningwheel.css" />
-		
-		<link rel="stylesheet" type="text/css" href="/static/index.css" />
-		<script src="/static/index.js"></script>
+        <style type="text/css" media="screen">@import "/static/jqtouch/jqtouch.css";</style>
+        <style type="text/css" media="screen">@import "/static/themes/jqt/theme.css";</style>
+        <script src="/static/jqtouch/jquery-1.4.2.js" type="text/javascript" charset="utf-8"></script>
+        <script src="/static/jqtouch/jqtouch.js" type="application/x-javascript" charset="utf-8"></script>
+    	
 
-        <script>
+        
+        
+        <script type="text/javascript" charset="utf-8">
             var jQT = new $.jQTouch({
                 icon: 'jqtouch.png',
+                icon4: 'jqtouch4.png',
                 addGlossToIcon: false,
                 startupScreen: 'jqt_startup.png',
                 statusBar: 'black',
                 preloadImages: [
+                    '/static/themes/jqt/img/activeButton.png',
                     '/static/themes/jqt/img/back_button.png',
                     '/static/themes/jqt/img/back_button_clicked.png',
+                    '/static/themes/jqt/img/blueButton.png',
+                    '/static/themes/jqt/img/button.png',
                     '/static/themes/jqt/img/button_clicked.png',
                     '/static/themes/jqt/img/grayButton.png',
+                    '/static/themes/jqt/img/greenButton.png',
+                    '/static/themes/jqt/img/redButton.png',
                     '/static/themes/jqt/img/whiteButton.png',
                     '/static/themes/jqt/img/loading.gif'
-                    ],
-				slideSelector: '.slide'
+                    ]
             });
+            // Some sample Javascript functions:
+            $(function(){
+                // Show a swipe event on swipe test
+                $('#swipeme').swipe(function(evt, data) {
+                    $(this).html('You swiped <strong>' + data.direction + '/' + data.deltaX +':' + data.deltaY + '</strong>!');
+                    $(this).parent().after('<li>swiped!</li>')
 
+                });
+                $('#tapme').tap(function(){
+                    $(this).parent().after('<li>tapped!</li>')
+                })
+                $('a[target="_blank"]').click(function() {
+                    if (confirm('This link opens in a new window.')) {
+                        return true;
+                    } else {
+                        return false;
+                    }
+                });
+                // Page animation callback events
+                $('#pageevents').
+                    bind('pageAnimationStart', function(e, info){ 
+                        $(this).find('.info').append('Started animating ' + info.direction + '&hellip; ');
+                    }).
+                    bind('pageAnimationEnd', function(e, info){
+                        $(this).find('.info').append(' finished animating ' + info.direction + '.<br /><br />');
+                    });
+                // Page animations end with AJAX callback event, example 1 (load remote HTML only first time)
+                $('#callback').bind('pageAnimationEnd', function(e, info){
+                    // Make sure the data hasn't already been loaded (we'll set 'loaded' to true a couple lines further down)
+                    if (!$(this).data('loaded')) {
+                        // Append a placeholder in case the remote HTML takes its sweet time making it back
+                        // Then, overwrite the "Loading" placeholder text with the remote HTML
+                        $(this).append($('<div>Loading</div>').load('ajax.html .info', function() {        
+                            // Set the 'loaded' var to true so we know not to reload
+                            // the HTML next time the #callback div animation ends
+                            $(this).parent().data('loaded', true);  
+                        }));
+                    }
+                });
+                // Orientation callback event
+                $('#jqt').bind('turn', function(e, data){
+                    $('#orient').html('Orientation: ' + data.orientation);
+                });
+                $('#play_movie').bind('tap', function(){
+                    $('#movie').get(0).play();
+                    $(this).removeClass('active');
+                });
+                
+                $('#video').bind('pageAnimationStart', function(e, info){
+                    $('#movie').css('display', 'none');
+                }).bind('pageAnimationEnd', function(e, info){
+                    if (info.direction == 'in')
+                    {
+                        $('#movie').css('display', 'block');
+                    }
+                })
+            });
         </script>
+        <style type="text/css" media="screen">
+            #jqt.fullscreen #home .info {
+                display: none;
+            }
+            div#jqt #about {
+                padding: 100px 10px 40px;
+                text-shadow: rgba(255, 255, 255, 0.3) 0px -1px 0;
+                font-size: 13px;
+                text-align: center;
+                background: #161618;
+            }
+            div#jqt #about p {
+                margin-bottom: 8px;
+            }
+            div#jqt #about a {
+            	color: #fff;
+                font-weight: bold;
+                text-decoration: none;
+            }
+        </style>
     </head>
     <body>
-		<div id="jqt">
-	        <div id="map" class="content">
+        <div id="jqt">
+			<div id="home" class="current">
 				<div class="toolbar">
-					<a class="button leftButton" id="mapTimeSelector">Select Time</a>
+					<h1>Home</h1>
+				</div>
+				<ul class="rounded">
+					<li class="arrow"><a href="#map">Map</a></li>
+					<li class="arrow"><a href="#list">List</a></li>
+					<li class="arrow"><a href="#profile">Profile</a></li>
+					<li class="arrow"><a href="#location_choice">Add Event</a></li>
+				</ul>
+			</div>	
+        	
+        	<div id="map">
+        		<div class="toolbar">
+					<a class="back" href="#">Back</a>
 					<h1>All Events</h1>
 					<a class="button slideup" id="mapFilterSelector">Filter</a>
-				</div>
+				</div>		
 				<img src="/static/imgs/map.png" alt="map" />
-			</div>
-		
-			<div id="list" class="content current">
+        	</div>
+        	
+        	<div id="list">
 				<div class="toolbar">
+					<a class="back" href="#">Back</a>
 					<h1>List View</h1>
 
 				</div>
@@ -70,18 +161,14 @@
 						<li class="slide arrow"><a href="#event">Event Nine </a></li>
 					</ul>
     			</div>
-			</div>
-			
-			<div id="event" class="content">
+        	</div>
+        	
+        	<div id="event">
 				<div class="toolbar">
-					<a class="back" href="#list">Back</a>
-					<h1> Event X </h1>
+					<a class="back" href="#">Back</a>
+					<h1> Burger Giveaway </h1>
 				</div>
-
-						
-				<div class="scroll">
-					<ul class="edgetoedge">
-						<li>Burger Giveaway</li>
+				<ul class="edgetoedge">
 						<li class="sep">Description</li>
 						<li> Lorem ipsum dolor sit amet, consectetur adipiscing elit. Duis in augue massa, vitae hendrerit enim. Aliquam eget urna massa, quis facilisis leo. Morbi non augue eget dolor commodo auctor a ut lacus. Suspendisse at lectus mauris. </li>
 						<li class="sep">Tags</li>
@@ -91,60 +178,80 @@
 						<li class="sep">Location</li>
 						<li>512 Campus Drive </li>
 					</ul>
-				<ul class="individual">
-					<li><a href="http://maps.google.com/maps?saddr=37.426905,-122.171615&daddr=512+Campus+Drive,+Stanford,+CA&hl=en&ll=37.425457,-122.165437&spn=0.025867,0.022058&sll=37.42544,-122.16546&sspn=0.025867,0.022058&geocode=FdkWOwIdIc-3-A%3BFZ4VOwIdqv-3-CmPXrJj2bqPgDEGzRttnV93gw&vpsrc=0&dirflg=w&mra=ltm&glp=1&t=m&z=15"> Get Directions</a></li>
-					<li><a href="#profile">Add to My Events</a></li>
-				</ul>		 
+					<ul class="individual">
+						<li><a href="http://maps.google.com/maps?saddr=37.426905,-122.171615&daddr=512+Campus+Drive,+Stanford,+CA&hl=en&ll=37.425457,-122.165437&spn=0.025867,0.022058&sll=37.42544,-122.16546&sspn=0.025867,0.022058&geocode=FdkWOwIdIc-3-A%3BFZ4VOwIdqv-3-CmPXrJj2bqPgDEGzRttnV93gw&vpsrc=0&dirflg=w&mra=ltm&glp=1&t=m&z=15"> Get Directions</a></li>
+						<li><a href="#profile">Add to My Events</a></li>
+					</ul>		 
 				</div>
 				
-			</div>
-			
-			<div id="profile" class="content">
+			<div id="profile">
 				<div class="toolbar">
+					<a href="#" class="back">Back</a>
 					<h1>My Interests</h1>
 				</div>
-				<div class="scroll">
+			
+					<h2>My Events</h2>
 					<ul class="plastic">
-						<li class="slide arrow"><a href="#interest">Hamburger</a></li>
-						<li class="slide arrow"><a href="#interest">CS</a></li>
-						<li class="slide arrow"><a href="#interest">Ice Cream</a></li>
+						<li class="slide arrow"><a href="#event">Burger Giveaway</a></li>
 					</ul>
-				</div>
+					<h2>My tags</h2>
+					<ul class="plastic">
+						<li class="arrow"><a href="#interest">Hamburger</a></li>
+						<li class="arrow"><a href="#interest">CS</a></li>
+						<li class="arrow"><a href="#interest">Ice Cream</a></li>
+						<li class="forward"><a href="#add_interests">Add Interests</a></li>
+					</ul>
 
 			</div>
-			
-			<div id="interest" class="content">
+        
+        	<div id="interest">
 				<div class="toolbar">
+					<a href="#" class="back">Back</a>
 					<h1>Interest</h1>
 				</div>
-				<ul class="individual">
-					<li><a href="#map">See on map</a></li>
-					<li><a href="#profile">Remove from my events</a></li>
-				</ul>
-			</div>			
-			
-			
-			<div id="add" class="content">
+					<ul class="individual">
+						<li><a href="http://maps.google.com/maps?saddr=37.426905,-122.171615&daddr=512+Campus+Drive,+Stanford,+CA&hl=en&ll=37.425457,-122.165437&spn=0.025867,0.022058&sll=37.42544,-122.16546&sspn=0.025867,0.022058&geocode=FdkWOwIdIc-3-A%3BFZ4VOwIdqv-3-CmPXrJj2bqPgDEGzRttnV93gw&vpsrc=0&dirflg=w&mra=ltm&glp=1&t=m&z=15"> Get Directions</a></li>
+						<li><a href="#profile">Remove from my interests</a></li>
+					</ul>		 
+
+			</div>	
+        
+        	<div id="location_choice">
+				<div class="toolbar">
+					<a href="#" class="back">Back</a>
+				</div>        		
+        		<a style="margin:0 10px;color:rgba(0,0,0,.9)" href="#add_info" class="whiteButton">Here and now!</a>
+        		<a style="margin:0 10px;color:rgba(0,0,0,.9)" href="#home" class="whiteButton">Enter a time and location.</a>
+        	</div>
+        		
+        		
+        	<div id="add_info">
 				<div class="toolbar">
 					<h1>Add Event</h1>
+					<a href="#" class="back">Back</a>
 				</div>
-				<div class="scroll">
 				<form>
-				
 					<ul class="edit rounded">
-						<input type="text" name="name" placeholder="Event Name" id="name">
+						<li><input type="text" name="name" placeholder="Event Name" id="name" /></li>
+						<li><input type="text" name="location" placeholder="Event Location" id="location" /></li>
+						<li><input type="text" name="time" placeholder="Time" id="time"  /></li>
+						<li>Repeating <span class="toggle"><input type="checkbox" /></span></li>
+						<li><textarea placeholder="Description" ></textarea></li>
+						<li><textarea placeholder="Add tags" ></textarea></li>
+						<li><a style="margin:0 10px;color:rgba(0,0,0,.9)" href="#home" class="whiteButton">Submit</a></li>
 					</ul>
+					
 				</form>
-				</div>
-			</div>
-			<nav id="tabbar">
-				<ul>
-					<li><a href="#map" class="fade">Map</a></li>
-					<li><a href="#list" class="fade current">List</a></li>
-					<li><a href="#profile" class="fade">Profile</a></li>
-					<li><a href="#add" class="fade">Add Event</a></li>
-				</ul>
-			</nav>
-		</div>
+        </div>
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        </div>
     </body>
 </html>
