@@ -1,3 +1,4 @@
+/*
 $(document).ready(function () {
 
 		$('#date3').scroller({ preset: 'datetime' });
@@ -8,7 +9,7 @@ $(document).ready(function () {
 				$('#date3').scroller('destroy').scroller({ preset: 'datetime', theme: t, mode: m });
 		});
 });
-
+*/
 
 
 $(function(){

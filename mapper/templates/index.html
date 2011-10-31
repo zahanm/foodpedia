@@ -10,18 +10,16 @@
         <title>Foodpedia &alpha;</title>
         <style type="text/css" media="screen">@import "/static/jqtouch/jqtouch.css";</style>
         <style type="text/css" media="screen">@import "/static/themes/jqt/theme.css";</style>
-		    <script src="http://code.jquery.com/jquery-1.6.4.min.js"></script>
+        <script src="http://code.jquery.com/jquery-1.4.2.min.js"></script>
         <script src="/static/jqtouch/jqtouch.js" type="application/x-javascript" charset="utf-8"></script>
         <script src="/static/jqmustache/jquery.mustache.js" type="text/javascript" charset="utf-8"></script>
 
-    		<script src="/static/index.js" type="text/javascript" charset="utf-8"></script>
-				
-				
-				<script src="/static/mobiscroll/js/mobiscroll-1.5.2.js" type="text/javascript"></script>
-    		<link href="/static/mobiscroll/css/mobiscroll-1.5.2.css" rel="stylesheet" type="text/css" />
+        <script src="/static/index.js" type="text/javascript" charset="utf-8"></script>
 
-
-
+<!--
+        <script src="/static/mobiscroll/js/mobiscroll-1.5.2.js" type="text/javascript"></script>
+        <link href="/static/mobiscroll/css/mobiscroll-1.5.2.css" rel="stylesheet" type="text/css" />
+-->
         <style type="text/css" media="screen">
             #jqt.fullscreen #home .info {
                 display: none;
@@ -37,7 +35,7 @@
                 margin-bottom: 8px;
             }
             div#jqt #about a {
-            	color: #fff;
+                color: #fff;
                 font-weight: bold;
                 text-decoration: none;
             }
@@ -45,184 +43,181 @@
     </head>
     <body>
         <div id="jqt">
-			<div id="home" class="current">
-				<div class="toolbar">
-					<h1>Home</h1>
-				</div>
-				<div data-role="fieldcontain">
-						<input type="text" name="date3" id="date3" class="mobiscroll" />
-				</div>
-				<ul class="rounded">
-					<li class="arrow"><a href="#map">Map View</a></li>
-					<li class="arrow"><a href="#list">List View</a></li>
-					<li class="arrow"><a href="#profile">My Profile</a></li>
-					<li class="arrow"><a href="#location_choice">Add Event</a></li>
-				</ul>
-			</div>	
-        	
-        	<div id="map">
-        		<div class="toolbar">
-					<a class="back" href="#">Back</a>
-					<h1>All Events</h1>
-					<a class="button slideup" id="mapFilterSelector" href="#" onclick="alert('Filter Selector');">Filter</a>
-				</div>
-						
-				<img src="/static/imgs/map.png" alt="map" />
-				<div class="info">
-					<a href="#" onclick="alert('Time Picker');">
-					
-						2:00 PM on 10/24/2011
-					<p />
-						(click to change)
-					</a>	
-				</div>
-				
-        	</div>
-        	
-        	<div id="list">
-				<div class="toolbar">
-					<a class="back" href="#">Back</a>
-					<h1>List View</h1>
+            <div id="home" class="current">
+                <div class="toolbar">
+                    <h1>Home</h1>
+                </div>
+                <ul class="rounded">
+                    <li class="arrow"><a href="#map">Map View</a></li>
+                    <li class="arrow"><a href="#list">List View</a></li>
+                    <li class="arrow"><a href="#profile">My Profile</a></li>
+                    <li class="arrow"><a href="#location_choice">Add Event</a></li>
+                </ul>
+            </div>  
+            
+            <div id="map">
+                <div class="toolbar">
+                    <a class="back" href="#">Back</a>
+                    <h1>All Events</h1>
+                    <a class="button slideup" id="mapFilterSelector" href="#" onclick="alert('Filter Selector');">Filter</a>
+                </div>
+                        
+                <img src="/static/imgs/map.png" alt="map" />
+                <div class="info">
+                    <a href="#" onclick="alert('Time Picker');">
+                    
+                        2:00 PM on 10/24/2011
+                    <p />
+                        (click to change)
+                    </a>    
+                </div>
+                
+            </div>
+            
+            <div id="list">
+                <div class="toolbar">
+                    <a class="back" href="#">Back</a>
+                    <h1>List View</h1>
 
-				</div>
-				<div class="scroll">
-					<ul class="edgetoedge">
-						<li class="sep">Today</li>
-						<li class="slide arrow"><a href="#event">Event One </a></li>
-						<li class="slide arrow"><a href="#event">Event Two </a></li>
-						<li class="slide arrow"><a href="#event">Event Three </a></li>
-						<li class="sep">Tomorrow</li>
-						<li class="slide arrow"><a href="#event">Event Four </a></li>
-						<li class="slide arrow"><a href="#event">Event Five </a></li>
-						<li class="slide arrow"><a href="#event">Event Six </a></li>
-						<li class="sep">The Next Day</li>
-						<li class="slide arrow"><a href="#event">Event Seven </a></li>
-						<li class="slide arrow"><a href="#event">Event Eight </a></li>
-						<li class="slide arrow"><a href="#event">Event Nine </a></li>
-					</ul>
-    			</div>
-        	</div>
-        	
-        	<div id="event">
-				<div class="toolbar">
-					<a class="back" href="#">Back</a>
-					<h1>Burger Party</h1>
-				</div>
-				<ul class="edgetoedge">
-						<li class="sep">Description</li>
-						<li> Lorem ipsum dolor sit amet, consectetur adipiscing elit. Duis in augue massa, vitae hendrerit enim. Aliquam eget urna massa, quis facilisis leo. Morbi non augue eget dolor commodo auctor a ut lacus. Suspendisse at lectus mauris. </li>
-						<li class="sep">Tags</li>
-						<li><a href="#old_interest">Burgers</a></li>
-						<li><a href="#new_interest">American</a> </li>
-						<li class="sep">Time</li>
-						<li>Friday, November 4 2011</li>
-						<li class="sep">Location</li>
-						<li><a href="http://maps.google.com/maps?saddr=37.426905,-122.171615&daddr=512+Campus+Drive,+Stanford,+CA&hl=en&ll=37.425457,-122.165437&spn=0.025867,0.022058&sll=37.42544,-122.16546&sspn=0.025867,0.022058&geocode=FdkWOwIdIc-3-A%3BFZ4VOwIdqv-3-CmPXrJj2bqPgDEGzRttnV93gw&vpsrc=0&dirflg=w&mra=ltm&glp=1&t=m&z=15">512 Campus Drive </a></li>
-					</ul>
-					<ul class="individual">
-						<li><a href="http://maps.google.com/maps?saddr=37.426905,-122.171615&daddr=512+Campus+Drive,+Stanford,+CA&hl=en&ll=37.425457,-122.165437&spn=0.025867,0.022058&sll=37.42544,-122.16546&sspn=0.025867,0.022058&geocode=FdkWOwIdIc-3-A%3BFZ4VOwIdqv-3-CmPXrJj2bqPgDEGzRttnV93gw&vpsrc=0&dirflg=w&mra=ltm&glp=1&t=m&z=15"> Get Directions</a></li>
-						
-						<li><a href="#profile">Add to My Events</a></li>
-					</ul>		 
-				</div>
-				
-			<div id="profile">
-				<div class="toolbar">
-					<a href="#" class="back">Back</a>
-					<h1>My Interests</h1>
-				</div>
-			
-					<h2>My Events</h2>
-					<ul class="plastic">
-						<li class="slide arrow"><a href="#event">Burger Party</a></li>
-					</ul>
-					<h2>My tags</h2>
-					<ul class="plastic">
-						<li class="arrow"><a href="#old_interest">Hamburger</a></li>
-						<li class="arrow"><a href="#old_interest">CS</a></li>
-						<li class="arrow"><a href="#old_interest">Ice Cream</a></li>
-						<li class="forward"><a href="#add_interest">Add Interests</a></li>
-					</ul>
+                </div>
+                <div class="scroll">
+                    <ul class="edgetoedge">
+                        <li class="sep">Today</li>
+                        <li class="slide arrow"><a href="#event">Event One </a></li>
+                        <li class="slide arrow"><a href="#event">Event Two </a></li>
+                        <li class="slide arrow"><a href="#event">Event Three </a></li>
+                        <li class="sep">Tomorrow</li>
+                        <li class="slide arrow"><a href="#event">Event Four </a></li>
+                        <li class="slide arrow"><a href="#event">Event Five </a></li>
+                        <li class="slide arrow"><a href="#event">Event Six </a></li>
+                        <li class="sep">The Next Day</li>
+                        <li class="slide arrow"><a href="#event">Event Seven </a></li>
+                        <li class="slide arrow"><a href="#event">Event Eight </a></li>
+                        <li class="slide arrow"><a href="#event">Event Nine </a></li>
+                    </ul>
+                </div>
+            </div>
+            
+            <div id="event">
+                <div class="toolbar">
+                    <a class="back" href="#">Back</a>
+                    <h1>Burger Party</h1>
+                </div>
+                <ul class="edgetoedge">
+                        <li class="sep">Description</li>
+                        <li> Lorem ipsum dolor sit amet, consectetur adipiscing elit. Duis in augue massa, vitae hendrerit enim. Aliquam eget urna massa, quis facilisis leo. Morbi non augue eget dolor commodo auctor a ut lacus. Suspendisse at lectus mauris. </li>
+                        <li class="sep">Tags</li>
+                        <li><a href="#old_interest">Burgers</a></li>
+                        <li><a href="#new_interest">American</a> </li>
+                        <li class="sep">Time</li>
+                        <li>Friday, November 4 2011</li>
+                        <li class="sep">Location</li>
+                        <li><a href="http://maps.google.com/maps?saddr=37.426905,-122.171615&daddr=512+Campus+Drive,+Stanford,+CA&hl=en&ll=37.425457,-122.165437&spn=0.025867,0.022058&sll=37.42544,-122.16546&sspn=0.025867,0.022058&geocode=FdkWOwIdIc-3-A%3BFZ4VOwIdqv-3-CmPXrJj2bqPgDEGzRttnV93gw&vpsrc=0&dirflg=w&mra=ltm&glp=1&t=m&z=15">512 Campus Drive </a></li>
+                    </ul>
+                    <ul class="individual">
+                        <li><a href="http://maps.google.com/maps?saddr=37.426905,-122.171615&daddr=512+Campus+Drive,+Stanford,+CA&hl=en&ll=37.425457,-122.165437&spn=0.025867,0.022058&sll=37.42544,-122.16546&sspn=0.025867,0.022058&geocode=FdkWOwIdIc-3-A%3BFZ4VOwIdqv-3-CmPXrJj2bqPgDEGzRttnV93gw&vpsrc=0&dirflg=w&mra=ltm&glp=1&t=m&z=15"> Get Directions</a></li>
+                        
+                        <li><a href="#profile">Add to My Events</a></li>
+                    </ul>        
+                </div>
+                
+            <div id="profile">
+                <div class="toolbar">
+                    <a href="#" class="back">Back</a>
+                    <h1>My Interests</h1>
+                </div>
+            
+                    <h2>My Events</h2>
+                    <ul class="plastic">
+                        <li class="slide arrow"><a href="#event">Burger Party</a></li>
+                    </ul>
+                    <h2>My tags</h2>
+                    <ul class="plastic">
+                        <li class="arrow"><a href="#old_interest">Hamburger</a></li>
+                        <li class="arrow"><a href="#old_interest">CS</a></li>
+                        <li class="arrow"><a href="#old_interest">Ice Cream</a></li>
+                        <li class="forward"><a href="#add_interest">Add Interests</a></li>
+                    </ul>
 
-			</div>
+            </div>
         
-        	<div id="old_interest">
-				<div class="toolbar">
-					<a href="#" class="back">Back</a>
-					<h1>Interest (Old) </h1>
-				</div>
-						<a style="margin:0 10px;color:rgba(0,0,0,.9)" href="#profile" class="whiteButton">Remove from my interests</a>
+            <div id="old_interest">
+                <div class="toolbar">
+                    <a href="#" class="back">Back</a>
+                    <h1>Interest (Old) </h1>
+                </div>
+                        <a style="margin:0 10px;color:rgba(0,0,0,.9)" href="#profile" class="whiteButton">Remove from my interests</a>
 
-			</div>	
-			<div id="new_interest">
-				<div class="toolbar">
-					<a href="#" class="back">Back</a>
-					<h1>Interest (New)</h1>
-				</div>
-						<a style="margin:0 10px;color:rgba(0,0,0,.9)" href="#profile" class="whiteButton">Add to my interests</a>
+            </div>  
+            <div id="new_interest">
+                <div class="toolbar">
+                    <a href="#" class="back">Back</a>
+                    <h1>Interest (New)</h1>
+                </div>
+                        <a style="margin:0 10px;color:rgba(0,0,0,.9)" href="#profile" class="whiteButton">Add to my interests</a>
 
-			</div>
-			<div id="add_interest">
-				<div class="toolbar">
-					<a href="#" class="back">Back</a>
-					<h1>Browse Tags</h1>
-				</div>
-				
-				<ul class="edgetoedge">
-					<li class="sep">C</li>
-					<li><a href="#new_interest">Cake</a></li>
-					<li><a href="#old_interest">CS</a></li>
-					<li class="sep">H</li>
-					<li><a href="#old_interest">Hamburger</a></li>
-					<li class="sep">I</li>
-					<li><a href="#old_interest">Ice Cream</a></li>
-					<li class="sep">S</li>
-					<li><a href="#new_interest">Supper</a></li>
-			</div>
-			
-			
+            </div>
+            <div id="add_interest">
+                <div class="toolbar">
+                    <a href="#" class="back">Back</a>
+                    <h1>Browse Tags</h1>
+                </div>
+                
+                <ul class="edgetoedge">
+                    <li class="sep">C</li>
+                    <li><a href="#new_interest">Cake</a></li>
+                    <li><a href="#old_interest">CS</a></li>
+                    <li class="sep">H</li>
+                    <li><a href="#old_interest">Hamburger</a></li>
+                    <li class="sep">I</li>
+                    <li><a href="#old_interest">Ice Cream</a></li>
+                    <li class="sep">S</li>
+                    <li><a href="#new_interest">Supper</a></li>
+            </div>
+            
+            
         
-        	<div id="location_choice">
-				<div class="toolbar">
-					<a href="#" class="back">Back</a>
-				</div>        		
-        		<a style="margin:0 10px;color:rgba(0,0,0,.9)" href="#add_info" class="whiteButton">Here and now!</a>
-        		<a style="margin:0 10px;color:rgba(0,0,0,.9)" href="#date_location_chooser" class="whiteButton">Enter a time and location.</a>
-        	</div>
-        	
-        	<div id="date_location_chooser">
-        		<div class="toolbar">
-        			<a href="#" class="back">Back</a>
-        			<h1>Date and Time</h1>
-        			<a href="#add_info" class="button">Continue</a>
-        		</div>
-        		<form>
-        			<ul class="edit rounded">
-        				<li><textarea placeholder="Location" ></textarea></li>
-        				<li><input type="text" placeholder="Time" /></li>
-        				
-        			</ul>
-        			
-        		</form>
-        	</div>
-        		
-        	<div id="add_info">
-				<div class="toolbar">
-					<h1>Add Event</h1>
-					<a href="#" class="back">Back</a>
-				</div>
-				<form>
-					<ul class="edit rounded">
-						<li><input type="text" name="name" placeholder="Event Name" id="name" /></li>
-						<li><input type="text" name="location" placeholder="Event Location" id="location"/></li>
-						<li><input type="text" name="time" placeholder="Time" id="time"  /></li>
-						<li>Repeating <span class="toggle"><input type="checkbox" /></span></li>
-						<li><textarea placeholder="Description" ></textarea></li>
-						<li><textarea placeholder="Add tags" ></textarea></li>
-						<li><a style="margin:0 10px;color:rgba(0,0,0,.9)" href="#home" class="whiteButton fade">Submit</a></li>
-					</ul>
-					
-				</form>
+            <div id="location_choice">
+                <div class="toolbar">
+                    <a href="#" class="back">Back</a>
+                </div>              
+                <a style="margin:0 10px;color:rgba(0,0,0,.9)" href="#add_info" class="whiteButton">Here and now!</a>
+                <a style="margin:0 10px;color:rgba(0,0,0,.9)" href="#date_location_chooser" class="whiteButton">Enter a time and location.</a>
+            </div>
+            
+            <div id="date_location_chooser">
+                <div class="toolbar">
+                    <a href="#" class="back">Back</a>
+                    <h1>Date and Time</h1>
+                    <a href="#add_info" class="button">Continue</a>
+                </div>
+                <form>
+                    <ul class="edit rounded">
+                        <li><textarea placeholder="Location" ></textarea></li>
+                        <li><input type="text" placeholder="Time" /></li>
+                        
+                    </ul>
+                    
+                </form>
+            </div>
+                
+            <div id="add_info">
+                <div class="toolbar">
+                    <h1>Add Event</h1>
+                    <a href="#" class="back">Back</a>
+                </div>
+                <form>
+                    <ul class="edit rounded">
+                        <li><input type="text" name="name" placeholder="Event Name" id="name" /></li>
+                        <li><input type="text" name="location" placeholder="Event Location" id="location"/></li>
+                        <li><input type="text" name="time" placeholder="Time" id="time"  /></li>
+                        <li>Repeating <span class="toggle"><input type="checkbox" /></span></li>
+                        <li><textarea placeholder="Description" ></textarea></li>
+                        <li><textarea placeholder="Add tags" ></textarea></li>
+                        <li><a style="margin:0 10px;color:rgba(0,0,0,.9)" href="#home" class="whiteButton fade">Submit</a></li>
+                    </ul>
+                    
+                </form>
         </div>
         
         
