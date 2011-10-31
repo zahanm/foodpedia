@@ -15,13 +15,15 @@ $(document).ready(function () {
 
 LIST_VIEW = '' +
             '<ul class="edgetoedge">' +
-            '{{#events}}' +
-//          '<li class="sep">{{date}}</li>' + XXX
-            '<li class="slide arrow"><a href="#event">{{name}}</a></li>' +
-            '{{/events}}' +
-            '{{^events}}' +
-            '<li class="slide"><h3>No events. :(</h3></li>' +
-            '{{/events}}' +
+            '{{#days}}' +
+              '<li class="sep">{{date}}</li>' +
+              '{{#details}}' +
+                '<li class="slide arrow"><a href="#event">{{name}}</a></li>' +
+              '{{/details}}' +
+            '{{/days}}' +
+            '{{^days}}' +
+              '<li class="slide"><h3>No events. :(</h3></li>' +
+            '{{/days}}' +
             '</ul>' +
             '';
 
@@ -51,7 +53,8 @@ $(function(){
     --- Setup button handlers
   */
   $('#refreshList').tap(function(e) {
-     
+    
+    $('#listview').html($.mustache(LIST_VIEW, remoteData));
   });
 
   /*

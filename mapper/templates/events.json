@@ -1,0 +1,17 @@
+
+{
+  "days": [
+  {% for day, events in day_events %}
+    {
+      "date": "{{ day }}",
+      "details": [
+      {% for event in events %}
+        {
+          "name": "{{ event.name }}"
+        },
+      {% endfor %}
+      ]
+    },
+  {% endfor %}
+  ]
+}

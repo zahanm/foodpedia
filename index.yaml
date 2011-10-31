@@ -26,6 +26,11 @@ indexes:
   - name: __key__
     direction: desc
 
+- kind: mapper_location
+  properties:
+  - name: __key__
+    direction: desc
+
 - kind: polls_poll
   properties:
   - name: __key__
