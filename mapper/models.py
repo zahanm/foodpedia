@@ -6,7 +6,7 @@ class Location(models.Model):
   longitude = models.FloatField()
   address = models.TextField(blank=True, max_length=200) # Can be blank, not needed
   def __unicode__(self):
-    return "({0}, {1}): {2} {3}".format(self.latitude, self.longitude, self.building, self.address)
+    return "({0}, {1}): {2}".format(self.latitude, self.longitude, self.address)
 
 class Event(models.Model):
   name = models.CharField(max_length=100)

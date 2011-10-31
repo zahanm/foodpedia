@@ -1,6 +1,8 @@
 
 from datetime import datetime
+import json
 
+from django.http import HttpResponse
 from django.template import Context, loader
 from django.shortcuts import render
 
@@ -14,17 +16,27 @@ def example(request):
   return render(request, 'scroll/index.html')
 
 def list_events(request):
-  events = Event.objects.all()[:1] #.order_by('when')
-  day_events = {}
   today = datetime.today()
+  events = Event.objects.all() #.order_by('when')
+  segmented_events = {}
   for event in events:
+    event_details = {}
+    event_details['name'] = event.name
     diff = utils.format_timedelta(event.when - today)
-    if diff not in day_events:
-      day_events[diff] = []
-    day_events[diff].append(event)
-  day_tuples = day_events.items()
-  day_tuples.sort()
-  return render(request, 'events.json', { 'day_events': day_tuples }, content_type='application/json')
+    if diff not in segmented_events:
+      segmented_events[diff] = []
+    segmented_events[diff].append(event_details)
+  # the list is only needed because of the format required clientside
+  split_list = []
+  for segment in segmented_events:
+    split_list.append({
+      'date': segment,
+      'details': segmented_events[segment]
+    })
+  split_list.sort(key=lambda x: x['date'])
+  response = HttpResponse(content_type='application/json')
+  json.dump({ 'days': split_list }, response)
+  return response
 
 def event_details(request):
   return render_to_response('eventdetails.html', {})
