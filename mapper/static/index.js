@@ -40,6 +40,12 @@ $(function(){
   /**
     --- Setup button handlers
   */
+  $('#listButton').click(function(e) {
+    $.getJSON('/mapper/api/event/list',function(event_list) {
+      $('#listview').html($.mustache(LIST_VIEW, event_list));
+    });
+  });
+
   $('#refreshList').tap(function(e) {
     $.getJSON('/mapper/api/event/list',function(event_list) {
       $('#listview').html($.mustache(LIST_VIEW, event_list));
