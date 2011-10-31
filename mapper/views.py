@@ -65,3 +65,42 @@ def add_event(request):
   to_add.save()
 
   return HttpResponse(to_add.pk, status=201)
+
+def event(request, event_id):
+	e = Event.objects.get(pk=event_id)
+	tags = e.tags.split(';')[:-1]
+	tag_list = []
+	for t in tags:
+		tag_list.append({"tag":t})
+	#cannot use json or django.core.serializers because location object, so must do manually
+	json_event = {}
+	json_event['pk'] = e.pk
+	json_event['name'] = e.name
+	json_event['description'] = e.description
+	json_event['when'] = e.when.strftime("%I:%M %p %b %d, %Y")
+	json_event['where'] = {"latitude":e.where.latitude, "longitude":e.where.longitude, "address":e.where.address}
+	json_event['tags'] = tag_list
+	response = HttpResponse(content_type='application/json')
+	json.dump({'event':json_event}, response)
+
+	return response
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
