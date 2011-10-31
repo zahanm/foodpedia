@@ -1,15 +1,3 @@
-/*
-$(document).ready(function () {
-
-		$('#date3').scroller({ preset: 'datetime' });
-
-		$('#theme, #mode').change(function() {
-				var t = "default";
-				var m = "scroller";
-				$('#date3').scroller('destroy').scroller({ preset: 'datetime', theme: t, mode: m });
-		});
-});
-*/
 
 
 $(function(){
