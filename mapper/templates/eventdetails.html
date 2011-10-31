@@ -1,6 +1,22 @@
 <html>
-<body>
-<h1> Event Details </h1>
-<h4> Time: blahblahblah</h4>
-</body>
+	<form action="api/event/add" method="post">
+					{% csrf_token %}
+					<input type="text" name="name"value="Event Name" />
+					<p />
+					<input type="hidden" name="lat" value="1.1">
+					<input type="hidden" name="long" value="1.1">
+					
+					<input type="text" name="address" value="Event Location"/>
+					<p />
+					<input type="text" name="time" value="1:00 PM Dec 21, 2011" />
+					<p />
+					Repeating<input type="checkbox" name="repeat" />
+					<p />
+					<textarea name="description" >Description</textarea>
+					<p />
+					<textarea name="tags">tag1, tag2</textarea>
+					<p />
+					<input type="Submit" />
+			
+	</form>
 </html>

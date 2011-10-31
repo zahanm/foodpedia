@@ -4,7 +4,6 @@ from django.db import models
 class Location(models.Model):
   latitude = models.FloatField()
   longitude = models.FloatField()
-  building = models.CharField(blank=True, max_length=30)
   address = models.TextField(blank=True, max_length=200) # Can be blank, not needed
   def __unicode__(self):
     return "({0}, {1}): {2} {3}".format(self.latitude, self.longitude, self.building, self.address)
