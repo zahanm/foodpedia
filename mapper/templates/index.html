@@ -10,11 +10,17 @@
         <title>Foodpedia &alpha;</title>
         <style type="text/css" media="screen">@import "/static/jqtouch/jqtouch.css";</style>
         <style type="text/css" media="screen">@import "/static/themes/jqt/theme.css";</style>
-        <script src="/static/jqtouch/jquery-1.4.2.js" type="text/javascript" charset="utf-8"></script>
+		    <script src="http://code.jquery.com/jquery-1.6.4.min.js"></script>
         <script src="/static/jqtouch/jqtouch.js" type="application/x-javascript" charset="utf-8"></script>
         <script src="/static/jqmustache/jquery.mustache.js" type="text/javascript" charset="utf-8"></script>
 
-    	<script src="/static/index.js" type="text/javascript" charset="utf-8"></script>
+    		<script src="/static/index.js" type="text/javascript" charset="utf-8"></script>
+				
+				
+				<script src="/static/mobiscroll/js/mobiscroll-1.5.2.js" type="text/javascript"></script>
+    		<link href="/static/mobiscroll/css/mobiscroll-1.5.2.css" rel="stylesheet" type="text/css" />
+
+
 
         <style type="text/css" media="screen">
             #jqt.fullscreen #home .info {
@@ -43,6 +49,9 @@
 				<div class="toolbar">
 					<h1>Home</h1>
 				</div>
+				<div data-role="fieldcontain">
+						<input type="text" name="date3" id="date3" class="mobiscroll" />
+				</div>
 				<ul class="rounded">
 					<li class="arrow"><a href="#map">Map View</a></li>
 					<li class="arrow"><a href="#list">List View</a></li>
@@ -56,7 +65,8 @@
 					<a class="back" href="#">Back</a>
 					<h1>All Events</h1>
 					<a class="button slideup" id="mapFilterSelector" href="#" onclick="alert('Filter Selector');">Filter</a>
-				</div>		
+				</div>
+						
 				<img src="/static/imgs/map.png" alt="map" />
 				<div class="info">
 					<a href="#" onclick="alert('Time Picker');">
