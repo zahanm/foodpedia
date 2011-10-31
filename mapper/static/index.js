@@ -21,7 +21,7 @@ $(function(){
       ]
   });
 
-  
+  /*
   // Show a swipe event on swipe test
   $('#swipeme').swipe(function(evt, data) {
     $(this).html('You swiped <strong>' + data.direction + '/' + data.deltaX +':' + data.deltaY + '</strong>!');
@@ -75,4 +75,5 @@ $(function(){
       $('#movie').css('display', 'block');
     }
   })
+  */
 });
