@@ -41,19 +41,9 @@ $(function(){
     --- Setup button handlers
   */
   $('#refreshList').tap(function(e) {
-    var request = new XMLHttpRequest;
-    request.open('GET', '/mapper/api/event/list', true);
-    request.onload = function() {
-      if (request.status === 200) {
-        console.log(request.responseText); // DEBUG
-        event_list = JSON.parse(request.responseText);
-        $('#listview').html($.mustache(LIST_VIEW, event_list));
-      }
-      else {
-        console.log('HTTP error', request.status)
-      }
-    };
-    request.send(null);
+    $.getJSON('/mapper/api/event/list',function(event_list) {
+      $('#listview').html($.mustache(LIST_VIEW, event_list));
+    });
   });
 
   /*

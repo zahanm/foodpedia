@@ -8,10 +8,10 @@
       {% for event in events %}
         {
           "name": "{{ event.name }}"
-        },
+        }
       {% endfor %}
       ]
-    },
+    }
   {% endfor %}
   ]
 }

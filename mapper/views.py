@@ -14,7 +14,7 @@ def example(request):
   return render(request, 'scroll/index.html')
 
 def list_events(request):
-  events = Event.objects.all() #.order_by('when')
+  events = Event.objects.all()[:1] #.order_by('when')
   day_events = {}
   today = datetime.today()
   for event in events:
