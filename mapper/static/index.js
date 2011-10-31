@@ -12,6 +12,19 @@ $(document).ready(function () {
 */
 
 
+
+LIST_VIEW = '' +
+            '<ul class="edgetoedge">' +
+            '{{#events}}' +
+//          '<li class="sep">{{date}}</li>' + XXX
+            '<li class="slide arrow"><a href="#event">{{name}}</a></li>' +
+            '{{/events}}' +
+            '{{^events}}' +
+            '<li class="slide"><h3>No events. :(</h3></li>' +
+            '{{/events}}' +
+            '</ul>' +
+            '';
+
 $(function(){
 
   var jQT = new $.jQTouch({
@@ -32,6 +45,13 @@ $(function(){
       '/static/themes/jqt/img/whiteButton.png',
       '/static/themes/jqt/img/loading.gif'
       ]
+  });
+
+  /**
+    --- Setup button handlers
+  */
+  $('#refreshList').tap(function(e) {
+     
   });
 
   /*
