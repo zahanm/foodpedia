@@ -33,6 +33,7 @@ def list_events(request):
       'date': segment,
       'details': segmented_events[segment]
     })
+  # TODO fix to use actual date ordering, once format_timedelta is rewritten, this won't work
   split_list.sort(key=lambda x: x['date'])
   response = HttpResponse(content_type='application/json')
   json.dump({ 'days': split_list }, response)
