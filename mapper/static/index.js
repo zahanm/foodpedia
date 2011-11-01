@@ -6,7 +6,7 @@ LIST_VIEW = '' +
             '{{#days}}' +
               '<li class="sep">{{date}}</li>' +
               '{{#details}}' +
-                '<li class="slide arrow"><a href="#event">{{name}}</a></li>' +
+                '<li class="slide arrow"><a href="#event" onclick="loadEvent({{pk}});">{{name}}</a></li>' +
               '{{/details}}' +
             '{{/days}}' +
             '{{^days}}' +
@@ -17,41 +17,40 @@ LIST_VIEW = '' +
 
 
 EVENT = '' +
-      	'<ul class="edgetoedge">' +
-      	'{{#event}}' +
-      		'<li class="sep">Description</li>' +
-      		'<li> {{description}} </li>' +
-      		'<li class="sep">Where</li>' +
-      		'{{#where}}' +
-      		'<li> {{address}} </li>' +
-      		'{{/where}}' +
-      		'<li class="sep">When</li>' +
-      		'<li>{{when}}</li>' +
-      		'<li class="sep">Tags</li>' +
-      		'{{#tags}}' +
-      		'<li>{{tag}}</li>' +
-      		'{{/tags}}' +
-      	'{{/event}}' +
-      	'</ul>'+
-      	'';
+				'{{#event}}' +
+				'<div class="toolbar">' +
+					'<a class="back" href="#">Back</a>' +
+					'<h1>{{name}}</h1>' +
+				'</div>' +
+				'<div id="eventdetails" >' +
+					'<ul class="edgetoedge" class="scroll">' +
+						'<li class="sep">Description</li>' +
+						'<li> {{description}} </li>' +
+						'<li class="sep">Where</li>' +
+						'{{#where}}' +
+						'<li><a href="http://maps.google.com/maps?q={{address}}@{{latitude}},{{longitude}}"> {{address}}</a> </li>' +
+						'{{/where}}' +
+						'<li class="sep">When</li>' +
+						'<li>{{when}}</li>' +
+						'<li class="sep">Tags</li>' +
+						'{{#tags}}' +
+						'<li>{{tag}}</li>' +
+						'{{/tags}}' +
+					'</ul>' +
+				'</div>' +
+				'{{/event}}' +
+					'';
+      	
+      	
+      	
 
-/*                        
-                        <li> Lorem ipsum dolor sit amet, consectetur adipiscing elit. Duis in augue massa, vitae hendrerit enim. Aliquam eget urna massa, quis facilisis leo. Morbi non augue eget dolor commodo auctor a ut lacus. Suspendisse at lectus mauris. </li>
-                        <li class="sep">Tags</li>
-                        <li><a href="#old_interest">Burgers</a></li>
-                        <li><a href="#new_interest">American</a> </li>
-                        <li class="sep">Time</li>
-                        <li>Friday, November 4 2011</li>
-                        <li class="sep">Location</li>
-                        <li><a href="http://maps.google.com/maps?saddr=37.426905,-122.171615&daddr=512+Campus+Drive,+Stanford,+CA&hl=en&ll=37.425457,-122.165437&spn=0.025867,0.022058&sll=37.42544,-122.16546&sspn=0.025867,0.022058&geocode=FdkWOwIdIc-3-A%3BFZ4VOwIdqv-3-CmPXrJj2bqPgDEGzRttnV93gw&vpsrc=0&dirflg=w&mra=ltm&glp=1&t=m&z=15">512 Campus Drive </a></li>
-                    </ul>
-                    <ul class="individual">
-                        <li><a href="http://maps.google.com/maps?saddr=37.426905,-122.171615&daddr=512+Campus+Drive,+Stanford,+CA&hl=en&ll=37.425457,-122.165437&spn=0.025867,0.022058&sll=37.42544,-122.16546&sspn=0.025867,0.022058&geocode=FdkWOwIdIc-3-A%3BFZ4VOwIdqv-3-CmPXrJj2bqPgDEGzRttnV93gw&vpsrc=0&dirflg=w&mra=ltm&glp=1&t=m&z=15"> Get Directions</a></li>
-                        
-                        <li><a href="#profile">Add to My Events</a></li>
-                    </ul>  
+function loadEvent(pk){
+	    $.getJSON('/mapper/api/event/' + pk, function(event) {
+				$('#event').html($.mustache(EVENT, event))
+    });
+}
 
-*/
+
 $(function(){
 
   var jQT = new $.jQTouch({
@@ -89,12 +88,6 @@ $(function(){
     });
   });
   
-  $('#eventPull').tap(function(e) {
-    $.getJSON('/mapper/api/event/51',function(event) {
-				$('#eventdetails').html($.mustache(EVENT, event))
-    });
-  });
-
   /*
   // Show a swipe event on swipe test
   $('#swipeme').swipe(function(evt, data) {
