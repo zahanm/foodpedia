@@ -43,8 +43,7 @@ EVENT = '' +
         '{{/event}}' +
           '';
 
-
-$(function() {
+$(document).ready(function() {
 
   var jQT = new $.jQTouch({
     icon: '/static/imgs/icon.png',
@@ -76,7 +75,14 @@ $(function() {
     });
   });
 
-  $('.listEvent').tap(function(e) {
+  $('#list').bind('pageAnimationEnd', function(e, info) {
+    if (info.direction == 'in') {
+      $('#refreshList').tap();
+    }
+  });
+
+  $(document).delegate('.listEvent', 'click', function(e) {
+    debugger;
     var pk = $(e.target).data('pk');
     $.getJSON('/api/event/' + pk, function(event) {
         $('#event').html($.mustache(EVENT, event));
@@ -85,9 +91,10 @@ $(function() {
 
   $('#refreshList').tap();
 
-  jQT.updateLocation(function(loc) {
-    console.log('latitude', loc.latitude, 'longitude', loc.longitude);
-  });
+  // SAMPLE
+  // jQT.updateLocation(function(loc) {
+  //   console.log('latitude', loc.latitude, 'longitude', loc.longitude);
+  // });
   
   /*
   // Show a swipe event on swipe test
