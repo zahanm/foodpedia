@@ -1,6 +1,4 @@
 
-
-
 LIST_VIEW = '' +
             '<ul class="edgetoedge">' +
             '{{#days}}' +
@@ -91,9 +89,10 @@ $(document).ready(function() {
   $('#refreshList').tap();
 
   // SAMPLE
-  // jQT.updateLocation(function(loc) {
-  //   console.log('latitude', loc.latitude, 'longitude', loc.longitude);
-  // });
+  $.location('update', function(loc) {
+    console.log('latitude', loc.latitude, 'longitude', loc.longitude);
+    console.log("From now on, it's cached", $.location('get').latitude, $.location('get').longitude);
+  });
   
   /*
   // Show a swipe event on swipe test
