@@ -17,36 +17,34 @@ LIST_VIEW = '' +
 
 
 EVENT = '' +
-				'{{#event}}' +
-				'<div class="toolbar">' +
-					'<a class="back" href="#">Back</a>' +
-					'<h1>{{name}}</h1>' +
-				'</div>' +
-				'<div id="eventdetails" >' +
-					'<ul class="edgetoedge" class="scroll">' +
-						'<li class="sep">Description</li>' +
-						'<li> {{description}} </li>' +
-						'<li class="sep">Where</li>' +
-						'{{#where}}' +
-						'<li><a href="http://maps.google.com/maps?q={{address}}@{{latitude}},{{longitude}}"> {{address}}</a> </li>' +
-						'{{/where}}' +
-						'<li class="sep">When</li>' +
-						'<li>{{when}}</li>' +
-						'<li class="sep">Tags</li>' +
-						'{{#tags}}' +
-						'<li>{{tag}}</li>' +
-						'{{/tags}}' +
-					'</ul>' +
-				'</div>' +
-				'{{/event}}' +
-					'';
-      	
-      	
-      	
+        '{{#event}}' +
+        '<div class="toolbar">' +
+          '<a class="back" href="#">Back</a>' +
+          '<h1>{{name}}</h1>' +
+        '</div>' +
+        '<div id="eventdetails" >' +
+          '<ul class="edgetoedge" class="scroll">' +
+            '<li class="sep">Description</li>' +
+            '<li> {{description}} </li>' +
+            '<li class="sep">Where</li>' +
+            '{{#where}}' +
+            '<li><a href="http://maps.google.com/maps?q={{address}}@{{latitude}},{{longitude}}"> {{address}}</a> </li>' +
+            '{{/where}}' +
+            '<li class="sep">When</li>' +
+            '<li>{{when}}</li>' +
+            '<li class="sep">Tags</li>' +
+            '{{#tags}}' +
+            '<li>{{tag}}</li>' +
+            '{{/tags}}' +
+          '</ul>' +
+        '</div>' +
+        '{{/event}}' +
+          '';
+
 
 function loadEvent(pk){
-	    $.getJSON('/mapper/api/event/' + pk, function(event) {
-				$('#event').html($.mustache(EVENT, event))
+    $.getJSON('/api/event/' + pk, function(event) {
+        $('#event').html($.mustache(EVENT, event))
     });
 }
 
@@ -73,21 +71,17 @@ $(function(){
       ]
   });
 
-
-
-
-
   /**
     --- Setup button handlers
   */
   $('#listButton').click(function(e) {
-    $.getJSON('/mapper/api/event/list',function(event_list) {
+    $.getJSON('/api/event/list',function(event_list) {
       $('#listview').html($.mustache(LIST_VIEW, event_list));
     });
   });
 
   $('#refreshList').tap(function(e) {
-    $.getJSON('/mapper/api/event/list',function(event_list) {
+    $.getJSON('/api/event/list',function(event_list) {
       $('#listview').html($.mustache(LIST_VIEW, event_list));
     });
   });
