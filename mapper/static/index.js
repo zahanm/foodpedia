@@ -82,7 +82,6 @@ $(document).ready(function() {
   });
 
   $(document).delegate('.listEvent', 'click', function(e) {
-    debugger;
     var pk = $(e.target).data('pk');
     $.getJSON('/api/event/' + pk, function(event) {
         $('#event').html($.mustache(EVENT, event));
