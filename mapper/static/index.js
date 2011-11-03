@@ -6,7 +6,9 @@ LIST_VIEW = '' +
             '{{#days}}' +
               '<li class="sep">{{date}}</li>' +
               '{{#details}}' +
-                '<li class="slide arrow"><a href="#event" onclick="loadEvent({{pk}});">{{name}}</a></li>' +
+                '<li class="slide arrow">' +
+                  '<a class="listEvent" href="#event" data-pk="{{pk}}">{{name}}</a>' +
+                '</li>' +
               '{{/details}}' +
             '{{/days}}' +
             '{{^days}}' +
@@ -42,14 +44,7 @@ EVENT = '' +
           '';
 
 
-function loadEvent(pk){
-    $.getJSON('/api/event/' + pk, function(event) {
-        $('#event').html($.mustache(EVENT, event))
-    });
-}
-
-
-$(function(){
+$(function() {
 
   var jQT = new $.jQTouch({
     icon: '/static/imgs/icon.png',
@@ -74,16 +69,24 @@ $(function(){
   /**
     --- Setup button handlers
   */
-  $('#listButton').click(function(e) {
-    $.getJSON('/api/event/list',function(event_list) {
-      $('#listview').html($.mustache(LIST_VIEW, event_list));
-    });
-  });
 
   $('#refreshList').tap(function(e) {
     $.getJSON('/api/event/list',function(event_list) {
       $('#listview').html($.mustache(LIST_VIEW, event_list));
     });
+  });
+
+  $('.listEvent').tap(function(e) {
+    var pk = $(e.target).data('pk');
+    $.getJSON('/api/event/' + pk, function(event) {
+        $('#event').html($.mustache(EVENT, event));
+    });
+  });
+
+  $('#refreshList').tap();
+
+  jQT.updateLocation(function(loc) {
+    console.log('latitude', loc.latitude, 'longitude', loc.longitude);
   });
   
   /*
@@ -142,4 +145,3 @@ $(function(){
   })
   */
 });
-

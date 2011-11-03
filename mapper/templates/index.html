@@ -45,42 +45,11 @@
     </head>
     <body>
         <div id="jqt">
-            <div id="home" class="current">
+            <div id="list" class="current">
                 <div class="toolbar">
-                    <h1>Home</h1>
-                </div>
-                <ul class="rounded">
-                    <li class="arrow"><a href="#map">Map View</a></li>
-                    <li class="arrow"><a href="#list" id="listButton">List View</a></li>
-                    <li class="arrow"><a href="#profile">My Profile</a></li>
-                    <li class="arrow"><a href="#location_choice">Add Event</a></li>
-                </ul>
-            </div>  
-            
-            <div id="map">
-                <div class="toolbar">
-                    <a class="back" href="#">Back</a>
-                    <h1>All Events</h1>
-                    <a class="button slideup" id="mapFilterSelector" href="#" onclick="alert('Filter Selector');">Filter</a>
-                </div>
-                        
-                <img src="/static/imgs/map.png" alt="map" />
-                <div class="info">
-                    <a href="#" onclick="alert('Time Picker');">
-                    
-                        2:00 PM on 10/24/2011
-                    <p />
-                        (click to change)
-                    </a>    
-                </div>
-                
-            </div>
-            
-            <div id="list">
-                <div class="toolbar">
-                    <a class="back" href="#">Back</a>
+                    <a class="" id="refreshList" href="#" >Refresh</a>
                     <h1>List View</h1>
-                    <a class="button" id="refreshList" href="#" >Refresh</a>
+                    <a class="button" id="addEvent" href="#location_choice" >Add Event</a>
                 </div>
                 <div id="listview" class="scroll">
                     <ul>
