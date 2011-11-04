@@ -5,7 +5,7 @@ LIST_VIEW = '' +
               '<li class="sep">{{date}}</li>' +
               '{{#details}}' +
                 '<li class="slide arrow">' +
-                  '<a class="listEvent" href="#event" data-pk="{{pk}}">{{name}}</a>' +
+                  '<a class="listEvent" href="#event" data-pk="{{pk}}" onclick="loadFoodEvent(this)">{{name}}</a>' +
                 '</li>' +
               '{{/details}}' +
             '{{/days}}' +
@@ -40,6 +40,87 @@ EVENT = '' +
         '</div>' +
         '{{/event}}' +
           '';
+          
+          
+          
+function selectDate(){
+	console.log("whatever");
+	var prev_time = $("#time_chooser").val();
+	var index_of_colon = prev_time.indexOf(':');
+	var index_of_space = prev_time.indexOf(' ');
+	
+	var prev_hour = prev_time.substring(0, index_of_colon);
+	var prev_min = prev_time.substring(index_of_colon + 1, index_of_space);
+	var prev_mod = prev_time.substring(prev_time.length - 2);
+	
+	var minutes = {0:'00', 15:'15', 30:'30', 45:'45'}
+	var hours = {1:1, 2:2, 3:3, 4:4, 5:5, 6:6, 7:7, 8:8, 9:9, 101:10, 11:11, 12:12}
+	var mod = {'AM':'AM', 'PM':'PM'}
+	
+	var day = {1:1, 2:2, 3:3}
+	var month = {1:1, 2:2, 3:3}
+	var year = {1:2011}
+	
+	SpinningWheel.addSlot(hours, 'center', prev_hour);
+	SpinningWheel.addSlot({separator:':'}, 'readonly shrink');
+	SpinningWheel.addSlot(minutes, 'center', prev_min);
+	SpinningWheel.addSlot(mod, 'center', prev_mod);
+	SpinningWheel.addSlot({separator:'on'}, 'readonly shrink');
+	SpinningWheel.addSlot(month, 'center')
+	SpinningWheel.addSlot({separator:'/'}, 'readonly shrink');
+	SpinningWheel.addSlot(day, 'center')
+	SpinningWheel.addSlot({separator:'/'}, 'readonly shrink');
+	SpinningWheel.addSlot(year, 'center')
+	SpinningWheel.setCancelAction(cancel);
+	SpinningWheel.setDoneAction(done);
+
+	SpinningWheel.open();
+}
+
+function done() {
+	var results = SpinningWheel.getSelectedValues();
+	$('#time_chooser').val(results.values[0]+ ':' + results.values[2] + ' ' + results.values[3]);
+}
+
+function cancel() {
+}
+
+function fillForm(){
+	$('#datetime').val($('#date_chooser').val() + ' ' + $('#time_chooser').val());
+}
+
+function fillChooser(){
+	var dt = $('#datetime').val();
+	var index_of_space = dt.indexOf(' ');
+	$('#date_chooser').val(dt.substring(0, index_of_space));
+	$('#time_chooser').val(dt.substring(index_of_space + 1));
+}
+	
+
+// -- needed for mobilesafari bug
+
+function loadFoodEvent(el) {
+  $('#event').html('Loading...');
+  var pk = $(el).data('pk');
+  $.getJSON('/api/event/' + pk, function(event) {
+      $('#event').html($.mustache(EVENT, event));
+  });
+}
+
+function formatDT() {
+  var datetime = {
+    hour: this.getHours() % 12, // TODO FIXME doesn't work for 12 PM
+    minute: this.getMinutes(),
+    ampm: this.getHours() < 12 ? 'AM': 'PM',
+    day: this.getDate(),
+    month: this.getMonth() + 1,
+    year: this.getFullYear()
+  }
+  return $.mustache(
+    "{{hour}}:{{minute}} {{ampm}} {{month}}/{{day}}/{{year}}",
+    datetime
+  );
+}
 
 $(document).ready(function() {
 
@@ -67,32 +148,59 @@ $(document).ready(function() {
     --- Setup button handlers
   */
 
-  $('#refreshList').tap(function(e) {
+  // -- listview
+
+  $('#refreshList').click(function(e) {
     $.getJSON('/api/event/list',function(event_list) {
       $('#listview').html($.mustache(LIST_VIEW, event_list));
     });
   });
 
+
+
   $('#list').bind('pageAnimationEnd', function(e, info) {
     if (info.direction == 'in') {
-      $('#refreshList').tap();
+      $('#refreshList').click();
     }
   });
 
-  $(document).delegate('.listEvent', 'click', function(e) {
-    var pk = $(e.target).data('pk');
-    $.getJSON('/api/event/' + pk, function(event) {
-        $('#event').html($.mustache(EVENT, event));
+  // -- location_choice
+
+  $('#addEvent').click(function(e) {
+    $('#location').val('Loading current location');
+    $('#time').val('Loading current time');
+    // location
+    $.location('update', function(loc) {
+      $('#location_lat').val(loc.latitude);
+      $('#location_lng').val(loc.longitude);
+      $.location('revgeocode', loc, function(address) {
+        $('#location').val(address);
+      });
     });
+    // time
+    var now = new Date();
+    $('#time').val(formatDT.call(now));
+  });
+  
+
+  $('#location').blur(function(e) {
+    var address = $('#location').val();
+    if (address) {
+      $.location('geocode', address, function(loc) {
+        $('#location_lat').val(loc.latitude);
+        $('#location_lng').val(loc.longitude);
+      });
+    }
   });
 
-  $('#refreshList').tap();
+  // -- init events
+  $('#refreshList').click();
 
-  // SAMPLE
+  /* SAMPLE
   $.location('update', function(loc) {
     console.log('latitude', loc.latitude, 'longitude', loc.longitude);
     console.log("From now on, it's cached", $.location('get').latitude, $.location('get').longitude);
-  });
+  }); */
   
   /*
   // Show a swipe event on swipe test

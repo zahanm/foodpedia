@@ -28,6 +28,7 @@
   function checkGeoLocation() {
     return navigator.geolocation;
   }
+
   function updateLocation(fn) {
     if (checkGeoLocation())
     {
@@ -40,6 +41,7 @@
       return false;
     }                
   }
+
   function savePosition(position) {
     latitude = position.coords.latitude;
     longitude = position.coords.longitude;
@@ -47,6 +49,7 @@
       callback(getLocation());
     }
   }
+
   function getLocation() {
     if (latitude && longitude) {
       return {
@@ -59,11 +62,78 @@
     }
   }
 
-  $.location = function(method, cb) {
+  /**
+   * Assumes that Google Maps API v3 has been loaded
+   */
 
+  /**
+   * Pass in address
+   * callback is invoked with { 'latitude': 32, 'longitude': -122 }
+   */
+  function geocode(address, cb) {
+    var request = {
+      'address': address
+    };
+    var geocoder = new google.maps.Geocoder();
+    geocoder.geocode(request, function(results, status) {
+      if (status == google.maps.GeocoderStatus.OK) {
+        if (results[0]) {
+          var loc = results[0].geometry.location;
+          cb({
+            'latitude': loc.lat(),
+            'longitude': loc.lng()
+          });
+        }
+      } else {
+        console.log("Geocode was not successful for the following reason: " + status);
+        cb(address);
+      }
+    });
+  }
+
+  /**
+   * Pass in object of form
+   * {
+   *   'latitude': 32,
+   *   'longitude': -122
+   * }
+   * callback is invoked with closest match address
+   */
+  function revgeocode(loc, cb) {
+    var request = {
+      'latLng': new google.maps.LatLng(loc.latitude, loc.longitude)
+    };
+    var geocoder = new google.maps.Geocoder();
+    geocoder.geocode(request, function(results, status) {
+      if (status == google.maps.GeocoderStatus.OK) {
+        if (results[0]) {
+          cb(results[0].formatted_address);
+        }
+      } else {
+        console.log("Geocode was not successful for the following reason: " + status);
+        cb('(Latitude: ' + loc.latitude + ', Longitude: ' + loc.longitude + ')');
+      }
+    });
+  }
+
+  /**
+   * @params method, [location], callback
+   */
+  $.location = function() {
+    var args = Array.prototype.slice.call(arguments);
+    var method = args.shift();
+    if (args.length) {
+      var cb = args.pop();
+    }
     switch(method) {
       case 'update':
         return updateLocation(cb);
+      case 'geocode':
+        var address = args.pop();
+        return geocode(address, cb);
+      case 'revgeocode':
+        var loc = args.pop();
+        return revgeocode(loc, cb);
       case 'get':
       default:
         return getLocation();
