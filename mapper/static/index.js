@@ -28,14 +28,14 @@ EVENT = '' +
             '<li> {{description}} </li>' +
             '<li class="sep">Where</li>' +
             '{{#where}}' +
-            '<li><a href="http://maps.google.com/maps?q={{address}}@{{latitude}},{{longitude}}"> {{address}}</a> </li>' +
+            '<li class="forward"><a href="http://maps.google.com/maps?q={{address}}@{{latitude}},{{longitude}}"> {{address}}</a> </li>' +
             '{{/where}}' +
             '<li class="sep">When</li>' +
             '<li>{{when}}</li>' +
-            '<li class="sep">Tags</li>' +
+            /*'<li class="sep">Tags</li>' +
             '{{#tags}}' +
             '<li>{{tag}}</li>' +
-            '{{/tags}}' +
+            '{{/tags}}' +*/
           '</ul>' +
         '</div>' +
         '{{/event}}' +
@@ -170,9 +170,25 @@ function formatDT() {
   );
 }
 
+function formatD() {
+  var datetime = {
+    day: this.getDate(),
+    month: this.getMonth() + 1,
+    year: this.getFullYear()
+  }
+  return $.mustache(
+    "{{month}}/{{day}}/{{year}}",
+    datetime
+  );
+}
+
 function formatT(){
+		var h = this.getHours() % 12
+		if (h == 0){
+			h = 12;
+		}
 	  var datetime = {
-    hour: this.getHours() % 12, // TODO FIXME doesn't work for 12 PM
+    hour: h, // TODO FIXME doesn't work for 12 PM
     minute: this.getMinutes(),
     ampm: this.getHours() < 12 ? 'AM': 'PM',
   }
@@ -234,12 +250,14 @@ $(document).ready(function() {
       $('#location_lat').val(loc.latitude);
       $('#location_lng').val(loc.longitude);
       $.location('revgeocode', loc, function(address) {
+      	alert(address);
         $('#location').val(address);
       });
     });
     // time
     var now = new Date();
     $('#time').val(formatT.call(now));
+    $('#date').val(formatD.call(now));
   });
   
 

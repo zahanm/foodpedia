@@ -57,7 +57,7 @@
             <div id="list" class="current">
                 <div class="toolbar">
                     <a class="button leftButton" id="refreshList" href="#" >Refresh</a>
-                    <h1>List View</h1>
+                    <h1>Foodpedia &alpha;</h1>
                     <a class="button" id="addEvent" href="#add_event" >Add Event</a>
                 </div>
                 <div id="listview" class="scroll">
@@ -87,24 +87,24 @@
                 <form>
                     <ul class="edit rounded">
                         <li>
-                        	<input type="text" name="name" placeholder="Event Name" id="name" />
+                        	<input class="form" type="text" name="name" placeholder="Event Name" id="name" />
                         	<span id="errorName" class="formError"></span>
                         </li>
                         <li>
-                            <input type="text" name="location" placeholder="Event Location" id="location" />
+                            <input class="form" type="text" name="location" placeholder="Event Location" id="location" />
                             <input type="hidden" name="location_lat" id="location_lat" />
                             <input type="hidden" name="location_lng" id="location_lng" />
                         </li>
                         <li>
-                        	<input type="text" id="time" readonly onclick='selectDate();' name="time" value="1:15 PM" />
+                        	<input class="form" type="text" id="time" readonly onclick='selectDate();' name="time" value="1:15 PM" />
                         	<span id="errorTime" class="formError"></span>
                         </li>
                         <li>
-                        	<input type="text" id="date" value="2/3/2011" />
+                        	<input class="form" type="text" id="date" value="2/3/2011" />
                         	<span id="errorDate" class="formError"></span>
                         </li>
                         <li>
-                        	<textarea placeholder="Description" id="description" ></textarea>
+                        	<textarea class="form" placeholder="Description" id="description" ></textarea>
                         	<span id="errorDescription" class="formError"></span>
                         </li>
                         <li><input type="submit" id="submit"/></li>

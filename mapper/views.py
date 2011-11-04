@@ -15,41 +15,51 @@ def index(request):
 def example(request):
   return render(request, 'scroll/index.html')
 
+
+
+
+
+
+
+
+
+
 def list_events(request):
-  today = datetime.today()
-  events = Event.objects.all() #.order_by('when')
-  segmented_events = {}
-  for event in events:
-    event_details = {}
-    event_details['name'] = event.name
-    event_details['pk'] = event.pk	
-   # var milli_d2 = today.getTime();
-   #%var diff = milli_d1 - milli_d2;
-   #var num_days = (((diff / 1000) / 60) / 60) / 24;*/
-   # all event should happened before the current time. it should 'be today - event.when'
-	# if you want result to be positive
-	#alert(" before = " +  event.when + "  after = " + today)
-    diff = utils.format_timedelta(today - event.when) #this diff is coming up negative (as in, the interval between when the event happens and today is coming up negative, even if the event happens "right now"
-    if diff not in segmented_events:
-      segmented_events[diff] = []
-    segmented_events[diff].append(event_details)
-  # the list is only needed because of the format required clientside
-  split_list = []
-  for segment in segmented_events:
-    dateString = segment
-    if segment == "0 day":
-	  dateString = "Today"
-    if segment == "1 day":
-	  dateString = "Tomorrow"
-    split_list.append({
-      'date': dateString,
-      'details': segmented_events[segment]
-    })
-  # TODO fix to use actual date ordering, once format_timedelta is rewritten, this won't work
-  split_list.sort(key=lambda x: x['date'])
-  response = HttpResponse(content_type='application/json')
-  json.dump({ 'days': split_list }, response)
-  return response
+	today = datetime.today()
+	events = Event.objects.all().order_by('when')
+	segmented_events = {}
+	for event in events:
+		event_details = {}
+		event_details['name'] = event.name
+		event_details['pk'] = event.pk	
+	
+		if event.when not in segmented_events:
+			segmented_events[event.when] = []
+		segmented_events[event.when].append(event_details)
+	# the list is only needed because of the format required clientside
+
+	split_list = []
+	
+	for segment in segmented_events:
+		dateString = segment.strftime("%m/%d/%Y")
+		if segment.date() == datetime.now().date():
+			dateString = "Today"
+		if segment < datetime.now():
+			continue
+		
+		split_list.append({
+			'date': dateString,
+			'epoch': int(segment.strftime("%s")),
+			'details': segmented_events[segment]
+		})
+		
+		
+		
+		
+	split_list.sort(key=lambda x: x['epoch'])
+	response = HttpResponse(content_type='application/json')
+	json.dump({ 'days': split_list }, response)
+	return response
 
 def event_details(request):
   return render_to_response('eventdetails.html', {})
@@ -86,7 +96,7 @@ def event(request, event_id):
   json_event['description'] = e.description
   json_event['when'] = e.when.strftime("%I:%M %p %m/%d/%Y")
   json_event['where'] = {"latitude":e.where.latitude, "longitude":e.where.longitude, "address":e.where.address}
-  json_event['tags'] = tag_list
+  #json_event['tags'] = tag_list
   response = HttpResponse(content_type='application/json')
   json.dump({'event':json_event}, response)
 
