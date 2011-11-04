@@ -68,25 +68,45 @@
 
   geocoder = new google.maps.Geocoder();
 
-  function geocode(request, cb) {
+  /**
+   * Pass in object of form
+   * {
+   *   'latitude': 32,
+   *   'longitude': -122
+   * }
+   * callback is invoked with closest match address
+   */
+  function revgeocode(loc, cb) {
+    var request = {
+      'latLng': new google.maps.LatLng(loc.latitude, loc.longitude)
+    };
     geocoder.geocode(request, function(results, status) {
       if (status == google.maps.GeocoderStatus.OK) {
-        results[0].geometry.location
-        var marker = new google.maps.Marker({
-            map: map,
-            position: results[0].geometry.location
-        });
+        if (results[0]) {
+          cb(results[0].formatted_address);
+        }
       } else {
-        alert("Geocode was not successful for the following reason: " + status);
+        console.log("Geocode was not successful for the following reason: " + status);
+        cb('(Latitude: ' + loc.latitude + ', Longitude: ' + loc.longitude + ')');
       }
     });
   }
 
-  $.location = function(method, cb) {
-
+  /**
+   * @params method, [location], callback
+   */
+  $.location = function() {
+    var args = Array.prototype.slice.call(arguments);
+    var method = args.shift();
+    if (args.length) {
+      var cb = args.pop();
+    }
     switch(method) {
       case 'update':
         return updateLocation(cb);
+      case 'revgeocode':
+        var loc = args.pop();
+        return revgeocode(loc, cb);
       case 'get':
       default:
         return getLocation();

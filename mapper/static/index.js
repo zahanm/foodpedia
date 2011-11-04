@@ -79,7 +79,7 @@ $(document).ready(function() {
 
   // -- listview
 
-  $('#refreshList').tap(function(e) {
+  $('#refreshList').click(function(e) {
     $.getJSON('/api/event/list',function(event_list) {
       $('#listview').html($.mustache(LIST_VIEW, event_list));
     });
@@ -87,23 +87,28 @@ $(document).ready(function() {
 
   $('#list').bind('pageAnimationEnd', function(e, info) {
     if (info.direction == 'in') {
-      $('#refreshList').tap();
+      $('#refreshList').click();
     }
   });
 
-  // location_choice
+  // -- location_choice
 
-  $(document).delegate('#autofillButton', 'click', function(e) {
+  $('#autofillButton').click(function(e) {
     $('#location').val('Loading current location');
     $('#time').val('Loading current time');
+    // location
     $.location('update', function(loc) {
-      $('#location').val('latitude ' + loc.latitude + ' longitude ' + loc.longitude);
+      $.location('revgeocode', loc, function(address) {
+        $('#location').val(address);
+      });
     });
+    // time
+    
+    $('#time').val('Loading current time');
   });
 
   // -- init events
-
-  $('#refreshList').tap();
+  $('#refreshList').click();
 
   /* SAMPLE
   $.location('update', function(loc) {

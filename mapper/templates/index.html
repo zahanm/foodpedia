@@ -40,9 +40,9 @@
         <!-- Javascripts -->
         <script src="http://code.jquery.com/jquery-1.4.3.min.js"></script>
         <script src="/static/jqtouch/jqtouch.js" type="application/x-javascript" charset="utf-8"></script>
-        <script src="/static/extensions/jqt.location.js" type="application/x-javascript" charset="utf-8"></script>
-        <script src="http://maps.google.com/maps/api/js?sensor=false" type="text/javascript"></script>
         <script src="/static/jqmustache/jquery.mustache.js" type="text/javascript" charset="utf-8"></script>
+        <script src="http://maps.google.com/maps/api/js?sensor=true" type="text/javascript"></script>
+        <script src="/static/extensions/jqt.location.js" type="application/x-javascript" charset="utf-8"></script>
         <script src="/static/index.js" type="text/javascript" charset="utf-8"></script>
 
     </head>
@@ -62,8 +62,17 @@
             </div>
             
             <div id="event">
-
+                <div class="toolbar">
+                    <a class="back" href="#" >Back</a>
+                    <h1>Event View</h1>
+                </div>
+                <div class="scroll">
+                    <ul>
+                        <li>Loading..</li>
+                    </ul>
+                </div>
             </div>
+
             <div id="profile">
                 <div class="toolbar">
                     <a href="#" class="back">Back</a>
@@ -88,7 +97,7 @@
                     <a href="#" class="back">Back</a>
                     <h1>Interest (Old) </h1>
                 </div>
-                        <a style="margin:0 10px;color:rgba(0,0,0,.9)" href="#profile" class="whiteButton">Remove from my interests</a>
+                        <a href="#profile" class="whiteButton">Remove from my interests</a>
 
             </div>  
             <div id="new_interest">
@@ -96,7 +105,7 @@
                     <a href="#" class="back">Back</a>
                     <h1>Interest (New)</h1>
                 </div>
-                        <a style="margin:0 10px;color:rgba(0,0,0,.9)" href="#profile" class="whiteButton">Add to my interests</a>
+                        <a href="#profile" class="whiteButton">Add to my interests</a>
 
             </div>
             <div id="add_interest">
