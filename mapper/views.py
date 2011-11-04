@@ -33,30 +33,30 @@ def list_events(request):
 		event_details['name'] = event.name
 		event_details['pk'] = event.pk	
 	
-		if event.when not in segmented_events:
-			segmented_events[event.when] = []
-		segmented_events[event.when].append(event_details)
+		if event.when.date() not in segmented_events:
+			segmented_events[event.when.date()] = []
+		segmented_events[event.when.date()].append(event_details)
 	# the list is only needed because of the format required clientside
 
 	split_list = []
 	
 	for segment in segmented_events:
 		dateString = segment.strftime("%m/%d/%Y")
-		if segment.date() == datetime.now().date():
+		if segment == datetime.now().date():
 			dateString = "Today"
-		if segment < datetime.now():
+		if segment < datetime.now().date():
 			continue
 		
 		split_list.append({
 			'date': dateString,
-			'epoch': int(segment.strftime("%s")),
+			'd': segment.strftime("%m/%d/%Y"),
 			'details': segmented_events[segment]
 		})
 		
 		
 		
 		
-	split_list.sort(key=lambda x: x['epoch'])
+	split_list.sort(key=lambda x: x['d'])
 	response = HttpResponse(content_type='application/json')
 	json.dump({ 'days': split_list }, response)
 	return response

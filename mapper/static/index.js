@@ -57,20 +57,11 @@ function selectDate(){
 	var hours = {1:1, 2:2, 3:3, 4:4, 5:5, 6:6, 7:7, 8:8, 9:9, 101:10, 11:11, 12:12}
 	var mod = {'AM':'AM', 'PM':'PM'}
 	
-	var day = {1:1, 2:2, 3:3}
-	var month = {1:1, 2:2, 3:3}
-	var year = {1:2011}
-	
 	SpinningWheel.addSlot(hours, 'center', prev_hour);
 	SpinningWheel.addSlot({separator:':'}, 'readonly shrink');
 	SpinningWheel.addSlot(minutes, 'center', prev_min);
 	SpinningWheel.addSlot(mod, 'center', prev_mod);
-	SpinningWheel.addSlot({separator:'on'}, 'readonly shrink');
-	SpinningWheel.addSlot(month, 'center')
-	SpinningWheel.addSlot({separator:'/'}, 'readonly shrink');
-	SpinningWheel.addSlot(day, 'center')
-	SpinningWheel.addSlot({separator:'/'}, 'readonly shrink');
-	SpinningWheel.addSlot(year, 'center')
+
 	SpinningWheel.setCancelAction(cancel);
 	SpinningWheel.setDoneAction(done);
 
@@ -250,7 +241,6 @@ $(document).ready(function() {
       $('#location_lat').val(loc.latitude);
       $('#location_lng').val(loc.longitude);
       $.location('revgeocode', loc, function(address) {
-      	alert(address);
         $('#location').val(address);
       });
     });
@@ -346,14 +336,16 @@ $(document).ready(function() {
 		}
 
 		var dataString = 'name='+ name + '&time=' + time + ' ' + date + '&lat=' + lat + '&long=' + longitude + '&address=' + location + '&description=' + description;
-		alert(dataString);
 		
 		$.ajax({
 			type: "POST",
 			url: "/api/event/add_event",
 			data: dataString,
 			success: function(msg) {
-				console.log("yay! success!");
+				$('#add_event #description').val('')
+				$('#add_event #name').val('')
+				$('#add_event #submit').attr("disabled", "");
+				jQT.goTo("#list", "dissolve")
 			},
 			error: function(ob,errStr) {
 				console.log("nooooo! failure");
