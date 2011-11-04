@@ -51,6 +51,21 @@ function loadFoodEvent(el) {
   });
 }
 
+function formatDT() {
+  var datetime = {
+    hour: this.getHours() % 12,
+    minute: this.getMinutes(),
+    ampm: this.getHours() >= 12,
+    day: this.getDate(),
+    month: this.getMonth(),
+    year: this.getFullYear()
+  }
+  return $.mustache(
+    "{{hour}}:{{minute}} {{ampm}} {{day}}/{{month}}/{{year}}",
+    datetime
+  );
+}
+
 $(document).ready(function() {
 
   var jQT = new $.jQTouch({
@@ -103,8 +118,8 @@ $(document).ready(function() {
       });
     });
     // time
-    
-    $('#time').val('Loading current time');
+    var now = new Date();
+    $('#time').val(formatDT.call(now));
   });
 
   // -- init events
