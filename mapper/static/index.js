@@ -5,7 +5,7 @@ LIST_VIEW = '' +
               '<li class="sep">{{date}}</li>' +
               '{{#details}}' +
                 '<li class="slide arrow">' +
-                  '<a class="listEvent" href="#event" data-pk="{{pk}}">{{name}}</a>' +
+                  '<a class="listEvent" href="#event" data-pk="{{pk}}" onclick="loadFoodEvent(this)">{{name}}</a>' +
                 '</li>' +
               '{{/details}}' +
             '{{/days}}' +
@@ -40,6 +40,15 @@ EVENT = '' +
         '</div>' +
         '{{/event}}' +
           '';
+
+// -- needed for mobilesafari bug
+
+function loadFoodEvent(el) {
+  var pk = $(el).data('pk');
+  $.getJSON('/api/event/' + pk, function(event) {
+      $('#event').html($.mustache(EVENT, event));
+  });
+}
 
 $(document).ready(function() {
 
@@ -77,13 +86,6 @@ $(document).ready(function() {
     if (info.direction == 'in') {
       $('#refreshList').tap();
     }
-  });
-
-  $(document).delegate('.listEvent', 'click', function(e) {
-    var pk = $(e.target).data('pk');
-    $.getJSON('/api/event/' + pk, function(event) {
-        $('#event').html($.mustache(EVENT, event));
-    });
   });
 
   $('#refreshList').tap();
