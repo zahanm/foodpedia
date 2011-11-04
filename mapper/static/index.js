@@ -40,6 +40,40 @@ EVENT = '' +
         '</div>' +
         '{{/event}}' +
           '';
+          
+          
+          
+function selectDate(){
+
+	var prev_time = $("#time_chooser").val();
+	var index_of_colon = prev_time.indexOf(':');
+	var index_of_space = prev_time.indexOf(' ');
+	
+	var prev_hour = prev_time.substring(0, index_of_colon);
+	var prev_min = prev_time.substring(index_of_colon + 1, index_of_space);
+	var prev_mod = prev_time.substring(prev_time.length - 2);
+	
+	var minutes = {0:'00', 15:'15', 30:'30', 45:'45'}
+	var hours = {1:1, 2:2, 3:3, 4:4, 5:5, 6:6, 7:7, 8:8, 9:9, 101:10, 11:11, 12:12}
+	var mod = {'AM':'AM', 'PM':'PM'}
+	
+	SpinningWheel.addSlot(hours, 'center', prev_hour)
+	SpinningWheel.addSlot({separator:':'}, 'readonly shrink')
+	SpinningWheel.addSlot(minutes, 'center', prev_min)
+	SpinningWheel.addSlot(mod, 'center', prev_mod)
+	SpinningWheel.setCancelAction(cancel);
+	SpinningWheel.setDoneAction(done);
+
+	SpinningWheel.open();
+}
+
+function done() {
+	var results = SpinningWheel.getSelectedValues();
+	$('#time_chooser').val(results.values[0]+ ':' + results.values[2] + ' ' + results.values[3]);
+}
+
+function cancel() {
+}
 
 $(document).ready(function() {
 
@@ -73,6 +107,8 @@ $(document).ready(function() {
     });
   });
 
+
+
   $('#list').bind('pageAnimationEnd', function(e, info) {
     if (info.direction == 'in') {
       $('#refreshList').tap();
@@ -85,6 +121,14 @@ $(document).ready(function() {
         $('#event').html($.mustache(EVENT, event));
     });
   });
+  
+  $("#pnlWHATEVER").bind("pageAnimationStart", function (e, data) {
+    if (data.direction === "out"){
+      if($("#sw-wrapper").css("top") != undefined){
+        SpinningWheel.close();
+      }
+    }
+  })
 
   $('#refreshList').tap();
 
