@@ -53,15 +53,15 @@ function loadFoodEvent(el) {
 
 function formatDT() {
   var datetime = {
-    hour: this.getHours() % 12,
+    hour: this.getHours() % 12, // TODO FIXME doesn't work for 12 PM
     minute: this.getMinutes(),
-    ampm: this.getHours() >= 12,
+    ampm: this.getHours() < 12 ? 'AM': 'PM',
     day: this.getDate(),
-    month: this.getMonth(),
+    month: this.getMonth() + 1,
     year: this.getFullYear()
   }
   return $.mustache(
-    "{{hour}}:{{minute}} {{ampm}} {{day}}/{{month}}/{{year}}",
+    "{{hour}}:{{minute}} {{ampm}} {{month}}/{{day}}/{{year}}",
     datetime
   );
 }
