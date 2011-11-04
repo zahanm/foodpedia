@@ -23,11 +23,12 @@
 
 (function($) {
 
-  var latitude, longitude, callback;
+  var latitude, longitude, callback, geocoder;
             
   function checkGeoLocation() {
     return navigator.geolocation;
   }
+
   function updateLocation(fn) {
     if (checkGeoLocation())
     {
@@ -40,6 +41,7 @@
       return false;
     }                
   }
+
   function savePosition(position) {
     latitude = position.coords.latitude;
     longitude = position.coords.longitude;
@@ -47,6 +49,7 @@
       callback(getLocation());
     }
   }
+
   function getLocation() {
     if (latitude && longitude) {
       return {
@@ -57,6 +60,26 @@
       console.log('No location available. Try calling updateLocation() first.');
       return false;
     }
+  }
+
+  /**
+   * Assumes that Google Maps API v3 has been loaded
+   */
+
+  geocoder = new google.maps.Geocoder();
+
+  function geocode(request, cb) {
+    geocoder.geocode(request, function(results, status) {
+      if (status == google.maps.GeocoderStatus.OK) {
+        results[0].geometry.location
+        var marker = new google.maps.Marker({
+            map: map,
+            position: results[0].geometry.location
+        });
+      } else {
+        alert("Geocode was not successful for the following reason: " + status);
+      }
+    });
   }
 
   $.location = function(method, cb) {

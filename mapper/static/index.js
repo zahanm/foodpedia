@@ -77,6 +77,8 @@ $(document).ready(function() {
     --- Setup button handlers
   */
 
+  // -- listview
+
   $('#refreshList').tap(function(e) {
     $.getJSON('/api/event/list',function(event_list) {
       $('#listview').html($.mustache(LIST_VIEW, event_list));
@@ -88,6 +90,18 @@ $(document).ready(function() {
       $('#refreshList').tap();
     }
   });
+
+  // location_choice
+
+  $(document).delegate('#autofillButton', 'click', function(e) {
+    $('#location').val('Loading current location');
+    $('#time').val('Loading current time');
+    $.location('update', function(loc) {
+      $('#location').val('latitude ' + loc.latitude + ' longitude ' + loc.longitude);
+    });
+  });
+
+  // -- init events
 
   $('#refreshList').tap();
 
