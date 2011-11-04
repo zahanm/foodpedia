@@ -85,6 +85,21 @@ function loadFoodEvent(el) {
   });
 }
 
+function formatDT() {
+  var datetime = {
+    hour: this.getHours() % 12, // TODO FIXME doesn't work for 12 PM
+    minute: this.getMinutes(),
+    ampm: this.getHours() < 12 ? 'AM': 'PM',
+    day: this.getDate(),
+    month: this.getMonth() + 1,
+    year: this.getFullYear()
+  }
+  return $.mustache(
+    "{{hour}}:{{minute}} {{ampm}} {{month}}/{{day}}/{{year}}",
+    datetime
+  );
+}
+
 $(document).ready(function() {
 
   var jQT = new $.jQTouch({
@@ -139,8 +154,8 @@ $(document).ready(function() {
       });
     });
     // time
-    
-    $('#time').val('Loading current time');
+    var now = new Date();
+    $('#time').val(formatDT.call(now));
   });
   
   $("#pnlWHATEVER").bind("pageAnimationStart", function (e, data) {
