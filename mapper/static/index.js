@@ -5,7 +5,7 @@ LIST_VIEW = '' +
               '<li class="sep">{{date}}</li>' +
               '{{#details}}' +
                 '<li class="slide arrow">' +
-                  '<a class="listEvent" href="#event" data-pk="{{pk}}">{{name}}</a>' +
+                  '<a class="listEvent" href="#event" data-pk="{{pk}}" onclick="loadFoodEvent(this)">{{name}}</a>' +
                 '</li>' +
               '{{/details}}' +
             '{{/days}}' +
@@ -75,6 +75,16 @@ function done() {
 function cancel() {
 }
 
+// -- needed for mobilesafari bug
+
+function loadFoodEvent(el) {
+  $('#event').html('Loading...');
+  var pk = $(el).data('pk');
+  $.getJSON('/api/event/' + pk, function(event) {
+      $('#event').html($.mustache(EVENT, event));
+  });
+}
+
 $(document).ready(function() {
 
   var jQT = new $.jQTouch({
@@ -101,7 +111,9 @@ $(document).ready(function() {
     --- Setup button handlers
   */
 
-  $('#refreshList').tap(function(e) {
+  // -- listview
+
+  $('#refreshList').click(function(e) {
     $.getJSON('/api/event/list',function(event_list) {
       $('#listview').html($.mustache(LIST_VIEW, event_list));
     });
@@ -111,15 +123,24 @@ $(document).ready(function() {
 
   $('#list').bind('pageAnimationEnd', function(e, info) {
     if (info.direction == 'in') {
-      $('#refreshList').tap();
+      $('#refreshList').click();
     }
   });
 
-  $(document).delegate('.listEvent', 'click', function(e) {
-    var pk = $(e.target).data('pk');
-    $.getJSON('/api/event/' + pk, function(event) {
-        $('#event').html($.mustache(EVENT, event));
+  // -- location_choice
+
+  $('#autofillButton').click(function(e) {
+    $('#location').val('Loading current location');
+    $('#time').val('Loading current time');
+    // location
+    $.location('update', function(loc) {
+      $.location('revgeocode', loc, function(address) {
+        $('#location').val(address);
+      });
     });
+    // time
+    
+    $('#time').val('Loading current time');
   });
   
   $("#pnlWHATEVER").bind("pageAnimationStart", function (e, data) {
@@ -130,13 +151,14 @@ $(document).ready(function() {
     }
   })
 
-  $('#refreshList').tap();
+  // -- init events
+  $('#refreshList').click();
 
-  // SAMPLE
+  /* SAMPLE
   $.location('update', function(loc) {
     console.log('latitude', loc.latitude, 'longitude', loc.longitude);
     console.log("From now on, it's cached", $.location('get').latitude, $.location('get').longitude);
-  });
+  }); */
   
   /*
   // Show a swipe event on swipe test

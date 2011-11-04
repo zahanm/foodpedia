@@ -32,17 +32,11 @@
                 font-weight: bold;
                 text-decoration: none;
             }
-            div#jqt whiteButton {
-                margin: 0 10px;
-                color: rgba(0,0,0,.9);
-            }
         </style>
 
         <!-- Javascripts -->
         <script src="http://code.jquery.com/jquery-1.4.3.min.js"></script>
         <script src="/static/jqtouch/jqtouch.js" type="application/x-javascript" charset="utf-8"></script>
-        <script src="/static/jqmustache/jquery.mustache.js" type="text/javascript" charset="utf-8"></script>
-        <script src="http://maps.google.com/maps/api/js?sensor=true" type="text/javascript"></script>
         <script src="/static/extensions/jqt.location.js" type="application/x-javascript" charset="utf-8"></script>
         <script src="http://maps.google.com/maps/api/js?sensor=false" type="text/javascript"></script>
         <script src="/static/jqmustache/jquery.mustache.js" type="text/javascript" charset="utf-8"></script>
@@ -67,17 +61,8 @@
             </div>
             
             <div id="event">
-                <div class="toolbar">
-                    <a class="back" href="#" >Back</a>
-                    <h1>Event View</h1>
-                </div>
-                <div class="scroll">
-                    <ul>
-                        <li>Loading..</li>
-                    </ul>
-                </div>
-            </div>
 
+            </div>
             <div id="profile">
                 <div class="toolbar">
                     <a href="#" class="back">Back</a>
@@ -102,7 +87,7 @@
                     <a href="#" class="back">Back</a>
                     <h1>Interest (Old) </h1>
                 </div>
-                        <a href="#profile" class="whiteButton">Remove from my interests</a>
+                        <a style="margin:0 10px;color:rgba(0,0,0,.9)" href="#profile" class="whiteButton">Remove from my interests</a>
 
             </div>  
             <div id="new_interest">
@@ -110,7 +95,7 @@
                     <a href="#" class="back">Back</a>
                     <h1>Interest (New)</h1>
                 </div>
-                        <a href="#profile" class="whiteButton">Add to my interests</a>
+                        <a style="margin:0 10px;color:rgba(0,0,0,.9)" href="#profile" class="whiteButton">Add to my interests</a>
 
             </div>
             <div id="add_interest">
@@ -138,8 +123,8 @@
                 <div class="toolbar">
                     <a href="#" class="back">Back</a>
                 </div>              
-                <a href="#add_info" class="whiteButton" id="autofillButton">Here and now!</a>
-                <a href="#date_location_chooser" class="whiteButton">Enter a time and location.</a>
+                <a style="margin:0 10px;color:rgba(0,0,0,.9)" href="#add_info" class="whiteButton">Here and now!</a>
+                <a style="margin:0 10px;color:rgba(0,0,0,.9)" href="#date_location_chooser" class="whiteButton">Enter a time and location.</a>
             </div>
             
             <div id="date_location_chooser">
@@ -167,10 +152,10 @@
                         <li><input type="text" name="name" placeholder="Event Name" id="name" /></li>
                         <li><input type="text" name="location" placeholder="Event Location" id="location"/></li>
                         <li><input type="text" name="time" placeholder="Time" id="time"  /></li>
-                        <li>Repeating <span class="toggle"><input type="checkbox" name='repeating' /></span></li>
+                        <li>Repeating <span class="toggle"><input type="checkbox" /></span></li>
                         <li><textarea placeholder="Description" ></textarea></li>
                         <li><textarea placeholder="Add tags" ></textarea></li>
-                        <li><a href="#home" class="whiteButton fade">Submit</a></li>
+                        <li><a style="margin:0 10px;color:rgba(0,0,0,.9)" href="#home" class="whiteButton fade">Submit</a></li>
                     </ul>
                     
                 </form>

@@ -23,11 +23,12 @@
 
 (function($) {
 
-  var latitude, longitude, callback;
+  var latitude, longitude, callback, geocoder;
             
   function checkGeoLocation() {
     return navigator.geolocation;
   }
+
   function updateLocation(fn) {
     if (checkGeoLocation())
     {
@@ -40,6 +41,7 @@
       return false;
     }                
   }
+
   function savePosition(position) {
     latitude = position.coords.latitude;
     longitude = position.coords.longitude;
@@ -47,6 +49,7 @@
       callback(getLocation());
     }
   }
+
   function getLocation() {
     if (latitude && longitude) {
       return {
@@ -59,11 +62,51 @@
     }
   }
 
-  $.location = function(method, cb) {
+  /**
+   * Assumes that Google Maps API v3 has been loaded
+   */
 
+  geocoder = new google.maps.Geocoder();
+
+  /**
+   * Pass in object of form
+   * {
+   *   'latitude': 32,
+   *   'longitude': -122
+   * }
+   * callback is invoked with closest match address
+   */
+  function revgeocode(loc, cb) {
+    var request = {
+      'latLng': new google.maps.LatLng(loc.latitude, loc.longitude)
+    };
+    geocoder.geocode(request, function(results, status) {
+      if (status == google.maps.GeocoderStatus.OK) {
+        if (results[0]) {
+          cb(results[0].formatted_address);
+        }
+      } else {
+        console.log("Geocode was not successful for the following reason: " + status);
+        cb('(Latitude: ' + loc.latitude + ', Longitude: ' + loc.longitude + ')');
+      }
+    });
+  }
+
+  /**
+   * @params method, [location], callback
+   */
+  $.location = function() {
+    var args = Array.prototype.slice.call(arguments);
+    var method = args.shift();
+    if (args.length) {
+      var cb = args.pop();
+    }
     switch(method) {
       case 'update':
         return updateLocation(cb);
+      case 'revgeocode':
+        var loc = args.pop();
+        return revgeocode(loc, cb);
       case 'get':
       default:
         return getLocation();
