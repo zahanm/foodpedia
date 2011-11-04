@@ -130,7 +130,7 @@
         return updateLocation(cb);
       case 'geocode':
         var address = args.pop();
-        return geocode(address);
+        return geocode(address, cb);
       case 'revgeocode':
         var loc = args.pop();
         return revgeocode(loc, cb);
