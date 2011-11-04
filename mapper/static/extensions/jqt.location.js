@@ -69,6 +69,30 @@
   geocoder = new google.maps.Geocoder();
 
   /**
+   * Pass in address
+   * callback is invoked with { 'latitude': 32, 'longitude': -122 }
+   */
+  function geocode(address, cb) {
+    var request = {
+      'address': address
+    };
+    geocoder.geocode(request, function(results, status) {
+      if (status == google.maps.GeocoderStatus.OK) {
+        if (results[0]) {
+          var loc = results[0].geometry.location;
+          cb({
+            'latitude': loc.lat(),
+            'longitude': loc.lng()
+          });
+        }
+      } else {
+        console.log("Geocode was not successful for the following reason: " + status);
+        cb(address);
+      }
+    });
+  }
+
+  /**
    * Pass in object of form
    * {
    *   'latitude': 32,
@@ -104,6 +128,9 @@
     switch(method) {
       case 'update':
         return updateLocation(cb);
+      case 'geocode':
+        var address = args.pop();
+        return geocode(address);
       case 'revgeocode':
         var loc = args.pop();
         return revgeocode(loc, cb);
