@@ -57,11 +57,6 @@ def add_event(request):
   to_add.where = where
 
   to_add.description = request.POST['description']
-  tags = request.POST['tags'].split(',')
-  tag_string = ""
-  for tag in tags:
-    tag_string += tag + ";"
-  to_add.tags = tag_string
 
   to_add.save()
 

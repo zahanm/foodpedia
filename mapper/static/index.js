@@ -84,17 +84,65 @@ function done() {
 
 function cancel() {
 }
+	
+function validateDate(){
+	var date = $('#add_event #date').val().split('/');
+	if (date.length > 3){
+		console.log("day too long" + date.length);
+		return false;
+	}
+	var month = parseInt(date[0]);
 
-function fillForm(){
-	$('#datetime').val($('#date_chooser').val() + ' ' + $('#time_chooser').val());
+	if (isNaN(month) || month < 1 || month > 12){
+		console.log("month is " + month);
+		return false;
+	}
+	var day = parseInt(date[1]);
+	if (isNaN(day) || day < 1 || day > 31){
+		console.log("day is " + day);
+		return false;
+	}
+	
+	
+	var year = parseInt(date[2]);
+	if (isNaN(year) || year < new Date().year){
+		console.log("year is " + year);
+		return false;
+	}
+	
+	return true;
 }
 
-function fillChooser(){
-	var dt = $('#datetime').val();
-	var index_of_space = dt.indexOf(' ');
-	$('#date_chooser').val(dt.substring(0, index_of_space));
-	$('#time_chooser').val(dt.substring(index_of_space + 1));
+function validateTime(){
+	var time = $('#add_event #time').val();
+	var index_of_colon = time.indexOf(':');
+	var index_of_space = time.indexOf(' ');
+	
+	var hour = parseInt(time.substring(0, index_of_colon));
+	if (isNaN(hour) || hour < 1 || hour > 12){
+		console.log("hour is " + hour);
+		return false;
+	}
+	var minute = parseInt(time.substring(index_of_colon + 1, index_of_space));
+	if (isNaN(minute) || minute < 0 || minute > 59){
+		console.log("minute is " + minute);
+		return false;
+	}
+	var ampm = time.substring(index_of_space + 1).toUpperCase();
+	if (ampm == '' || (ampm != 'AM' && ampm != 'PM')){
+		console.log("ampm is '" + ampm + "'");
+		return false;
+	}
+	return true;
 }
+	
+	
+
+
+	
+
+
+
 	
 
 // -- needed for mobilesafari bug
@@ -118,6 +166,18 @@ function formatDT() {
   }
   return $.mustache(
     "{{hour}}:{{minute}} {{ampm}} {{month}}/{{day}}/{{year}}",
+    datetime
+  );
+}
+
+function formatT(){
+	  var datetime = {
+    hour: this.getHours() % 12, // TODO FIXME doesn't work for 12 PM
+    minute: this.getMinutes(),
+    ampm: this.getHours() < 12 ? 'AM': 'PM',
+  }
+  return $.mustache(
+    "{{hour}}:{{minute}} {{ampm}}",
     datetime
   );
 }
@@ -168,7 +228,7 @@ $(document).ready(function() {
 
   $('#addEvent').click(function(e) {
     $('#location').val('Loading current location');
-    $('#time').val('Loading current time');
+    var currentTime = new Date()
     // location
     $.location('update', function(loc) {
       $('#location_lat').val(loc.latitude);
@@ -179,7 +239,7 @@ $(document).ready(function() {
     });
     // time
     var now = new Date();
-    $('#time').val(formatDT.call(now));
+    $('#time').val(formatT.call(now));
   });
   
 
@@ -192,9 +252,109 @@ $(document).ready(function() {
       });
     }
   });
+    
+  $('#add_event #submit').click(function() {
+		// Disable the submit button
+		$('#add_event #submit').attr("disabled", "disabled");
+		// Clear and hide any error messages
+		$('#add_event .formError').html('');
+		// Set temaprary variables for the script
+		var isFocus=0;
+		var isError=0;
+		// Get the data from the form
+		
+		var name= $('#add_event #name').val();
+		var location= $('#add_event #location').val();
+		var lat = $('#add_event #location_lat').val();
+		var longitude = $('#add_event #location_lng').val();
+		var date= $('#add_event #date').val();
+		var time= $('#add_event #time').val();
+		var description = $('#add_event #description').val();
+		
+		
+		
+		
+		
+		if (name==''){
+			$('#add_event #errorName').html('This is a required field.');
+			$('#add_event #name').focus()
+			isFocus = 1;
+			isError = 1;
+		}
+		
+		if (!validateDate()){
+			$('#add_event #errorDate').html('Incorrect Format. Please use: MM/DD/YYYY');
+			if (isFocus == 0){
+				$('#add_event #date').focus();
+				isFocus = 1;
+			}
+			isError = 1;
+		}
+		
+		if (!validateTime()){
+		$('#add_event #errorTime').html('Incorrect Format. Please use: HH:MM AM/PM');
+			if (isFocus == 0){
+				$('#add_event #time').focus()
+				isFocus = 1;
+			}
+			isError = 1;
+		}
+		
+		if (description==''){
+		$('#add_event #errorDescription').html('This is a required field.');
+			if (isFocus == 0){
+				$('#add_event #description').focus()
+				isFocus = 1;
+			}
+			isError = 1;
+		}			
+		
+		
+		
+		
+		
+		
+		
+		
+		
+		
+		
+
+		// Terminate the script if an error is found
+		if(isError==1) {
+			// Activate the submit button
+			$('#add_event #submit').attr("disabled", "");
+			return false;
+		}
+
+		var dataString = 'name='+ name + '&time=' + time + ' ' + date + '&lat=' + lat + '&long=' + longitude + '&address=' + location + '&description=' + description;
+		alert(dataString);
+		
+		$.ajax({
+			type: "POST",
+			url: "/api/event/add_event",
+			data: dataString,
+			success: function(msg) {
+				console.log("yay! success!");
+			},
+			error: function(ob,errStr) {
+				console.log("nooooo! failure");
+				console.log(errStr);
+			}
+
+		});
+		
+		return false;
+	});
 
   // -- init events
   $('#refreshList').click();
+  
+  
+  
+  
+  
+  
 
   /* SAMPLE
   $.location('update', function(loc) {

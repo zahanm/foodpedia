@@ -13,6 +13,7 @@
         <style type="text/css" media="screen">@import "/static/jqtouch/jqtouch.css";</style>
         <style type="text/css" media="screen">@import "/static/themes/jqt/theme.css";</style>
         <link rel="stylesheet" href="/static/sw/spinningwheel.css" type="text/css" media="all" />
+        <link rel="stylesheet" href="/static/index.css" type="text/css" media="all" />
         <style type="text/css" media="screen">
             #jqt.fullscreen #home .info {
                 display: none;
@@ -77,33 +78,6 @@
                     </ul>
                 </div>
             </div>
-
-            
-            
-        
-            <div id="location_choice">
-                <div class="toolbar">
-                    <a href="#" class="back">Back</a>
-                </div>              
-                <a href="#add_info" class="whiteButton" id="autofillButton">Here and now!</a>
-                <a href="#date_location_chooser" class="whiteButton">Enter a time and location.</a>
-            </div>
-            
-            <div id="date_location_chooser">
-                <div class="toolbar">
-                    <a href="#" class="back">Back</a>
-                    <h1>Date and Time</h1>
-                    <a href="#add_info" class="button" onclick="fillForm();">Continue</a>
-                </div>
-                <form>
-                    <ul class="edit rounded">
-                        <li><input type="text" class="" value="" placeHolder="Event Location" /> </li>
-                        <li><input id="date_chooser" type="text" value="1/21/2011" /> </li>
-                        <li><input id="time_chooser" type="text" value="11:45 PM" /></li>
-                    </ul>
-                    
-                </form>
-            </div>
                 
             <div id="add_event">
                 <div class="toolbar">
@@ -112,18 +86,31 @@
                 </div>
                 <form>
                     <ul class="edit rounded">
-                        <li><input type="text" name="name" placeholder="Event Name" id="name" /></li>
+                        <li>
+                        	<input type="text" name="name" placeholder="Event Name" id="name" />
+                        	<span id="errorName" class="formError"></span>
+                        </li>
                         <li>
                             <input type="text" name="location" placeholder="Event Location" id="location" />
                             <input type="hidden" name="location_lat" id="location_lat" />
                             <input type="hidden" name="location_lng" id="location_lng" />
                         </li>
-                        <li><input type="text" id="datetime" readonly onclick='selectDate();' name="time" value="1:15 PM" /></li>
-                        <li><input type="text" id="date" readonly onclick='alert("select date");' value="2/3/2011" /></li>
-                        <li>Repeating <span class="toggle"><input type="checkbox" name='repeating' /></span></li>
-                        <li><textarea placeholder="Description" ></textarea></li>
-                        <li><textarea placeholder="Add tags" ></textarea></li>
-                        <li><a href="#home" class="whiteButton fade">Submit</a></li>
+                        <li>
+                        	<input type="text" id="time" readonly onclick='selectDate();' name="time" value="1:15 PM" />
+                        	<span id="errorTime" class="formError"></span>
+                        </li>
+                        <li>
+                        	<input type="text" id="date" value="2/3/2011" />
+                        	<span id="errorDate" class="formError"></span>
+                        </li>
+                        <li>
+                        	<textarea placeholder="Description" id="description" ></textarea>
+                        	<span id="errorDescription" class="formError"></span>
+                        </li>
+                        <li><input type="submit" id="submit"/></li>
+                        
+                        
+                        
                     </ul>
                     
                 </form>
