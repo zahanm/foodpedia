@@ -23,7 +23,7 @@
 
 (function($) {
 
-  var latitude, longitude, callback, geocoder;
+  var latitude, longitude, callback;
             
   function checkGeoLocation() {
     return navigator.geolocation;
@@ -66,8 +66,6 @@
    * Assumes that Google Maps API v3 has been loaded
    */
 
-  geocoder = new google.maps.Geocoder();
-
   /**
    * Pass in address
    * callback is invoked with { 'latitude': 32, 'longitude': -122 }
@@ -76,6 +74,7 @@
     var request = {
       'address': address
     };
+    var geocoder = new google.maps.Geocoder();
     geocoder.geocode(request, function(results, status) {
       if (status == google.maps.GeocoderStatus.OK) {
         if (results[0]) {
@@ -104,6 +103,7 @@
     var request = {
       'latLng': new google.maps.LatLng(loc.latitude, loc.longitude)
     };
+    var geocoder = new google.maps.Geocoder();
     geocoder.geocode(request, function(results, status) {
       if (status == google.maps.GeocoderStatus.OK) {
         if (results[0]) {
