@@ -31,6 +31,10 @@
                 font-weight: bold;
                 text-decoration: none;
             }
+            div#jqt whiteButton {
+                margin: 0 10px;
+                color: rgba(0,0,0,.9);
+            }
         </style>
 
         <!-- Javascripts -->
@@ -120,8 +124,8 @@
                 <div class="toolbar">
                     <a href="#" class="back">Back</a>
                 </div>              
-                <a style="margin:0 10px;color:rgba(0,0,0,.9)" href="#add_info" class="whiteButton">Here and now!</a>
-                <a style="margin:0 10px;color:rgba(0,0,0,.9)" href="#date_location_chooser" class="whiteButton">Enter a time and location.</a>
+                <a href="#add_info" class="whiteButton" id="autofillButton">Here and now!</a>
+                <a href="#date_location_chooser" class="whiteButton">Enter a time and location.</a>
             </div>
             
             <div id="date_location_chooser">
@@ -150,10 +154,10 @@
                         <li><input type="text" name="name" placeholder="Event Name" id="name" /></li>
                         <li><input type="text" name="location" placeholder="Event Location" id="location"/></li>
                         <li><input type="text" name="time" placeholder="Time" id="time"  /></li>
-                        <li>Repeating <span class="toggle"><input type="checkbox" /></span></li>
+                        <li>Repeating <span class="toggle"><input type="checkbox" name='repeating' /></span></li>
                         <li><textarea placeholder="Description" ></textarea></li>
                         <li><textarea placeholder="Add tags" ></textarea></li>
-                        <li><a style="margin:0 10px;color:rgba(0,0,0,.9)" href="#home" class="whiteButton fade">Submit</a></li>
+                        <li><a href="#home" class="whiteButton fade">Submit</a></li>
                     </ul>
                     
                 </form>
