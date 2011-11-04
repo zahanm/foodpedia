@@ -75,6 +75,18 @@ function done() {
 function cancel() {
 }
 
+function fillForm(){
+	$('#datetime').val($('#date_chooser').val() + ' ' + $('#time_chooser').val());
+}
+
+function fillChooser(){
+	var dt = $('#datetime').val();
+	var index_of_space = dt.indexOf(' ');
+	$('#date_chooser').val(dt.substring(0, index_of_space));
+	$('#time_chooser').val(dt.substring(index_of_space + 1));
+}
+	
+
 // -- needed for mobilesafari bug
 
 function loadFoodEvent(el) {
