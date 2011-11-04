@@ -113,7 +113,11 @@
                 <form>
                     <ul class="edit rounded">
                         <li><input type="text" name="name" placeholder="Event Name" id="name" /></li>
-                        <li><input type="text" name="location" placeholder="Event Location" id="location"/></li>
+                        <li>
+                            <input type="text" name="location" placeholder="Event Location" id="location" />
+                            <input type="hidden" name="location_lat" id="location_lat" />
+                            <input type="hidden" name="location_lng" id="location_lng" />
+                        </li>
                         <li><input type="text" id="datetime" readonly onclick='selectDate();' name="time" value="1:15 PM" /></li>
                         <li><input type="text" id="date" readonly onclick='alert("select date");' value="2/3/2011" /></li>
                         <li>Repeating <span class="toggle"><input type="checkbox" name='repeating' /></span></li>

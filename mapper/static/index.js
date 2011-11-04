@@ -166,11 +166,13 @@ $(document).ready(function() {
 
   // -- location_choice
 
-  $('#autofillButton').click(function(e) {
+  $('#addEvent').click(function(e) {
     $('#location').val('Loading current location');
     $('#time').val('Loading current time');
     // location
     $.location('update', function(loc) {
+      $('#location_lat').val(loc.latitude);
+      $('#location_lng').val(loc.longitude);
       $.location('revgeocode', loc, function(address) {
         $('#location').val(address);
       });
@@ -180,6 +182,16 @@ $(document).ready(function() {
     $('#time').val(formatDT.call(now));
   });
   
+
+  $('#location').blur(function(e) {
+    var address = $('#location').val();
+    if (address) {
+      $.location('geocode', address, function(loc) {
+        $('#location_lat').val(loc.latitude);
+        $('#location_lng').val(loc.longitude);
+      });
+    }
+  });
 
   // -- init events
   $('#refreshList').click();
