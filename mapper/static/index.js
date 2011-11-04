@@ -44,6 +44,7 @@ EVENT = '' +
 // -- needed for mobilesafari bug
 
 function loadFoodEvent(el) {
+  $('#event').html('Loading...');
   var pk = $(el).data('pk');
   $.getJSON('/api/event/' + pk, function(event) {
       $('#event').html($.mustache(EVENT, event));
@@ -90,11 +91,11 @@ $(document).ready(function() {
 
   $('#refreshList').tap();
 
-  // SAMPLE
+  /* SAMPLE
   $.location('update', function(loc) {
     console.log('latitude', loc.latitude, 'longitude', loc.longitude);
     console.log("From now on, it's cached", $.location('get').latitude, $.location('get').longitude);
-  });
+  }); */
   
   /*
   // Show a swipe event on swipe test
