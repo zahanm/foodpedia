@@ -44,7 +44,7 @@ EVENT = '' +
           
           
 function selectDate(){
-
+	console.log("whatever");
 	var prev_time = $("#time_chooser").val();
 	var index_of_colon = prev_time.indexOf(':');
 	var index_of_space = prev_time.indexOf(' ');
@@ -158,13 +158,6 @@ $(document).ready(function() {
     $('#time').val(formatDT.call(now));
   });
   
-  $("#pnlWHATEVER").bind("pageAnimationStart", function (e, data) {
-    if (data.direction === "out"){
-      if($("#sw-wrapper").css("top") != undefined){
-        SpinningWheel.close();
-      }
-    }
-  })
 
   // -- init events
   $('#refreshList').click();
