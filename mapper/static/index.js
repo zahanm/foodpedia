@@ -5,9 +5,12 @@ LIST_VIEW = '' +
               '<li class="sep">{{date}}</li>' +
               '{{#details}}' +
                 '<li class="slide arrow">' +
-                  '<a class="listEvent" href="#event" data-pk="{{pk}}" ' + 
+                  '<a class="listEvent" href="#event" data-pk="{{pk}}" ' +
                   ' data-lat="{{lat}}" data-lng="{{lng}}" ' +
-                  ' ontouchstart="loadFoodEvent(this)">{{name}}</a>' +
+                  ' ontouchstart="loadFoodEvent(this)" onclick="loadFoodEvent(this)">' +
+                  '<span>{{name}}</span><br/>' +
+                  '<span class="dist">{{dist}}</span>' +
+                  '</a>' +
                 '</li>' +
               '{{/details}}' +
             '{{/days}}' +
@@ -204,8 +207,21 @@ function formatT(){
 */
 
 function click_refreshList (el) {
-  $.getJSON('/api/event/list',function(event_list) {
-    $('#listview').html($.mustache(LIST_VIEW, event_list));
+  $.location('update', function(me) {
+    $.getJSON('/api/event/list',function(day_list) {
+      day_list.days.forEach(function(day_events) {
+        day_events.details.forEach(function(ev) {
+          var loc = {
+            latitude: ev.lat,
+            longitude: ev.lng
+          };
+          ev.dist = $.location('distance', me, loc);
+          ev.dist = ev.dist.toFixed(2);
+          ev.dist += ' m';
+        });
+      });
+      $('#listview').html($.mustache(LIST_VIEW, day_list));
+    });
   });
 }
 
