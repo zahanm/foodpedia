@@ -184,9 +184,13 @@ function formatT(){
 		if (h == 0){
 			h = 12;
 		}
+		var m = this.getMinutes()
+		if (m < 10){
+			m = "0" + m
+		}
 	  var datetime = {
     hour: h,
-    minute: this.getMinutes(),
+    minute: m,
     ampm: this.getHours() < 12 ? 'AM': 'PM'
   }
   return $.mustache(
