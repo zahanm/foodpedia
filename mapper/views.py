@@ -31,7 +31,9 @@ def list_events(request):
 	for event in events:
 		event_details = {}
 		event_details['name'] = event.name
-		event_details['pk'] = event.pk	
+		event_details['pk'] = event.pk
+		event_details['lat'] = event.where.latitude
+		event_details['lng'] = event.where.longitude
 	
 		if event.when.date() not in segmented_events:
 			segmented_events[event.when.date()] = []

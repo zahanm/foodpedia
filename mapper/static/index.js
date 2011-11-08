@@ -5,7 +5,9 @@ LIST_VIEW = '' +
               '<li class="sep">{{date}}</li>' +
               '{{#details}}' +
                 '<li class="slide arrow">' +
-                  '<a class="listEvent" href="#event" data-pk="{{pk}}" onclick="loadFoodEvent(this)">{{name}}</a>' +
+                  '<a class="listEvent" href="#event" data-pk="{{pk}}" ' + 
+                  ' data-lat="{{lat}}" data-lng="{{lng}}" ' +
+                  ' onclick="loadFoodEvent(this)">{{name}}</a>' +
                 '</li>' +
               '{{/details}}' +
             '{{/days}}' +
@@ -54,7 +56,7 @@ function selectDate(){
 	var prev_mod = prev_time.substring(prev_time.length - 2);
 	
 	var minutes = {0:'00', 15:'15', 30:'30', 45:'45'}
-	var hours = {1:1, 2:2, 3:3, 4:4, 5:5, 6:6, 7:7, 8:8, 9:9, 101:10, 11:11, 12:12}
+	var hours = {1:1, 2:2, 3:3, 4:4, 5:5, 6:6, 7:7, 8:8, 9:9, 10:10, 11:11, 12:12}
 	var mod = {'AM':'AM', 'PM':'PM'}
 	
 	SpinningWheel.addSlot(hours, 'center', prev_hour);
@@ -147,8 +149,12 @@ function loadFoodEvent(el) {
 }
 
 function formatDT() {
+  var h = this.getHours() % 12;
+  if (h == 0){
+    h = 12;
+  }
   var datetime = {
-    hour: this.getHours() % 12, // TODO FIXME doesn't work for 12 PM
+    hour: h,
     minute: this.getMinutes(),
     ampm: this.getHours() < 12 ? 'AM': 'PM',
     day: this.getDate(),
@@ -174,14 +180,14 @@ function formatD() {
 }
 
 function formatT(){
-		var h = this.getHours() % 12
+		var h = this.getHours() % 12;
 		if (h == 0){
 			h = 12;
 		}
 	  var datetime = {
-    hour: h, // TODO FIXME doesn't work for 12 PM
+    hour: h,
     minute: this.getMinutes(),
-    ampm: this.getHours() < 12 ? 'AM': 'PM',
+    ampm: this.getHours() < 12 ? 'AM': 'PM'
   }
   return $.mustache(
     "{{hour}}:{{minute}} {{ampm}}",
