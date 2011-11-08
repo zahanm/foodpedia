@@ -7,7 +7,7 @@ LIST_VIEW = '' +
                 '<li class="slide arrow">' +
                   '<a class="listEvent" href="#event" data-pk="{{pk}}" ' + 
                   ' data-lat="{{lat}}" data-lng="{{lng}}" ' +
-                  ' onclick="loadFoodEvent(this)">{{name}}</a>' +
+                  ' ontouchstart="loadFoodEvent(this)">{{name}}</a>' +
                 '</li>' +
               '{{/details}}' +
             '{{/days}}' +
