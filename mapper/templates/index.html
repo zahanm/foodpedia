@@ -70,9 +70,9 @@
             <div id="event">
                 <div class="toolbar">
                     <a class="back" href="#" >Back</a>
-                    <h1>Event View</h1>
+                    <h1 id="event_title">Event View</h1>
                 </div>
-                <div class="scroll">
+                <div id="event_body" class="scroll">
                     <ul>
                         <li>Loading..</li>
                     </ul>
@@ -87,27 +87,27 @@
                 <form onsubmit="return click_submit(this);">
                     <ul class="edit rounded">
                         <li>
-                        	<input class="form" type="text" name="name" placeholder="Event Name" id="name" />
+                        	<input class="formEntry" type="text" name="name" placeholder="Event Name" id="add_name" />
                         	<span id="errorName" class="formError"></span>
                         </li>
                         <li>
-                            <input class="form" type="text" name="location" placeholder="Event Location" id="location" />
-                            <input type="hidden" name="location_lat" id="location_lat" />
-                            <input type="hidden" name="location_lng" id="location_lng" />
+                            <input class="formEntry" type="text" name="location" placeholder="Event Location" id="add_location" />
+                            <input type="hidden" name="location_lat" id="add_location_lat" />
+                            <input type="hidden" name="location_lng" id="add_location_lng" />
                         </li>
                         <li>
-                        	<input class="form" type="text" id="time" name="time" value="1:15 PM" />
+                        	<input class="formEntry" type="text" id="add_time" name="time" value="1:15 PM" readonly ontouchstart="selectDate()" onclick="selectDate()" />
                         	<span id="errorTime" class="formError"></span>
                         </li>
                         <li>
-                        	<input class="form" type="text" id="date" value="2/3/2011" />
+                        	<input class="formEntry" type="text" id="add_date" value="2/3/2011" />
                         	<span id="errorDate" class="formError"></span>
                         </li>
                         <li>
-                        	<textarea class="form" placeholder="Description" id="description" ></textarea>
+                        	<textarea class="formEntry" placeholder="Description" id="add_description" ></textarea>
                         	<span id="errorDescription" class="formError"></span>
                         </li>
-                        <li><input type="submit" id="submit"/></li>
+                        <li><input type="submit" id="add_submit"/></li>
                         
                         
                         

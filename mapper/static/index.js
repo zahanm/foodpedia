@@ -50,7 +50,7 @@ EVENT = '' +
           
 function selectDate(){
 	console.log("whatever");
-	var prev_time = $("#time_chooser").val();
+	var prev_time = $("#add_time").val();
 	var index_of_colon = prev_time.indexOf(':');
 	var index_of_space = prev_time.indexOf(' ');
 	
@@ -75,14 +75,14 @@ function selectDate(){
 
 function done() {
 	var results = SpinningWheel.getSelectedValues();
-	$('#time_chooser').val(results.values[0]+ ':' + results.values[2] + ' ' + results.values[3]);
+	$('#time').val(results.values[0]+ ':' + results.values[2] + ' ' + results.values[3]);
 }
 
 function cancel() {
 }
 	
 function validateDate(){
-	var date = $('#add_event #date').val().split('/');
+	var date = $('#add_event #add_date').val().split('/');
 	if (date.length > 3){
 		console.log("day too long" + date.length);
 		return false;
@@ -110,7 +110,7 @@ function validateDate(){
 }
 
 function validateTime(){
-	var time = $('#add_event #time').val();
+	var time = $('#add_event #add_time').val();
 	var index_of_colon = time.indexOf(':');
 	var index_of_space = time.indexOf(' ');
 	
@@ -144,7 +144,8 @@ function validateTime(){
 // -- needed for mobilesafari bug
 
 function loadFoodEvent(el) {
-  $('#event').html('Loading...');
+  $('#event_title').html('Loading...');
+  $('#event_body').html('');
   var pk = $(el).data('pk');
   $.getJSON('/api/event/' + pk, function(event) {
       $('#event').html($.mustache(EVENT, event));
@@ -188,7 +189,8 @@ function formatT(){
 			h = 12;
 		}
 		var m = this.getMinutes()
-		if (m < 10){
+		m = (15 * Math.floor(m/15))
+		if (m == 0){
 			m = "0" + m
 		}
 	  var datetime = {
@@ -237,13 +239,13 @@ function click_addEvent (el) {
   });
   // time
   var now = new Date();
-  $('#time').val(formatT.call(now));
-  $('#date').val(formatD.call(now));
+  $('#add_time').val(formatT.call(now));
+  $('#add_date').val(formatD.call(now));
 }
 
 function click_submit (el) {
   // Disable the submit button
-  $('#add_event #submit').attr("disabled", "disabled");
+  $('#add_event #add_submit').attr("disabled", "disabled");
   // Clear and hide any error messages
   $('#add_event .formError').html('');
   // Set temaprary variables for the script
@@ -251,17 +253,17 @@ function click_submit (el) {
   var isError=0;
   // Get the data from the form
 
-  var name= $('#add_event #name').val();
-  var location= $('#add_event #location').val();
-  var lat = $('#add_event #location_lat').val();
-  var longitude = $('#add_event #location_lng').val();
-  var date= $('#add_event #date').val();
-  var time= $('#add_event #time').val();
-  var description = $('#add_event #description').val();
+  var name= $('#add_event #add_name').val();
+  var location= $('#add_event #add_location').val();
+  var lat = $('#add_event #add_location_lat').val();
+  var longitude = $('#add_event #add_location_lng').val();
+  var date= $('#add_event #add_date').val();
+  var time= $('#add_event #add_time').val();
+  var description = $('#add_event #add_description').val();
 
   if (name==''){
     $('#add_event #errorName').html('This is a required field.');
-    $('#add_event #name').focus()
+    $('#add_event #add_name').focus()
     isFocus = 1;
     isError = 1;
   }
@@ -269,7 +271,7 @@ function click_submit (el) {
   if (!validateDate()){
     $('#add_event #errorDate').html('Incorrect Format. Please use: MM/DD/YYYY');
     if (isFocus == 0){
-      $('#add_event #date').focus();
+      $('#add_event #add_date').focus();
       isFocus = 1;
     }
     isError = 1;
@@ -278,7 +280,7 @@ function click_submit (el) {
   if (!validateTime()){
   $('#add_event #errorTime').html('Incorrect Format. Please use: HH:MM AM/PM');
     if (isFocus == 0){
-      $('#add_event #time').focus()
+      $('#add_event #add_time').focus()
       isFocus = 1;
     }
     isError = 1;
@@ -287,7 +289,7 @@ function click_submit (el) {
   if (description==''){
   $('#add_event #errorDescription').html('This is a required field.');
     if (isFocus == 0){
-      $('#add_event #description').focus()
+      $('#add_event #add_description').focus()
       isFocus = 1;
     }
     isError = 1;
@@ -297,7 +299,7 @@ function click_submit (el) {
   // Terminate the script if an error is found
   if(isError==1) {
     // Activate the submit button
-    $('#add_event #submit').attr("disabled", "");
+    $('#add_event #add_submit').attr("disabled", "");
     return false;
   }
 
@@ -308,9 +310,9 @@ function click_submit (el) {
     url: "/api/event/add_event",
     data: dataString,
     success: function(msg) {
-      $('#add_event #description').val('')
-      $('#add_event #name').val('')
-      $('#add_event #submit').attr("disabled", "");
+      $('#add_event #add_description').val('')
+      $('#add_event #add_name').val('')
+      $('#add_event #add_submit').attr("disabled", "");
       window.jQT.goTo("#list", "dissolve")
     },
     error: function(ob,errStr) {
@@ -355,12 +357,12 @@ $(document).ready(function() {
 
   // -- location_choice
 
-  $('#location').blur(function(e) {
-    var address = $('#location').val();
+  $('#add_location').blur(function(e) {
+    var address = $('#add_location').val();
     if (address) {
       $.location('geocode', address, function(loc) {
-        $('#location_lat').val(loc.latitude);
-        $('#location_lng').val(loc.longitude);
+        $('#add_location_lat').val(loc.latitude);
+        $('#add_location_lng').val(loc.longitude);
       });
     }
   });
@@ -368,65 +370,5 @@ $(document).ready(function() {
   // -- init events
   $('#refreshList').click();
 
-  /* SAMPLE
-  $.location('update', function(loc) {
-    console.log('latitude', loc.latitude, 'longitude', loc.longitude);
-    console.log("From now on, it's cached", $.location('get').latitude, $.location('get').longitude);
-  }); */
   
-  /*
-  // Show a swipe event on swipe test
-  $('#swipeme').swipe(function(evt, data) {
-    $(this).html('You swiped <strong>' + data.direction + '/' + data.deltaX +':' + data.deltaY + '</strong>!');
-    $(this).parent().after('<li>swiped!</li>')
-
-  });
-  $('#tapme').tap(function(){
-    $(this).parent().after('<li>tapped!</li>')
-  })
-  $('a[target="_blank"]').click(function() {
-    if (confirm('This link opens in a new window.')) {
-      return true;
-    } else {
-      return false;
-    }
-  });
-  // Page animation callback events
-  $('#pageevents').
-    bind('pageAnimationStart', function(e, info){ 
-      $(this).find('.info').append('Started animating ' + info.direction + '&hellip; ');
-    }).
-    bind('pageAnimationEnd', function(e, info){
-      $(this).find('.info').append(' finished animating ' + info.direction + '.<br /><br />');
-    });
-  // Page animations end with AJAX callback event, example 1 (load remote HTML only first time)
-  $('#callback').bind('pageAnimationEnd', function(e, info){
-    // Make sure the data hasn't already been loaded (we'll set 'loaded' to true a couple lines further down)
-    if (!$(this).data('loaded')) {
-      // Append a placeholder in case the remote HTML takes its sweet time making it back
-      // Then, overwrite the "Loading" placeholder text with the remote HTML
-      $(this).append($('<div>Loading</div>').load('ajax.html .info', function() {        
-        // Set the 'loaded' var to true so we know not to reload
-        // the HTML next time the #callback div animation ends
-        $(this).parent().data('loaded', true);
-      }));
-    }
-  });
-  // Orientation callback event
-  $('#jqt').bind('turn', function(e, data){
-    $('#orient').html('Orientation: ' + data.orientation);
-  });
-  $('#play_movie').bind('tap', function(){
-    $('#movie').get(0).play();
-    $(this).removeClass('active');
-  });
-  
-  $('#video').bind('pageAnimationStart', function(e, info){
-    $('#movie').css('display', 'none');
-  }).bind('pageAnimationEnd', function(e, info){
-    if (info.direction == 'in') {
-      $('#movie').css('display', 'block');
-    }
-  })
-  */
 });
