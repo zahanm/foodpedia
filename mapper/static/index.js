@@ -141,7 +141,8 @@ function validateTime(){
 // -- needed for mobilesafari bug
 
 function loadFoodEvent(el) {
-  $('#event').html('Loading...');
+  $('#event_title').html('Loading...');
+  $('#event_body').html('');
   var pk = $(el).data('pk');
   $.getJSON('/api/event/' + pk, function(event) {
       $('#event').html($.mustache(EVENT, event));
