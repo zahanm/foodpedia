@@ -9,7 +9,7 @@ LIST_VIEW = '' +
                   ' data-lat="{{lat}}" data-lng="{{lng}}" ' +
                   ' ontouchstart="loadFoodEvent(this)" onclick="loadFoodEvent(this)">' +
                   '<span>{{name}}</span><br/>' +
-                  '<span class="dist">{{dist}}</span>' +
+                  '<span class="secondary">{{dist}}</span>' +
                   '</a>' +
                 '</li>' +
               '{{/details}}' +
@@ -204,13 +204,11 @@ function formatT(){
   );
 }
 
-/**
-  --- Setup button handlers
-*/
-
-function click_refreshList (el) {
+function refreshList (el) {
   $.location('update', function(me) {
     $.getJSON('/api/event/list',function(day_list) {
+      var storage = window.sessionStorage;
+      storage.setItem('day_list', JSON.stringify(day_list));
       day_list.days.forEach(function(day_events) {
         day_events.details.forEach(function(ev) {
           var loc = {
@@ -225,6 +223,35 @@ function click_refreshList (el) {
       $('#listview').html($.mustache(LIST_VIEW, day_list));
     });
   });
+}
+
+/**
+  --- Setup button handlers
+*/
+
+function click_sortList (el) {
+  var storage = window.sessionStorage;
+  try {
+    var day_list = storage.getItem('day_list');
+  } catch (err) {
+    console.log('day_list not loaded before sort attempted');
+    return;
+  }
+  var sortButton = $('#sortList')[0];
+  switch(sortButton.innerText) {
+    case 'By Time':
+      // now must sort by time
+      $('#listview').html($.mustache(LIST_VIEW, day_list));
+      // toggle the button
+      sortButton.innerText = 'By Distance';
+      break;
+    case 'By Distance':
+    default:
+      // now must sort by distance
+
+      // toggel the button
+      sortButton.innerText = 'By Time';
+  }
 }
 
 function click_addEvent (el) {
@@ -351,7 +378,7 @@ $(document).ready(function() {
 
   $('#list').bind('pageAnimationEnd', function(e, info) {
     if (info.direction == 'in') {
-      $('#refreshList').click();
+      refreshList();
     }
   });
 
@@ -368,7 +395,6 @@ $(document).ready(function() {
   });
 
   // -- init events
-  $('#refreshList').click();
-
+  refreshList();
   
 });
