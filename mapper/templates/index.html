@@ -56,9 +56,9 @@
         <div id="jqt">
             <div id="list" class="current">
                 <div class="toolbar">
-                    <a class="button leftButton" id="refreshList" href="#" >Refresh</a>
+                    <a class="button leftButton" id="refreshList" href="#" onclick="click_refreshList(this)" >Refresh</a>
                     <h1>Foodpedia &alpha;</h1>
-                    <a class="button" id="addEvent" href="#add_event" >Add Event</a>
+                    <a class="button" id="addEvent" href="#add_event" onclick="click_addEvent(this)" >Add Event</a>
                 </div>
                 <div id="listview" class="scroll">
                     <ul>
@@ -84,7 +84,7 @@
                     <h1>Add Event</h1>
                     <a href="#" class="back">Back</a>
                 </div>
-                <form>
+                <form onsubmit="return click_submit(this);">
                     <ul class="edit rounded">
                         <li>
                         	<input class="form" type="text" name="name" placeholder="Event Name" id="name" />

@@ -195,9 +195,117 @@ function formatT(){
   );
 }
 
+/**
+  --- Setup button handlers
+*/
+
+function click_refreshList (el) {
+  $.getJSON('/api/event/list',function(event_list) {
+    $('#listview').html($.mustache(LIST_VIEW, event_list));
+  });
+}
+
+function click_addEvent (el) {
+  $('#location').val('Loading current location');
+  // location
+  $.location('update', function(loc) {
+    $('#location_lat').val(loc.latitude);
+    $('#location_lng').val(loc.longitude);
+    $.location('revgeocode', loc, function(address) {
+      $('#location').val(address);
+    });
+  });
+  // time
+  var now = new Date();
+  $('#time').val(formatT.call(now));
+  $('#date').val(formatD.call(now));
+}
+
+function click_submit (el) {
+  // Disable the submit button
+  $('#add_event #submit').attr("disabled", "disabled");
+  // Clear and hide any error messages
+  $('#add_event .formError').html('');
+  // Set temaprary variables for the script
+  var isFocus=0;
+  var isError=0;
+  // Get the data from the form
+
+  var name= $('#add_event #name').val();
+  var location= $('#add_event #location').val();
+  var lat = $('#add_event #location_lat').val();
+  var longitude = $('#add_event #location_lng').val();
+  var date= $('#add_event #date').val();
+  var time= $('#add_event #time').val();
+  var description = $('#add_event #description').val();
+
+  if (name==''){
+    $('#add_event #errorName').html('This is a required field.');
+    $('#add_event #name').focus()
+    isFocus = 1;
+    isError = 1;
+  }
+
+  if (!validateDate()){
+    $('#add_event #errorDate').html('Incorrect Format. Please use: MM/DD/YYYY');
+    if (isFocus == 0){
+      $('#add_event #date').focus();
+      isFocus = 1;
+    }
+    isError = 1;
+  }
+
+  if (!validateTime()){
+  $('#add_event #errorTime').html('Incorrect Format. Please use: HH:MM AM/PM');
+    if (isFocus == 0){
+      $('#add_event #time').focus()
+      isFocus = 1;
+    }
+    isError = 1;
+  }
+
+  if (description==''){
+  $('#add_event #errorDescription').html('This is a required field.');
+    if (isFocus == 0){
+      $('#add_event #description').focus()
+      isFocus = 1;
+    }
+    isError = 1;
+  }
+
+
+  // Terminate the script if an error is found
+  if(isError==1) {
+    // Activate the submit button
+    $('#add_event #submit').attr("disabled", "");
+    return false;
+  }
+
+  var dataString = 'name='+ name + '&time=' + time + ' ' + date + '&lat=' + lat + '&long=' + longitude + '&address=' + location + '&description=' + description;
+
+  $.ajax({
+    type: "POST",
+    url: "/api/event/add_event",
+    data: dataString,
+    success: function(msg) {
+      $('#add_event #description').val('')
+      $('#add_event #name').val('')
+      $('#add_event #submit').attr("disabled", "");
+      window.jQT.goTo("#list", "dissolve")
+    },
+    error: function(ob,errStr) {
+      console.log("nooooo! failure");
+      console.log(errStr);
+    }
+
+  });
+
+  return false;
+}
+
 $(document).ready(function() {
 
-  var jQT = new $.jQTouch({
+  window.jQT = new $.jQTouch({
     icon: '/static/imgs/icon.png',
     addGlossToIcon: false,
     startupScreen: 'jqt_startup.png',
@@ -217,19 +325,7 @@ $(document).ready(function() {
       ]
   });
 
-  /**
-    --- Setup button handlers
-  */
-
   // -- listview
-
-  $('#refreshList').click(function(e) {
-    $.getJSON('/api/event/list',function(event_list) {
-      $('#listview').html($.mustache(LIST_VIEW, event_list));
-    });
-  });
-
-
 
   $('#list').bind('pageAnimationEnd', function(e, info) {
     if (info.direction == 'in') {
@@ -238,24 +334,6 @@ $(document).ready(function() {
   });
 
   // -- location_choice
-
-  $('#addEvent').click(function(e) {
-    $('#location').val('Loading current location');
-    var currentTime = new Date()
-    // location
-    $.location('update', function(loc) {
-      $('#location_lat').val(loc.latitude);
-      $('#location_lng').val(loc.longitude);
-      $.location('revgeocode', loc, function(address) {
-        $('#location').val(address);
-      });
-    });
-    // time
-    var now = new Date();
-    $('#time').val(formatT.call(now));
-    $('#date').val(formatD.call(now));
-  });
-  
 
   $('#location').blur(function(e) {
     var address = $('#location').val();
@@ -266,111 +344,9 @@ $(document).ready(function() {
       });
     }
   });
-    
-  $('#add_event #submit').click(function() {
-		// Disable the submit button
-		$('#add_event #submit').attr("disabled", "disabled");
-		// Clear and hide any error messages
-		$('#add_event .formError').html('');
-		// Set temaprary variables for the script
-		var isFocus=0;
-		var isError=0;
-		// Get the data from the form
-		
-		var name= $('#add_event #name').val();
-		var location= $('#add_event #location').val();
-		var lat = $('#add_event #location_lat').val();
-		var longitude = $('#add_event #location_lng').val();
-		var date= $('#add_event #date').val();
-		var time= $('#add_event #time').val();
-		var description = $('#add_event #description').val();
-		
-		
-		
-		
-		
-		if (name==''){
-			$('#add_event #errorName').html('This is a required field.');
-			$('#add_event #name').focus()
-			isFocus = 1;
-			isError = 1;
-		}
-		
-		if (!validateDate()){
-			$('#add_event #errorDate').html('Incorrect Format. Please use: MM/DD/YYYY');
-			if (isFocus == 0){
-				$('#add_event #date').focus();
-				isFocus = 1;
-			}
-			isError = 1;
-		}
-		
-		if (!validateTime()){
-		$('#add_event #errorTime').html('Incorrect Format. Please use: HH:MM AM/PM');
-			if (isFocus == 0){
-				$('#add_event #time').focus()
-				isFocus = 1;
-			}
-			isError = 1;
-		}
-		
-		if (description==''){
-		$('#add_event #errorDescription').html('This is a required field.');
-			if (isFocus == 0){
-				$('#add_event #description').focus()
-				isFocus = 1;
-			}
-			isError = 1;
-		}			
-		
-		
-		
-		
-		
-		
-		
-		
-		
-		
-		
-
-		// Terminate the script if an error is found
-		if(isError==1) {
-			// Activate the submit button
-			$('#add_event #submit').attr("disabled", "");
-			return false;
-		}
-
-		var dataString = 'name='+ name + '&time=' + time + ' ' + date + '&lat=' + lat + '&long=' + longitude + '&address=' + location + '&description=' + description;
-		
-		$.ajax({
-			type: "POST",
-			url: "/api/event/add_event",
-			data: dataString,
-			success: function(msg) {
-				$('#add_event #description').val('')
-				$('#add_event #name').val('')
-				$('#add_event #submit').attr("disabled", "");
-				jQT.goTo("#list", "dissolve")
-			},
-			error: function(ob,errStr) {
-				console.log("nooooo! failure");
-				console.log(errStr);
-			}
-
-		});
-		
-		return false;
-	});
 
   // -- init events
   $('#refreshList').click();
-  
-  
-  
-  
-  
-  
 
   /* SAMPLE
   $.location('update', function(loc) {
