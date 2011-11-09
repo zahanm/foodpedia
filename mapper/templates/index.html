@@ -13,6 +13,7 @@
         <style type="text/css" media="screen">@import "/static/jqtouch/jqtouch.css";</style>
         <style type="text/css" media="screen">@import "/static/themes/jqt/theme.css";</style>
         <link rel="stylesheet" href="/static/sw/spinningwheel.css" type="text/css" media="all" />
+        <link rel="stylesheet" href="/static/index.css" type="text/css" media="all" />
         <style type="text/css" media="screen">
             #jqt.fullscreen #home .info {
                 display: none;
@@ -42,7 +43,7 @@
         <script src="http://code.jquery.com/jquery-1.4.3.min.js"></script>
         <script src="/static/jqtouch/jqtouch.js" type="application/x-javascript" charset="utf-8"></script>
         <script src="/static/jqmustache/jquery.mustache.js" type="text/javascript" charset="utf-8"></script>
-        <script src="http://maps.google.com/maps/api/js?sensor=true" type="text/javascript"></script>
+        <script src="http://maps.google.com/maps/api/js?sensor=true&libraries=geometry" type="text/javascript"></script>
         <script src="/static/extensions/jqt.location.js" type="application/x-javascript" charset="utf-8"></script>
         <script src="http://maps.google.com/maps/api/js?sensor=false" type="text/javascript"></script>
         <script src="/static/jqmustache/jquery.mustache.js" type="text/javascript" charset="utf-8"></script>
@@ -55,9 +56,9 @@
         <div id="jqt">
             <div id="list" class="current">
                 <div class="toolbar">
-                    <a class="button leftButton" id="refreshList" href="#" >Refresh</a>
-                    <h1>List View</h1>
-                    <a class="button" id="addEvent" href="#add_event" >Add Event</a>
+                    <a class="button leftButton" id="sortList" href="#" ontouchstart="click_sortList(this)" onclick="click_sortList(this)" >By Distance</a>
+                    <h1>Foodpedia &alpha;</h1>
+                    <a class="button" id="addEvent" href="#add_event" ontouchstart="click_addEvent(this)" >Add</a>
                 </div>
                 <div id="listview" class="scroll">
                     <ul>
@@ -69,40 +70,13 @@
             <div id="event">
                 <div class="toolbar">
                     <a class="back" href="#" >Back</a>
-                    <h1>Event View</h1>
+                    <h1 id="event_title">Event View</h1>
                 </div>
-                <div class="scroll">
+                <div id="event_body" class="scroll">
                     <ul>
                         <li>Loading..</li>
                     </ul>
                 </div>
-            </div>
-
-            
-            
-        
-            <div id="location_choice">
-                <div class="toolbar">
-                    <a href="#" class="back">Back</a>
-                </div>              
-                <a href="#add_info" class="whiteButton" id="autofillButton">Here and now!</a>
-                <a href="#date_location_chooser" class="whiteButton">Enter a time and location.</a>
-            </div>
-            
-            <div id="date_location_chooser">
-                <div class="toolbar">
-                    <a href="#" class="back">Back</a>
-                    <h1>Date and Time</h1>
-                    <a href="#add_info" class="button" onclick="fillForm();">Continue</a>
-                </div>
-                <form>
-                    <ul class="edit rounded">
-                        <li><input type="text" class="" value="" placeHolder="Event Location" /> </li>
-                        <li><input id="date_chooser" type="text" value="1/21/2011" /> </li>
-                        <li><input id="time_chooser" type="text" value="11:45 PM" /></li>
-                    </ul>
-                    
-                </form>
             </div>
                 
             <div id="add_event">
@@ -110,20 +84,33 @@
                     <h1>Add Event</h1>
                     <a href="#" class="back">Back</a>
                 </div>
-                <form>
+                <form onsubmit="return click_submit(this);">
                     <ul class="edit rounded">
-                        <li><input type="text" name="name" placeholder="Event Name" id="name" /></li>
                         <li>
-                            <input type="text" name="location" placeholder="Event Location" id="location" />
-                            <input type="hidden" name="location_lat" id="location_lat" />
-                            <input type="hidden" name="location_lng" id="location_lng" />
+                        	<input class="formEntry" type="text" name="name" placeholder="Event Name" id="add_name" />
+                        	<span id="errorName" class="formError"></span>
                         </li>
-                        <li><input type="text" id="datetime" readonly onclick='selectDate();' name="time" value="1:15 PM" /></li>
-                        <li><input type="text" id="date" readonly onclick='alert("select date");' value="2/3/2011" /></li>
-                        <li>Repeating <span class="toggle"><input type="checkbox" name='repeating' /></span></li>
-                        <li><textarea placeholder="Description" ></textarea></li>
-                        <li><textarea placeholder="Add tags" ></textarea></li>
-                        <li><a href="#home" class="whiteButton fade">Submit</a></li>
+                        <li>
+                            <input class="formEntry" type="text" name="location" placeholder="Event Location" id="add_location" />
+                            <input type="hidden" name="location_lat" id="add_location_lat" />
+                            <input type="hidden" name="location_lng" id="add_location_lng" />
+                        </li>
+                        <li>
+                        	<input class="formEntry" type="time" id="add_time" name="time"  />
+                        	<span id="errorTime" class="formError"></span>
+                        </li>
+                        <li>
+                        	<input class="formEntry" type="date" id="add_date" />
+                        	<span id="errorDate" class="formError"></span>
+                        </li>
+                        <li>
+                        	<textarea class="formEntry" placeholder="Description" id="add_description" ></textarea>
+                        	<span id="errorDescription" class="formError"></span>
+                        </li>
+                        <li><input type="submit" id="add_submit"/></li>
+                        
+                        
+                        
                     </ul>
                     
                 </form>

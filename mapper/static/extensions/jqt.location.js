@@ -26,7 +26,7 @@
   var latitude, longitude, callback;
             
   function checkGeoLocation() {
-    return navigator.geolocation;
+    return navigator.geolocation && navigator.userAgent.indexOf('Simulator') < 0;
   }
 
   function updateLocation(fn) {
@@ -36,8 +36,11 @@
       navigator.geolocation.getCurrentPosition(savePosition);
       return true;
     } else {
-      console.log('Device not capable of geo-location.');
-      fn(false);
+      console.log('Device not capable of geo-location. Or it is the damn iPhone simulator.');
+      fn({
+        latitude: 37.4241059,
+        longitude: -122.166075
+      });
       return false;
     }                
   }
@@ -116,24 +119,34 @@
     });
   }
 
+  function distance (loc1, loc2) {
+    var latlng1 = new google.maps.LatLng(loc1.latitude, loc1.longitude)
+      , latlng2 = new google.maps.LatLng(loc2.latitude, loc2.longitude);
+    return google.maps.geometry.spherical.computeDistanceBetween(latlng1, latlng2);
+  }
+
   /**
-   * @params method, [location], callback
+   * @params method, [other args...], callback
    */
   $.location = function() {
     var args = Array.prototype.slice.call(arguments);
     var method = args.shift();
-    if (args.length) {
-      var cb = args.pop();
-    }
     switch(method) {
       case 'update':
+        var cb = args.pop();
         return updateLocation(cb);
       case 'geocode':
-        var address = args.pop();
+        var cb = args.pop()
+          , address = args.pop();
         return geocode(address, cb);
       case 'revgeocode':
-        var loc = args.pop();
+        var cb = args.pop()
+          , loc = args.pop();
         return revgeocode(loc, cb);
+      case 'distance':
+        var loc1 = args.pop();
+        var loc2 = args.pop();
+        return distance(loc1, loc2);
       case 'get':
       default:
         return getLocation();

@@ -5,7 +5,12 @@ LIST_VIEW = '' +
               '<li class="sep">{{date}}</li>' +
               '{{#details}}' +
                 '<li class="slide arrow">' +
-                  '<a class="listEvent" href="#event" data-pk="{{pk}}" onclick="loadFoodEvent(this)">{{name}}</a>' +
+                  '<a class="listEvent" href="#event" data-pk="{{pk}}" ' +
+                  ' data-lat="{{lat}}" data-lng="{{lng}}" ' +
+                  ' ontouchstart="loadFoodEvent(this)" onclick="loadFoodEvent(this)">' +
+                  '<span>{{name}}</span><br/>' +
+                  '<span class="secondary">{{dist}} m</span>' +
+                  '</a>' +
                 '</li>' +
               '{{/details}}' +
             '{{/days}}' +
@@ -15,6 +20,26 @@ LIST_VIEW = '' +
             '</ul>' +
             '';
 
+LIST_VIEW_DIST = '' +
+            '<ul class="edgetoedge">' +
+            '{{#dists}}' +
+              '<li class="sep">{{sep}}</li>' +
+              '{{#details}}' +
+                '<li class="slide arrow">' +
+                  '<a class="listEvent" href="#event" data-pk="{{pk}}" ' +
+                  ' data-lat="{{lat}}" data-lng="{{lng}}" ' +
+                  ' ontouchstart="loadFoodEvent(this)" onclick="loadFoodEvent(this)">' +
+                  '<span>{{name}}</span><br/>' +
+                  '<span class="secondary">{{date}}</span>' +
+                  '</a>' +
+                '</li>' +
+              '{{/details}}' +
+            '{{/dists}}' +
+            '{{^dists}}' +
+              '<li class="slide"><h3>No events. :(</h3></li>' +
+            '{{/dists}}' +
+            '</ul>' +
+            '';
 
 EVENT = '' +
         '{{#event}}' +
@@ -28,79 +53,79 @@ EVENT = '' +
             '<li> {{description}} </li>' +
             '<li class="sep">Where</li>' +
             '{{#where}}' +
-            '<li><a href="http://maps.google.com/maps?q={{address}}@{{latitude}},{{longitude}}"> {{address}}</a> </li>' +
+            '<li class="forward"><a href="http://maps.google.com/maps?q={{address}}"> {{address}}</a> </li>' +
             '{{/where}}' +
             '<li class="sep">When</li>' +
             '<li>{{when}}</li>' +
-            '<li class="sep">Tags</li>' +
+            /*'<li class="sep">Tags</li>' +
             '{{#tags}}' +
             '<li>{{tag}}</li>' +
-            '{{/tags}}' +
+            '{{/tags}}' +*/
           '</ul>' +
         '</div>' +
         '{{/event}}' +
           '';
           
-          
-          
-function selectDate(){
-	console.log("whatever");
-	var prev_time = $("#time_chooser").val();
-	var index_of_colon = prev_time.indexOf(':');
-	var index_of_space = prev_time.indexOf(' ');
 	
-	var prev_hour = prev_time.substring(0, index_of_colon);
-	var prev_min = prev_time.substring(index_of_colon + 1, index_of_space);
-	var prev_mod = prev_time.substring(prev_time.length - 2);
+function validateDateTime(){
 	
-	var minutes = {0:'00', 15:'15', 30:'30', 45:'45'}
-	var hours = {1:1, 2:2, 3:3, 4:4, 5:5, 6:6, 7:7, 8:8, 9:9, 101:10, 11:11, 12:12}
-	var mod = {'AM':'AM', 'PM':'PM'}
+	var date = $('#add_event #add_date').val().split('-');
 	
-	var day = {1:1, 2:2, 3:3}
-	var month = {1:1, 2:2, 3:3}
-	var year = {1:2011}
+	var time = $('#add_event #add_time').val().split(':');
+	var year = parseInt(date[0],10);
+	var month = parseInt(date[1],10);
+	var day = parseInt(date[2],10);
+	var hour = parseInt(time[0],10);
+	var minute = parseInt(time[1],10);
 	
-	SpinningWheel.addSlot(hours, 'center', prev_hour);
-	SpinningWheel.addSlot({separator:':'}, 'readonly shrink');
-	SpinningWheel.addSlot(minutes, 'center', prev_min);
-	SpinningWheel.addSlot(mod, 'center', prev_mod);
-	SpinningWheel.addSlot({separator:'on'}, 'readonly shrink');
-	SpinningWheel.addSlot(month, 'center')
-	SpinningWheel.addSlot({separator:'/'}, 'readonly shrink');
-	SpinningWheel.addSlot(day, 'center')
-	SpinningWheel.addSlot({separator:'/'}, 'readonly shrink');
-	SpinningWheel.addSlot(year, 'center')
-	SpinningWheel.setCancelAction(cancel);
-	SpinningWheel.setDoneAction(done);
+	
+	var today = new Date();
 
-	SpinningWheel.open();
+	if (year > today.getFullYear()){
+		return true;
+	} else if (year < today.getFullYear()){
+		return false;
+	}
+	
+	if (month > (today.getMonth() + 1)){
+		return true;
+	} else if (month < (today.getMonth() + 1)){
+		return false;
+	}
+	if (day > today.getDate()){
+		return true;
+	} else if (day < today.getDate()){
+		return false;
+	}
+	if (hour > today.getHours()){
+		return true;
+	} else if (hour < today.getHours()){
+		return false;
+	}
+	if (minute > today.getMinutes()){
+		return true;
+	} else if (minute < today.getMinutes()){
+		return false;
+	}
+	
+	return true;
 }
 
-function done() {
-	var results = SpinningWheel.getSelectedValues();
-	$('#time_chooser').val(results.values[0]+ ':' + results.values[2] + ' ' + results.values[3]);
-}
+	
+	
 
-function cancel() {
-}
 
-function fillForm(){
-	$('#datetime').val($('#date_chooser').val() + ' ' + $('#time_chooser').val());
-}
+	
 
-function fillChooser(){
-	var dt = $('#datetime').val();
-	var index_of_space = dt.indexOf(' ');
-	$('#date_chooser').val(dt.substring(0, index_of_space));
-	$('#time_chooser').val(dt.substring(index_of_space + 1));
-}
+
+
 	
 
 // -- needed for mobilesafari bug
 
 function loadFoodEvent(el) {
-  $('#event').html('Loading...');
+  $('#event_title').html('Loading...');
+  $('#event_body').html('');
   var pk = $(el).data('pk');
   $.getJSON('/api/event/' + pk, function(event) {
       $('#event').html($.mustache(EVENT, event));
@@ -108,8 +133,12 @@ function loadFoodEvent(el) {
 }
 
 function formatDT() {
+  var h = this.getHours() % 12;
+  if (h == 0){
+    h = 12;
+  }
   var datetime = {
-    hour: this.getHours() % 12, // TODO FIXME doesn't work for 12 PM
+    hour: h,
     minute: this.getMinutes(),
     ampm: this.getHours() < 12 ? 'AM': 'PM',
     day: this.getDate(),
@@ -122,9 +151,211 @@ function formatDT() {
   );
 }
 
+function formatD() {
+  var datetime = {
+    day: this.getDate(),
+    month: this.getMonth() + 1,
+    year: this.getFullYear()
+  }
+  return $.mustache(
+    "{{month}}/{{day}}/{{year}}",
+    datetime
+  );
+}
+
+function formatT(){
+		var h = this.getHours() % 12;
+		if (h == 0){
+			h = 12;
+		}
+		var m = this.getMinutes()
+		m = (15 * Math.floor(m/15))
+		if (m == 0){
+			m = "0" + m
+		}
+	  var datetime = {
+    hour: h,
+    minute: m,
+    ampm: this.getHours() < 12 ? 'AM': 'PM'
+  }
+  return $.mustache(
+    "{{hour}}:{{minute}} {{ampm}}",
+    datetime
+  );
+}
+
+function refreshList (el) {
+  $.location('update', function(me) {
+    $.getJSON('/api/event/list',function(day_list) {
+      day_list.days.forEach(function(day_events) {
+        day_events.details.forEach(function(ev) {
+          var loc = {
+            latitude: ev.lat,
+            longitude: ev.lng
+          };
+          ev.dist = $.location('distance', me, loc);
+          ev.dist = ev.dist.toFixed(2);
+        });
+      });
+      var storage = window.sessionStorage;
+      storage.setItem('day_list', JSON.stringify(day_list));
+      $('#listview').html($.mustache(LIST_VIEW, day_list));
+    });
+  });
+}
+
+// -- sortlist helpers
+
+function bin_dist (dist_bins, ev) {
+  var key = '0';
+  if (ev.dist < 100) {
+    key = '100';
+  } else if (ev.dist < 500) {
+    key = '500';
+  } else {
+    key = '501';
+  }
+  dist_bins[key] = dist_bins[key] || {};
+  dist_bins[key].details = dist_bins[key].details || [];
+  insert_sorted(dist_bins[key].details, function(a) { return a['dist']; }, ev);
+}
+
+function insert_sorted (arr, key, elem) {
+  var ii = 0;
+  while (arr[ii] && key(elem) > key(arr[ii])) {
+    ii++;
+  }
+  arr.splice(ii, 0, elem);
+}
+
+/**
+  --- Setup button handlers
+*/
+
+function click_sortList (el) {
+  var storage = window.sessionStorage;
+  try {
+    var day_list = JSON.parse(storage.getItem('day_list'));
+  } catch (err) {
+    console.log('day_list not loaded before sort attempted');
+    return;
+  }
+  var sortButton = $('#sortList')[0];
+  switch(sortButton.innerText) {
+    case 'By Time':
+      // now must sort by time
+      $('#listview').html($.mustache(LIST_VIEW, day_list));
+      // toggle the button
+      sortButton.innerText = 'By Distance';
+      break;
+    case 'By Distance':
+    default:
+      dist_bins = {}
+      // now must sort by distance
+      day_list.days.forEach(function(day_events) {
+        day_events.details.forEach(function(ev) {
+          bin_dist(dist_bins, ev);
+        });
+      });
+      dist_list = [];
+      $.each(dist_bins, function(bin, v) {
+        dist_bin = parseInt(bin, 10);
+        details = $.extend(v, {
+          sep: ((dist_bin % 10 == 1) ? '> ' : '< ') + bin + 'm',
+          dist_bin: dist_bin
+        })
+        insert_sorted(dist_list, function(a) { return a['dist_bin']; }, details);
+      });
+      $('#listview').html($.mustache(LIST_VIEW_DIST, { dists: dist_list }));
+      // toggle the button
+      sortButton.innerText = 'By Time';
+  }
+}
+
+function click_addEvent (el) {
+  $('#location').val('Loading current location');
+  // location
+  $.location('update', function(loc) {
+    $('#location_lat').val(loc.latitude);
+    $('#location_lng').val(loc.longitude);
+    $.location('revgeocode', loc, function(address) {
+      $('#location').val(address);
+    });
+  });
+  // time
+  var now = new Date();
+  //$('#add_time').val(formatT.call(now));
+  //$('#add_date').val(formatD.call(now));
+}
+
+function click_submit (el) {
+  // Disable the submit button
+  $('#add_event #add_submit').attr("disabled", "disabled");
+  // Clear and hide any error messages
+  $('#add_event .formError').html('');
+  // Set temaprary variables for the script
+  var isFocus=0;
+  var isError=0;
+  // Get the data from the form
+
+  var name= $('#add_event #add_name').val();
+  var location= $('#add_event #add_location').val();
+  var lat = $('#add_event #add_location_lat').val();
+  var longitude = $('#add_event #add_location_lng').val();
+  var date= $('#add_event #add_date').val();
+  var time= $('#add_event #add_time').val();
+  var description = $('#add_event #add_description').val();
+
+  if (name==''){
+    $('#add_event #errorName').html('This is a required field.');
+    $('#add_event #add_name').focus()
+    isFocus = 1;
+    isError = 1;
+  }
+
+  if (!validateDateTime()){
+    $('#add_event #errorDate').html('Error, this time has already passed');
+    if (isFocus == 0){
+      $('#add_event #add_date').focus();
+      isFocus = 1;
+    }
+    isError = 1;
+  }
+
+
+
+  // Terminate the script if an error is found
+  if(isError==1) {
+    // Activate the submit button
+    $('#add_event #add_submit').attr("disabled", "");
+    return false;
+  }
+
+  var dataString = 'name='+ name + '&time=' + time + ' ' + date + '&lat=' + lat + '&long=' + longitude + '&address=' + location + '&description=' + description;
+
+  $.ajax({
+    type: "POST",
+    url: "/api/event/add_event",
+    data: dataString,
+    success: function(msg) {
+      $('#add_event #add_description').val('')
+      $('#add_event #add_name').val('')
+      $('#add_event #add_submit').attr("disabled", "");
+      window.jQT.goTo("#list", "dissolve")
+    },
+    error: function(ob,errStr) {
+      console.log("nooooo! failure");
+      console.log(errStr);
+    }
+
+  });
+
+  return false;
+}
+
 $(document).ready(function() {
 
-  var jQT = new $.jQTouch({
+  window.jQT = new $.jQTouch({
     icon: '/static/imgs/icon.png',
     addGlossToIcon: false,
     startupScreen: 'jqt_startup.png',
@@ -144,117 +375,27 @@ $(document).ready(function() {
       ]
   });
 
-  /**
-    --- Setup button handlers
-  */
-
   // -- listview
-
-  $('#refreshList').click(function(e) {
-    $.getJSON('/api/event/list',function(event_list) {
-      $('#listview').html($.mustache(LIST_VIEW, event_list));
-    });
-  });
-
-
 
   $('#list').bind('pageAnimationEnd', function(e, info) {
     if (info.direction == 'in') {
-      $('#refreshList').click();
+      refreshList();
     }
   });
 
   // -- location_choice
 
-  $('#addEvent').click(function(e) {
-    $('#location').val('Loading current location');
-    $('#time').val('Loading current time');
-    // location
-    $.location('update', function(loc) {
-      $('#location_lat').val(loc.latitude);
-      $('#location_lng').val(loc.longitude);
-      $.location('revgeocode', loc, function(address) {
-        $('#location').val(address);
-      });
-    });
-    // time
-    var now = new Date();
-    $('#time').val(formatDT.call(now));
-  });
-  
-
-  $('#location').blur(function(e) {
-    var address = $('#location').val();
+  $('#add_location').blur(function(e) {
+    var address = $('#add_location').val();
     if (address) {
       $.location('geocode', address, function(loc) {
-        $('#location_lat').val(loc.latitude);
-        $('#location_lng').val(loc.longitude);
+        $('#add_location_lat').val(loc.latitude);
+        $('#add_location_lng').val(loc.longitude);
       });
     }
   });
 
   // -- init events
-  $('#refreshList').click();
-
-  /* SAMPLE
-  $.location('update', function(loc) {
-    console.log('latitude', loc.latitude, 'longitude', loc.longitude);
-    console.log("From now on, it's cached", $.location('get').latitude, $.location('get').longitude);
-  }); */
+  refreshList();
   
-  /*
-  // Show a swipe event on swipe test
-  $('#swipeme').swipe(function(evt, data) {
-    $(this).html('You swiped <strong>' + data.direction + '/' + data.deltaX +':' + data.deltaY + '</strong>!');
-    $(this).parent().after('<li>swiped!</li>')
-
-  });
-  $('#tapme').tap(function(){
-    $(this).parent().after('<li>tapped!</li>')
-  })
-  $('a[target="_blank"]').click(function() {
-    if (confirm('This link opens in a new window.')) {
-      return true;
-    } else {
-      return false;
-    }
-  });
-  // Page animation callback events
-  $('#pageevents').
-    bind('pageAnimationStart', function(e, info){ 
-      $(this).find('.info').append('Started animating ' + info.direction + '&hellip; ');
-    }).
-    bind('pageAnimationEnd', function(e, info){
-      $(this).find('.info').append(' finished animating ' + info.direction + '.<br /><br />');
-    });
-  // Page animations end with AJAX callback event, example 1 (load remote HTML only first time)
-  $('#callback').bind('pageAnimationEnd', function(e, info){
-    // Make sure the data hasn't already been loaded (we'll set 'loaded' to true a couple lines further down)
-    if (!$(this).data('loaded')) {
-      // Append a placeholder in case the remote HTML takes its sweet time making it back
-      // Then, overwrite the "Loading" placeholder text with the remote HTML
-      $(this).append($('<div>Loading</div>').load('ajax.html .info', function() {        
-        // Set the 'loaded' var to true so we know not to reload
-        // the HTML next time the #callback div animation ends
-        $(this).parent().data('loaded', true);
-      }));
-    }
-  });
-  // Orientation callback event
-  $('#jqt').bind('turn', function(e, data){
-    $('#orient').html('Orientation: ' + data.orientation);
-  });
-  $('#play_movie').bind('tap', function(){
-    $('#movie').get(0).play();
-    $(this).removeClass('active');
-  });
-  
-  $('#video').bind('pageAnimationStart', function(e, info){
-    $('#movie').css('display', 'none');
-  }).bind('pageAnimationEnd', function(e, info){
-    if (info.direction == 'in') {
-      $('#movie').css('display', 'block');
-    }
-  })
-  */
 });
