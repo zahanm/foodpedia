@@ -26,7 +26,7 @@
   var latitude, longitude, callback;
             
   function checkGeoLocation() {
-    return navigator.geolocation;
+    return navigator.geolocation && navigator.userAgent.indexOf('Simulator') < 0;
   }
 
   function updateLocation(fn) {
@@ -36,8 +36,11 @@
       navigator.geolocation.getCurrentPosition(savePosition);
       return true;
     } else {
-      console.log('Device not capable of geo-location.');
-      fn(false);
+      console.log('Device not capable of geo-location. Or it is the damn iPhone simulator.');
+      fn({
+        latitude: 37.4241059,
+        longitude: -122.166075
+      });
       return false;
     }                
   }
