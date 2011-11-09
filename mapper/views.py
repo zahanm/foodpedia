@@ -34,14 +34,15 @@ def list_events(request):
 		event_details['pk'] = event.pk
 		event_details['lat'] = event.where.latitude
 		event_details['lng'] = event.where.longitude
-	
+		event_details['date'] = event.when.date().strftime("%m/%d/%Y")
+
 		if event.when.date() not in segmented_events:
 			segmented_events[event.when.date()] = []
 		segmented_events[event.when.date()].append(event_details)
 	# the list is only needed because of the format required clientside
 
 	split_list = []
-	
+
 	for segment in segmented_events:
 		dateString = segment.strftime("%m/%d/%Y")
 		if segment == datetime.now().date():

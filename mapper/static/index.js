@@ -9,7 +9,7 @@ LIST_VIEW = '' +
                   ' data-lat="{{lat}}" data-lng="{{lng}}" ' +
                   ' ontouchstart="loadFoodEvent(this)" onclick="loadFoodEvent(this)">' +
                   '<span>{{name}}</span><br/>' +
-                  '<span class="secondary">{{dist}}</span>' +
+                  '<span class="secondary">{{dist}} m</span>' +
                   '</a>' +
                 '</li>' +
               '{{/details}}' +
@@ -20,6 +20,26 @@ LIST_VIEW = '' +
             '</ul>' +
             '';
 
+LIST_VIEW_DIST = '' +
+            '<ul class="edgetoedge">' +
+            '{{#dists}}' +
+              '<li class="sep">{{sep}}</li>' +
+              '{{#details}}' +
+                '<li class="slide arrow">' +
+                  '<a class="listEvent" href="#event" data-pk="{{pk}}" ' +
+                  ' data-lat="{{lat}}" data-lng="{{lng}}" ' +
+                  ' ontouchstart="loadFoodEvent(this)" onclick="loadFoodEvent(this)">' +
+                  '<span>{{name}}</span><br/>' +
+                  '<span class="secondary">{{date}}</span>' +
+                  '</a>' +
+                '</li>' +
+              '{{/details}}' +
+            '{{/dists}}' +
+            '{{^dists}}' +
+              '<li class="slide"><h3>No events. :(</h3></li>' +
+            '{{/dists}}' +
+            '</ul>' +
+            '';
 
 EVENT = '' +
         '{{#event}}' +
@@ -207,8 +227,6 @@ function formatT(){
 function refreshList (el) {
   $.location('update', function(me) {
     $.getJSON('/api/event/list',function(day_list) {
-      var storage = window.sessionStorage;
-      storage.setItem('day_list', JSON.stringify(day_list));
       day_list.days.forEach(function(day_events) {
         day_events.details.forEach(function(ev) {
           var loc = {
@@ -217,12 +235,37 @@ function refreshList (el) {
           };
           ev.dist = $.location('distance', me, loc);
           ev.dist = ev.dist.toFixed(2);
-          ev.dist += ' m';
         });
       });
+      var storage = window.sessionStorage;
+      storage.setItem('day_list', JSON.stringify(day_list));
       $('#listview').html($.mustache(LIST_VIEW, day_list));
     });
   });
+}
+
+// -- sortlist helpers
+
+function bin_dist (dist_bins, ev) {
+  var key = '0';
+  if (ev.dist < 100) {
+    key = '100';
+  } else if (ev.dist < 500) {
+    key = '500';
+  } else {
+    key = '501';
+  }
+  dist_bins[key] = dist_bins[key] || {};
+  dist_bins[key].details = dist_bins[key].details || [];
+  insert_sorted(dist_bins[key].details, function(a) { return a['dist']; }, ev);
+}
+
+function insert_sorted (arr, key, elem) {
+  var ii = 0;
+  while (arr[ii] && key(elem) > key(arr[ii])) {
+    ii++;
+  }
+  arr.splice(ii, 0, elem);
 }
 
 /**
@@ -232,7 +275,7 @@ function refreshList (el) {
 function click_sortList (el) {
   var storage = window.sessionStorage;
   try {
-    var day_list = storage.getItem('day_list');
+    var day_list = JSON.parse(storage.getItem('day_list'));
   } catch (err) {
     console.log('day_list not loaded before sort attempted');
     return;
@@ -247,9 +290,24 @@ function click_sortList (el) {
       break;
     case 'By Distance':
     default:
+      dist_bins = {}
       // now must sort by distance
-
-      // toggel the button
+      day_list.days.forEach(function(day_events) {
+        day_events.details.forEach(function(ev) {
+          bin_dist(dist_bins, ev);
+        });
+      });
+      dist_list = [];
+      $.each(dist_bins, function(bin, v) {
+        dist_bin = parseInt(bin, 10);
+        details = $.extend(v, {
+          sep: ((dist_bin % 10 == 1) ? '> ' : '< ') + bin + 'm',
+          dist_bin: dist_bin
+        })
+        insert_sorted(dist_list, function(a) { return a['dist_bin']; }, details);
+      });
+      $('#listview').html($.mustache(LIST_VIEW_DIST, { dists: dist_list }));
+      // toggle the button
       sortButton.innerText = 'By Time';
   }
 }
