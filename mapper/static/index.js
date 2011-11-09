@@ -53,7 +53,7 @@ EVENT = '' +
             '<li> {{description}} </li>' +
             '<li class="sep">Where</li>' +
             '{{#where}}' +
-            '<li class="forward"><a href="http://maps.google.com/maps?q={{address}}@{{latitude}},{{longitude}}"> {{address}}</a> </li>' +
+            '<li class="forward"><a href="http://maps.google.com/maps?q={{address}}"> {{address}}</a> </li>' +
             '{{/where}}' +
             '<li class="sep">When</li>' +
             '<li>{{when}}</li>' +
@@ -66,91 +66,51 @@ EVENT = '' +
         '{{/event}}' +
           '';
           
-          
-          
-function selectDate(){
-	console.log("whatever");
-	var prev_time = $("#add_time").val();
-	var index_of_colon = prev_time.indexOf(':');
-	var index_of_space = prev_time.indexOf(' ');
 	
-	var prev_hour = prev_time.substring(0, index_of_colon);
-	var prev_min = prev_time.substring(index_of_colon + 1, index_of_space);
-	var prev_mod = prev_time.substring(prev_time.length - 2);
+function validateDateTime(){
 	
-	var minutes = {0:'00', 15:'15', 30:'30', 45:'45'}
-	var hours = {1:1, 2:2, 3:3, 4:4, 5:5, 6:6, 7:7, 8:8, 9:9, 10:10, 11:11, 12:12}
-	var mod = {'AM':'AM', 'PM':'PM'}
+	var date = $('#add_event #add_date').val().split('-');
 	
-	SpinningWheel.addSlot(hours, 'center', prev_hour);
-	SpinningWheel.addSlot({separator:':'}, 'readonly shrink');
-	SpinningWheel.addSlot(minutes, 'center', prev_min);
-	SpinningWheel.addSlot(mod, 'center', prev_mod);
-
-	SpinningWheel.setCancelAction(cancel);
-	SpinningWheel.setDoneAction(done);
-
-	SpinningWheel.open();
-}
-
-function done() {
-	var results = SpinningWheel.getSelectedValues();
-	$('#time').val(results.values[0]+ ':' + results.values[2] + ' ' + results.values[3]);
-}
-
-function cancel() {
-}
+	var time = $('#add_event #add_time').val().split(':');
+	var year = parseInt(date[0],10);
+	var month = parseInt(date[1],10);
+	var day = parseInt(date[2],10);
+	var hour = parseInt(time[0],10);
+	var minute = parseInt(time[1],10);
 	
-function validateDate(){
-	var date = $('#add_event #add_date').val().split('/');
-	if (date.length > 3){
-		console.log("day too long" + date.length);
-		return false;
-	}
-	var month = parseInt(date[0]);
+	
+	var today = new Date();
 
-	if (isNaN(month) || month < 1 || month > 12){
-		console.log("month is " + month);
-		return false;
-	}
-	var day = parseInt(date[1]);
-	if (isNaN(day) || day < 1 || day > 31){
-		console.log("day is " + day);
+	if (year > today.getFullYear()){
+		return true;
+	} else if (year < today.getFullYear()){
 		return false;
 	}
 	
-	
-	var year = parseInt(date[2]);
-	if (isNaN(year) || year < new Date().year){
-		console.log("year is " + year);
+	if (month > (today.getMonth() + 1)){
+		return true;
+	} else if (month < (today.getMonth() + 1)){
+		return false;
+	}
+	if (day > today.getDate()){
+		return true;
+	} else if (day < today.getDate()){
+		return false;
+	}
+	if (hour > today.getHours()){
+		return true;
+	} else if (hour < today.getHours()){
+		return false;
+	}
+	if (minute > today.getMinutes()){
+		return true;
+	} else if (minute < today.getMinutes()){
 		return false;
 	}
 	
 	return true;
 }
 
-function validateTime(){
-	var time = $('#add_event #add_time').val();
-	var index_of_colon = time.indexOf(':');
-	var index_of_space = time.indexOf(' ');
-	
-	var hour = parseInt(time.substring(0, index_of_colon));
-	if (isNaN(hour) || hour < 1 || hour > 12){
-		console.log("hour is " + hour);
-		return false;
-	}
-	var minute = parseInt(time.substring(index_of_colon + 1, index_of_space));
-	if (isNaN(minute) || minute < 0 || minute > 59){
-		console.log("minute is " + minute);
-		return false;
-	}
-	var ampm = time.substring(index_of_space + 1).toUpperCase();
-	if (ampm == '' || (ampm != 'AM' && ampm != 'PM')){
-		console.log("ampm is '" + ampm + "'");
-		return false;
-	}
-	return true;
-}
 	
 	
 
@@ -324,8 +284,8 @@ function click_addEvent (el) {
   });
   // time
   var now = new Date();
-  $('#add_time').val(formatT.call(now));
-  $('#add_date').val(formatD.call(now));
+  //$('#add_time').val(formatT.call(now));
+  //$('#add_date').val(formatD.call(now));
 }
 
 function click_submit (el) {
@@ -353,8 +313,8 @@ function click_submit (el) {
     isError = 1;
   }
 
-  if (!validateDate()){
-    $('#add_event #errorDate').html('Incorrect Format. Please use: MM/DD/YYYY');
+  if (!validateDateTime()){
+    $('#add_event #errorDate').html('Error, this time has already passed');
     if (isFocus == 0){
       $('#add_event #add_date').focus();
       isFocus = 1;
@@ -362,23 +322,6 @@ function click_submit (el) {
     isError = 1;
   }
 
-  if (!validateTime()){
-  $('#add_event #errorTime').html('Incorrect Format. Please use: HH:MM AM/PM');
-    if (isFocus == 0){
-      $('#add_event #add_time').focus()
-      isFocus = 1;
-    }
-    isError = 1;
-  }
-
-  if (description==''){
-  $('#add_event #errorDescription').html('This is a required field.');
-    if (isFocus == 0){
-      $('#add_event #add_description').focus()
-      isFocus = 1;
-    }
-    isError = 1;
-  }
 
 
   // Terminate the script if an error is found
