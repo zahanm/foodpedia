@@ -133,20 +133,15 @@ function loadFoodEvent(el) {
 }
 
 function formatDT() {
-  var h = this.getHours() % 12;
-  if (h == 0){
-    h = 12;
-  }
   var datetime = {
-    hour: h,
+    hour: this.getHours(),
     minute: this.getMinutes(),
-    ampm: this.getHours() < 12 ? 'AM': 'PM',
     day: this.getDate(),
     month: this.getMonth() + 1,
     year: this.getFullYear()
   }
   return $.mustache(
-    "{{hour}}:{{minute}} {{ampm}} {{month}}/{{day}}/{{year}}",
+    "{{hour}}:{{minute}} {{year}}-{{month}}-{{day}}",
     datetime
   );
 }
@@ -158,16 +153,13 @@ function formatD() {
     year: this.getFullYear()
   }
   return $.mustache(
-    "{{month}}/{{day}}/{{year}}",
+    "{{year}}-{{month}}-{{day}}",
     datetime
   );
 }
 
 function formatT(){
-		var h = this.getHours() % 12;
-		if (h == 0){
-			h = 12;
-		}
+		var h = this.getHours();
 		var m = this.getMinutes()
 		m = (15 * Math.floor(m/15))
 		if (m == 0){
@@ -175,11 +167,10 @@ function formatT(){
 		}
 	  var datetime = {
     hour: h,
-    minute: m,
-    ampm: this.getHours() < 12 ? 'AM': 'PM'
+    minute: m
   }
   return $.mustache(
-    "{{hour}}:{{minute}} {{ampm}}",
+    "{{hour}}:{{minute}}",
     datetime
   );
 }
@@ -338,10 +329,10 @@ function click_submit (el) {
     url: "/api/event/add_event",
     data: dataString,
     success: function(msg) {
-      $('#add_event #add_description').val('')
-      $('#add_event #add_name').val('')
+      $('#add_event #add_description').val('');
+      $('#add_event #add_name').val('');
       $('#add_event #add_submit').attr("disabled", "");
-      window.jQT.goTo("#list", "dissolve")
+      window.jQT.goTo("#list", "dissolve");
     },
     error: function(ob,errStr) {
       console.log("nooooo! failure");
