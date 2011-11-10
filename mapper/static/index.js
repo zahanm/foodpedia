@@ -160,6 +160,7 @@ function formatD() {
 
 function formatT(){
 		var h = this.getHours();
+    h = (h < 10) ? '0' + h : h;
 		var m = this.getMinutes()
 		m = (15 * Math.floor(m/15))
 		if (m == 0){
