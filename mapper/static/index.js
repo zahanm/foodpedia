@@ -273,19 +273,19 @@ function click_sortList (el) {
 }
 
 function click_addEvent (el) {
-  $('#location').val('Loading current location');
+  $('#add_location').val('Loading current location');
   // location
   $.location('update', function(loc) {
     $('#location_lat').val(loc.latitude);
     $('#location_lng').val(loc.longitude);
     $.location('revgeocode', loc, function(address) {
-      $('#location').val(address);
+      $('#add_location').val(address);
     });
   });
   // time
   var now = new Date();
-  //$('#add_time').val(formatT.call(now));
-  //$('#add_date').val(formatD.call(now));
+  $('#add_time').val(formatT.call(now));
+  $('#add_date').val(formatD.call(now));
 }
 
 function click_submit (el) {
