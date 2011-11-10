@@ -158,15 +158,17 @@ function formatD() {
   );
 }
 
+function padN (number, padding) {
+  var s = number.toString();
+  while (s.length < padding) { s = '0' + s; }
+  return s;
+}
+
 function formatT(){
-		var h = this.getHours();
-    h = (h < 10) ? '0' + h : h;
+		var h = padN(this.getHours(), 2);
 		var m = this.getMinutes()
-		m = (15 * Math.floor(m/15))
-		if (m == 0){
-			m = "0" + m
-		}
-	  var datetime = {
+		m = padN(15 * Math.floor(m/15), 2);
+		var datetime = {
     hour: h,
     minute: m
   }
