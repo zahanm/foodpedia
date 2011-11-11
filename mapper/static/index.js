@@ -197,12 +197,53 @@ function refreshList (el, time_window) {
       });
       var storage = window.sessionStorage;
       storage.setItem('day_list', JSON.stringify(day_list));
-      $('#listview').html($.mustache(LIST_VIEW, day_list));
+      resort_list();
     });
   });
 }
 
 // -- sortlist helpers
+
+function resort_list () {
+  var storage = window.sessionStorage;
+  try {
+    var day_list = JSON.parse(storage.getItem('day_list'));
+  } catch (err) {
+    console.log('day_list not loaded before sort attempted');
+    return;
+  }
+  var sort_type = $('#listview').data('sorttype')
+    , sort_button = $('#sortList')[0];
+  switch(sort_type) {
+    case 'time':
+      // now must sort by time
+      $('#listview').html($.mustache(LIST_VIEW, day_list));
+      // set the button
+      sort_button.innerText = 'Sort by distance';
+      break;
+    case 'distance':
+    default:
+      dist_bins = {}
+      // now must sort by distance
+      day_list.days.forEach(function(day_events) {
+        day_events.details.forEach(function(ev) {
+          bin_dist(dist_bins, ev);
+        });
+      });
+      dist_list = [];
+      $.each(dist_bins, function(bin, v) {
+        dist_bin = parseInt(bin, 10);
+        details = $.extend(v, {
+          sep: ((dist_bin % 10 == 1) ? '> ' : '< ') + bin + 'm',
+          dist_bin: dist_bin
+        })
+        insert_sorted(dist_list, function(a) { return a['dist_bin']; }, details);
+      });
+      $('#listview').html($.mustache(LIST_VIEW_DIST, { dists: dist_list }));
+      // set the button
+      sort_button.innerText = 'Sort by time';
+  }
+}
 
 function bin_dist (dist_bins, ev) {
   var key = '0';
@@ -231,43 +272,16 @@ function insert_sorted (arr, key, elem) {
 */
 
 function click_sortList (el) {
-  var storage = window.sessionStorage;
-  try {
-    var day_list = JSON.parse(storage.getItem('day_list'));
-  } catch (err) {
-    console.log('day_list not loaded before sort attempted');
-    return;
-  }
-  var sortButton = $('#sortList')[0];
-  switch(sortButton.innerText) {
-    case 'Sort by time':
-      // now must sort by time
-      $('#listview').html($.mustache(LIST_VIEW, day_list));
-      // toggle the button
-      sortButton.innerText = 'Sort by distance';
+  var cur_sort_type = $('#listview').data('sorttype');
+  switch(cur_sort_type) {
+    case 'distance':
+      $('#listview').data('sorttype', 'time');
       break;
-    case 'Sort by distance':
+    case 'time':
     default:
-      dist_bins = {}
-      // now must sort by distance
-      day_list.days.forEach(function(day_events) {
-        day_events.details.forEach(function(ev) {
-          bin_dist(dist_bins, ev);
-        });
-      });
-      dist_list = [];
-      $.each(dist_bins, function(bin, v) {
-        dist_bin = parseInt(bin, 10);
-        details = $.extend(v, {
-          sep: ((dist_bin % 10 == 1) ? '> ' : '< ') + bin + 'm',
-          dist_bin: dist_bin
-        })
-        insert_sorted(dist_list, function(a) { return a['dist_bin']; }, details);
-      });
-      $('#listview').html($.mustache(LIST_VIEW_DIST, { dists: dist_list }));
-      // toggle the button
-      sortButton.innerText = 'Sort by time';
+      $('#listview').data('sorttype', 'distance');
   }
+  resort_list();
 }
 
 function click_timeWindow (el) {
