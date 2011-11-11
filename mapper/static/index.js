@@ -285,6 +285,7 @@ function click_timeWindow (el) {
     default:
       until = false;
   }
+  refreshList(el, until.toString());
 }
 
 function click_addEvent (el) {

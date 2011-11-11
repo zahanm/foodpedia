@@ -12,22 +12,10 @@ import mapper.utils as utils
 def index(request):
   return render(request, 'index.html')
 
-def example(request):
-  return render(request, 'scroll/index.html')
-
-
-
-
-
-
-
-
-
-
 def list_events(request):
 	until = None
 	try:
-		until = datetime.strptime("", request.GET['end'])
+		until = datetime.strptime("%a %b %d %Y %H:%M:%S", request.GET['until'])
 	except:
 		pass
 	today = datetime.today()
@@ -65,9 +53,6 @@ def list_events(request):
 			'd': segment.strftime("%m/%d/%Y"),
 			'details': segmented_events[segment]
 		})
-		
-		
-		
 		
 	split_list.sort(key=lambda x: x['d'])
 	response = HttpResponse(content_type='application/json')
