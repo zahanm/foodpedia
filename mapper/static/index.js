@@ -192,7 +192,7 @@ function until_time () {
       until = new Date(until.getTime() + 7 * 24 * 60 * 60 * 1000);
       break;
     default:
-      until = false;
+      until = '';
   }
   return until.toString();
 }
