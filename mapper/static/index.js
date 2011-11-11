@@ -133,20 +133,15 @@ function loadFoodEvent(el) {
 }
 
 function formatDT() {
-  var h = this.getHours() % 12;
-  if (h == 0){
-    h = 12;
-  }
   var datetime = {
-    hour: h,
+    hour: this.getHours(),
     minute: this.getMinutes(),
-    ampm: this.getHours() < 12 ? 'AM': 'PM',
     day: this.getDate(),
     month: this.getMonth() + 1,
     year: this.getFullYear()
   }
   return $.mustache(
-    "{{hour}}:{{minute}} {{ampm}} {{month}}/{{day}}/{{year}}",
+    "{{hour}}:{{minute}} {{year}}-{{month}}-{{day}}",
     datetime
   );
 }
@@ -158,35 +153,38 @@ function formatD() {
     year: this.getFullYear()
   }
   return $.mustache(
-    "{{month}}/{{day}}/{{year}}",
+    "{{year}}-{{month}}-{{day}}",
     datetime
   );
+}
+
+function padN (number, padding) {
+  var s = number.toString();
+  while (s.length < padding) { s = '0' + s; }
+  return s;
 }
 
 function formatT(){
-		var h = this.getHours() % 12;
-		if (h == 0){
-			h = 12;
-		}
+		var h = padN(this.getHours(), 2);
 		var m = this.getMinutes()
-		m = (15 * Math.floor(m/15))
-		if (m == 0){
-			m = "0" + m
-		}
-	  var datetime = {
+		m = padN(15 * Math.floor(m/15), 2);
+		var datetime = {
     hour: h,
-    minute: m,
-    ampm: this.getHours() < 12 ? 'AM': 'PM'
+    minute: m
   }
   return $.mustache(
-    "{{hour}}:{{minute}} {{ampm}}",
+    "{{hour}}:{{minute}}",
     datetime
   );
 }
 
-function refreshList (el) {
+function refreshList (el, time_window) {
   $.location('update', function(me) {
-    $.getJSON('/api/event/list',function(day_list) {
+    var options = {};
+    if (time_window) {
+      options['until'] = time_window;
+    }
+    $.getJSON('/api/event/list', options, function(day_list) {
       day_list.days.forEach(function(day_events) {
         day_events.details.forEach(function(ev) {
           var loc = {
@@ -272,20 +270,37 @@ function click_sortList (el) {
   }
 }
 
+function click_timeWindow (el) {
+  var until = new Date();
+  switch(el) {
+    case 'hour':
+      until = new Date(until.getTime() + 60 * 60 * 1000);
+      break;
+    case 'day':
+      until = new Date(until.getTime() + 24 * 60 * 60 * 1000);
+      break;
+    case 'week':
+      until = new Date(until.getTime() + 7 * 24 * 60 * 60 * 1000);
+      break;
+    default:
+      until = false;
+  }
+}
+
 function click_addEvent (el) {
-  $('#location').val('Loading current location');
+  $('#add_location').val('Loading current location');
   // location
   $.location('update', function(loc) {
     $('#location_lat').val(loc.latitude);
     $('#location_lng').val(loc.longitude);
     $.location('revgeocode', loc, function(address) {
-      $('#location').val(address);
+      $('#add_location').val(address);
     });
   });
   // time
   var now = new Date();
-  //$('#add_time').val(formatT.call(now));
-  //$('#add_date').val(formatD.call(now));
+  $('#add_time').val(formatT.call(now));
+  $('#add_date').val(formatD.call(now));
 }
 
 function click_submit (el) {
@@ -338,10 +353,10 @@ function click_submit (el) {
     url: "/api/event/add_event",
     data: dataString,
     success: function(msg) {
-      $('#add_event #add_description').val('')
-      $('#add_event #add_name').val('')
+      $('#add_event #add_description').val('');
+      $('#add_event #add_name').val('');
       $('#add_event #add_submit').attr("disabled", "");
-      window.jQT.goTo("#list", "dissolve")
+      window.jQT.goTo("#list", "dissolve");
     },
     error: function(ob,errStr) {
       console.log("nooooo! failure");
