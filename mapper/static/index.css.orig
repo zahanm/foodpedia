@@ -1,0 +1,14 @@
+.formError {
+	color:red;
+}
+
+.formEntry {
+<<<<<<< HEAD
+=======
+  color:white;
+>>>>>>> 1f535e4a9361ac8493bcf871a10867cb176eb019
+}
+
+.secondary {
+  color: gray;
+}
