@@ -7,58 +7,62 @@ from django.template import Context, loader
 from django.shortcuts import render
 
 from mapper.models import Event, Location
-import mapper.utils as utils
+from mapper.utils import FixedOffset
 
 def index(request):
   return render(request, 'index.html')
 
+PSTOFFSET = -8
+
 def list_events(request):
 
-	until = None
-	try:
-		until = datetime.strptime("%a %b %d %Y %H:%M:%S", request.GET['until'])
-	except:
-		print("Not able to parse 'until' {0}".format(request.GET['until']))
-	
-	today = datetime.now()
-	today += timedelta(hours = -1)
-	
-	events = Event.objects.all().order_by('when').filter(when__gt=today)
-	
-	if not until == None:
-		events.filter(when__lt=until)
-	
-	segmented_events = {}
-	for event in events:
-		event_details = {}
-		event_details['name'] = event.name
-		event_details['pk'] = event.pk
-		event_details['lat'] = event.where.latitude
-		event_details['lng'] = event.where.longitude
-	
-		if event.when.date() not in segmented_events:
-			segmented_events[event.when.date()] = []
-		segmented_events[event.when.date()].append(event_details)
-	# the list is only needed because of the format required clientside
+  until = None
+  try:
+    until = datetime.strptime("%a %b %d %Y %H:%M:%S", request.GET['until'])
+    until = until.replace(tzinfo=FixedOffset(PSTOFFSET, 'PST'))
+  except:
+    if request.GET['until']:
+      print("Not able to parse 'until' {0}".format(request.GET['until']))
 
-	split_list = []
-	
-	for segment in segmented_events:
+  today = datetime.now(tz=FixedOffset(PSTOFFSET, 'PST'))
+  today += timedelta(hours = -1)
 
-		dateString = segment.strftime("%m/%d/%Y")
-		if segment == datetime.now().date():
-			dateString = "Today"
+  events = Event.objects.all().order_by('when').filter(when__gt=today)
 
-		split_list.append({
-			'date': dateString,
-			'd': segment.strftime("%m/%d/%Y"),
-			'details': segmented_events[segment]
-		})
+  if not until == None:
+    events.filter(when__lt=until)
 
-	split_list.sort(key=lambda x: x['d'])
-	response = HttpResponse(content_type='application/json')
-	json.dump({ 'days': split_list }, response)
-	return response
+  segmented_events = {}
+  for event in events:
+    event_details = {}
+    event_details['name'] = event.name
+    event_details['pk'] = event.pk
+    event_details['lat'] = event.where.latitude
+    event_details['lng'] = event.where.longitude
+
+    if event.when.date() not in segmented_events:
+      segmented_events[event.when.date()] = []
+    segmented_events[event.when.date()].append(event_details)
+  # the list is only needed because of the format required clientside
+
+  split_list = []
+
+  for segment in segmented_events:
+
+    dateString = segment.strftime("%m/%d/%Y")
+    if segment == datetime.now(tz=FixedOffset(PSTOFFSET, 'PST')).date():
+      dateString = "Today"
+
+    split_list.append({
+      'date': dateString,
+      'd': segment.strftime("%m/%d/%Y"),
+      'details': segmented_events[segment]
+    })
+
+  split_list.sort(key=lambda x: x['d'])
+  response = HttpResponse(content_type='application/json')
+  json.dump({ 'days': split_list }, response)
+  return response
 
 def event_details(request):
   return render_to_response('eventdetails.html', {})
@@ -67,6 +71,7 @@ def add_event(request):
   to_add = Event()
   to_add.name = request.POST['name']
   to_add.when = datetime.strptime(request.POST['time'],"%H:%M %Y-%m-%d")
+  to_add.when = to_add.when.replace(tzinfo=FixedOffset(PSTOFFSET, 'PST'))
 
   where = Location()
 
