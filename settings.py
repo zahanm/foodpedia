@@ -10,6 +10,12 @@ TEMPLATE_DEBUG = DEBUG
 
 cur_dir = os.path.dirname(os.path.abspath(__file__))
 
+TIME_ZONE = 'America/Los_Angeles'
+
+LANGUAGE_CODE = 'en-us'
+
+SITE_ID = 1
+
 # Activate django-dbindexer for the default database
 DATABASES['native'] = DATABASES['default']
 DATABASES['default'] = {'ENGINE': 'dbindexer', 'TARGET': 'native'}

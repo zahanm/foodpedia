@@ -178,9 +178,13 @@ function formatT(){
   );
 }
 
-function refreshList (el) {
+function refreshList (el, time_window) {
   $.location('update', function(me) {
-    $.getJSON('/api/event/list',function(day_list) {
+    var options = {};
+    if (time_window) {
+      options['until'] = time_window;
+    }
+    $.getJSON('/api/event/list', options, function(day_list) {
       day_list.days.forEach(function(day_events) {
         day_events.details.forEach(function(ev) {
           var loc = {
@@ -263,6 +267,23 @@ function click_sortList (el) {
       $('#listview').html($.mustache(LIST_VIEW_DIST, { dists: dist_list }));
       // toggle the button
       sortButton.innerText = 'By Time';
+  }
+}
+
+function click_timeWindow (el) {
+  var until = new Date();
+  switch(el) {
+    case 'hour':
+      until = new Date(until.getTime() + 60 * 60 * 1000);
+      break;
+    case 'day':
+      until = new Date(until.getTime() + 24 * 60 * 60 * 1000);
+      break;
+    case 'week':
+      until = new Date(until.getTime() + 7 * 24 * 60 * 60 * 1000);
+      break;
+    default:
+      until = false;
   }
 }
 
