@@ -80,7 +80,7 @@ def event_details(request):
 def add_event(request):
   to_add = Event()
   to_add.name = request.POST['name']
-  to_add.when = datetime.strptime(request.POST['time'],"%I:%M %p %m/%d/%Y")
+  to_add.when = datetime.strptime(request.POST['time'],"%H:%M %Y-%m-%d")
 
   where = Location()
 
