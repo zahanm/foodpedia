@@ -25,14 +25,16 @@ def example(request):
 
 
 def list_events(request):
+
 	until = None
 	try:
 		until = datetime.strptime("", request.GET['end'])
 	except:
 		pass
-	today = datetime.today()
-	today += timedelta(hours = -1)
+		
 	
+	today = datetime.now()
+	today += timedelta(hours = -1)
 	
 	events = Event.objects.all().order_by('when').filter(when__gt=today)
 	
@@ -70,8 +72,8 @@ def list_events(request):
 		
 		
 	split_list.sort(key=lambda x: x['d'])
-	response = HttpResponse(content_type='application/json')
-	json.dump({ 'days': split_list }, response)
+	response = HttpResponse(content= str(today), content_type='application/json')
+	#json.dump({ 'days': split_list }, response)
 	return response
 
 def event_details(request):
