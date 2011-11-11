@@ -240,13 +240,13 @@ function click_sortList (el) {
   }
   var sortButton = $('#sortList')[0];
   switch(sortButton.innerText) {
-    case 'By Time':
+    case 'Sort by time':
       // now must sort by time
       $('#listview').html($.mustache(LIST_VIEW, day_list));
       // toggle the button
-      sortButton.innerText = 'By Distance';
+      sortButton.innerText = 'Sort by distance';
       break;
-    case 'By Distance':
+    case 'Sort by distance':
     default:
       dist_bins = {}
       // now must sort by distance
@@ -266,7 +266,7 @@ function click_sortList (el) {
       });
       $('#listview').html($.mustache(LIST_VIEW_DIST, { dists: dist_list }));
       // toggle the button
-      sortButton.innerText = 'By Time';
+      sortButton.innerText = 'Sort by time';
   }
 }
 

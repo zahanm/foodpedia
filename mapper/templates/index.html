@@ -56,7 +56,7 @@
         <div id="jqt">
             <div id="list" class="current">
                 <div class="toolbar">
-                    <a class="button leftButton" id="sortList" href="#sort" ontouchstart="click_sortList(this)" >By Distance</a>
+                    <a class="button leftButton flip" href="#settings">Settings</a>
                     <h1>Foodpedia &alpha;</h1>
                     <a class="button" id="addEvent" href="#add_event" ontouchstart="click_addEvent(this)" >Add</a>
                 </div>
@@ -67,14 +67,20 @@
                 </div>
             </div>
 		
-			<div id="sort">
-				<a style="margin:0 10px; color:rgba(0,0,0,.9) href="#" class="whiteButton sortby"> Sort By Distance </a>
-				<p> Only Show Events Happening:  </p>
+			<div id="settings">
+                <div class="toolbar">
+                    <a class="back" href="#" >Back</a>
+                    <h1 >List Settings</h1>
+                </div>
+                <p>
+                    <a href="#" class="whiteButton sortby" id="sortList" ontouchstart="click_sortList(this)">Sort by distance</a>
+                </p>
+				<h4>Only Show Events Happening:</h4>
 				<ul>
-					<li> In The Next Hour... </li>
-					<li> Today </li>
-					<li> This Week </li> 
-					<li> All </li>
+					<li class="selected">In The Next Hour...</li>
+					<li>Today</li>
+					<li>This Week</li> 
+					<li>All</li>
 				</ul>
 			</div>
             

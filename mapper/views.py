@@ -34,7 +34,6 @@ def list_events(request):
   events = Event.objects.all().filter(when__gt=today)
 
   if until:
-    sys.stderr.write("'until' is real! {0}\n".format(until))
     events = events.filter(when__lte=until)
 
   segmented_events = {}
