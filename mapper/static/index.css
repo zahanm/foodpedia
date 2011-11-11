@@ -25,5 +25,6 @@ div#jqt #settings ul li {
 }
 
 div#jqt #settings .selected {
-	
+	background: black;
+	border: white solid 1px;
 }

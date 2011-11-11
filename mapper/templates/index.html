@@ -60,7 +60,7 @@
                     <h1>Foodpedia &alpha;</h1>
                     <a class="button" id="addEvent" href="#add_event" ontouchstart="click_addEvent(this)" >Add</a>
                 </div>
-                <div id="listview" class="scroll" data-sorttype="time">
+                <div id="listview" class="scroll" data-sorttype="time" data-timewindow="all" >
                     <ul>
                         <li>Loading..</li>
                     </ul>
@@ -77,10 +77,10 @@
                 </p>
 				<h4>Only Show Events Happening:</h4>
 				<ul class="rounded">
-					<li class="selected">In the next hour</li>
-					<li>Within a day</li>
-					<li>Within a week</li>
-					<li>All</li>
+					<li data-timewindow="hour" ontouchstart="click_timeWindow(this)">Within an hour</li>
+					<li data-timewindow="day" ontouchstart="click_timeWindow(this)" >Within a day</li>
+					<li data-timewindow="week" ontouchstart="click_timeWindow(this)" >Within a week</li>
+					<li data-timewindow="all" ontouchstart="click_timeWindow(this)" class="selected" >All</li>
 				</ul>
 			</div>
             

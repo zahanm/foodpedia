@@ -178,9 +178,29 @@ function formatT(){
   );
 }
 
-function refreshList (el, time_window) {
+function until_time () {
+  var until = new Date();
+  var time_selector = $('#listview').data('timewindow');
+  switch(time_selector) {
+    case 'hour':
+      until = new Date(until.getTime() + 60 * 60 * 1000);
+      break;
+    case 'day':
+      until = new Date(until.getTime() + 24 * 60 * 60 * 1000);
+      break;
+    case 'week':
+      until = new Date(until.getTime() + 7 * 24 * 60 * 60 * 1000);
+      break;
+    default:
+      until = false;
+  }
+  return until.toString();
+}
+
+function refreshList (el) {
   $.location('update', function(me) {
     var options = {};
+    var time_window = until_time();
     if (time_window) {
       options['until'] = time_window;
     }
@@ -285,21 +305,10 @@ function click_sortList (el) {
 }
 
 function click_timeWindow (el) {
-  var until = new Date();
-  switch(el) {
-    case 'hour':
-      until = new Date(until.getTime() + 60 * 60 * 1000);
-      break;
-    case 'day':
-      until = new Date(until.getTime() + 24 * 60 * 60 * 1000);
-      break;
-    case 'week':
-      until = new Date(until.getTime() + 7 * 24 * 60 * 60 * 1000);
-      break;
-    default:
-      until = false;
-  }
-  refreshList(el, until.toString());
+  var time_window = $(el).data('timewindow');
+  $('#listview').data('timewindow', time_window);
+  $(el).parent().children('.selected').removeClass('selected');
+  $(el).addClass('selected');
 }
 
 function click_addEvent (el) {
