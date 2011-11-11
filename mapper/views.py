@@ -13,14 +13,15 @@ def index(request):
   return render(request, 'index.html')
 
 def list_events(request):
+
 	until = None
 	try:
 		until = datetime.strptime("%a %b %d %Y %H:%M:%S", request.GET['until'])
 	except:
-		pass
-	today = datetime.today()
-	today += timedelta(hours = -1)
+		print("Not able to parse 'until' {0}".format(request.GET['until']))
 	
+	today = datetime.now()
+	today += timedelta(hours = -1)
 	
 	events = Event.objects.all().order_by('when').filter(when__gt=today)
 	
@@ -53,7 +54,7 @@ def list_events(request):
 			'd': segment.strftime("%m/%d/%Y"),
 			'details': segmented_events[segment]
 		})
-		
+
 	split_list.sort(key=lambda x: x['d'])
 	response = HttpResponse(content_type='application/json')
 	json.dump({ 'days': split_list }, response)
@@ -65,7 +66,7 @@ def event_details(request):
 def add_event(request):
   to_add = Event()
   to_add.name = request.POST['name']
-  to_add.when = datetime.strptime(request.POST['time'],"%I:%M %p %m/%d/%Y")
+  to_add.when = datetime.strptime(request.POST['time'],"%H:%M %Y-%m-%d")
 
   where = Location()
 

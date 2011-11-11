@@ -56,7 +56,7 @@
         <div id="jqt">
             <div id="list" class="current">
                 <div class="toolbar">
-                    <a class="button leftButton" id="sortList" href="#" ontouchstart="click_sortList(this)" >By Distance</a>
+                    <a class="button leftButton" id="sortList" href="#sort" ontouchstart="click_sortList(this)" >By Distance</a>
                     <h1>Foodpedia &alpha;</h1>
                     <a class="button" id="addEvent" href="#add_event" ontouchstart="click_addEvent(this)" >Add</a>
                 </div>
@@ -66,6 +66,17 @@
                     </ul>
                 </div>
             </div>
+		
+			<div id="sort">
+				<a style="margin:0 10px; color:rgba(0,0,0,.9) href="#" class="whiteButton sortby"> Sort By Distance </a>
+				<p> Only Show Events Happening:  </p>
+				<ul>
+					<li> In The Next Hour... </li>
+					<li> Today </li>
+					<li> This Week </li> 
+					<li> All </li>
+				</ul>
+			</div>
             
             <div id="event">
                 <div class="toolbar">
@@ -96,21 +107,18 @@
                             <input type="hidden" name="location_lng" id="add_location_lng" />
                         </li>
                         <li>
-                        	<input class="formEntry" type="time" id="add_time" name="time"  />
+							<input class="formEntry" value="Event Time" type="time" name="time" id="add_time"/>
                         	<span id="errorTime" class="formError"></span>
                         </li>
                         <li>
-                        	<input class="formEntry" type="date" id="add_date" />
+                        	<input class="formEntry" value="Event Date" type="date" id="add_date" />
                         	<span id="errorDate" class="formError"></span>
                         </li>
                         <li>
                         	<textarea class="formEntry" placeholder="Description" id="add_description" ></textarea>
                         	<span id="errorDescription" class="formError"></span>
                         </li>
-                        <li><input type="submit" id="add_submit"/></li>
-                        
-                        
-                        
+                        <li><input type="submit" id="add_submit"/></li>                         
                     </ul>
                     
                 </form>
