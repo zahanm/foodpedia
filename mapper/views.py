@@ -25,7 +25,11 @@ def example(request):
 
 
 def list_events(request):
-	until = datetime.strptime("", request.GET['end'])
+	until = None
+	try:
+		until = datetime.strptime("", request.GET['end'])
+	except:
+		pass
 	today = datetime.today()
 	today += timedelta(hours = -1)
 	
