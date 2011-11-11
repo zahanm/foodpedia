@@ -1,6 +1,8 @@
 
+import json
+import logging
+import sys
 from datetime import datetime, timedelta
-import json, logging
 
 from django.http import HttpResponse
 from django.template import Context, loader
@@ -17,20 +19,23 @@ PSTOFFSET = -8
 def list_events(request):
 
   until = None
-  try:
-    until = datetime.strptime("%a %b %d %Y %H:%M:%S", request.GET['until'])
-    until = until.replace(tzinfo=FixedOffset(PSTOFFSET, 'PST'))
-  except:
-    if 'until' in request.GET:
-      print("Not able to parse 'until' {0}".format(request.GET['until']))
+  if 'until' in request.GET:
+    d = request.GET['until']
+    d = d.split('GMT')[0].strip()
+    try:
+      until = datetime.strptime(d, '%a %b %d %Y %H:%M:%S')
+      until = until.replace(tzinfo=FixedOffset(PSTOFFSET, 'PST'))
+    except:
+      sys.stderr.write("Not able to parse 'until' {0}\n".format(request.GET['until']))
 
   today = datetime.now(tz=FixedOffset(PSTOFFSET, 'PST'))
   today += timedelta(hours = -1)
 
-  events = Event.objects.all().order_by('when').filter(when__gt=today)
+  events = Event.objects.all().filter(when__gt=today)
 
-  if not until == None:
-    events.filter(when__lt=until)
+  if until:
+    sys.stderr.write("'until' is real! {0}\n".format(until))
+    events = events.filter(when__lte=until)
 
   segmented_events = {}
   for event in events:

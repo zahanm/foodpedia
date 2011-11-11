@@ -21,9 +21,13 @@ ZERO = timedelta(0)
 class FixedOffset(tzinfo):
   """Fixed offset in minutes east from UTC."""
 
-  def __init__(self, offset, name):
-    self.__offset = timedelta(hours = offset)
-    self.__name = name
+  def __init__(self, *args):
+    if len(args):
+      self.__offset = timedelta(hours = args[0])
+      self.__name = args[1]
+    else:
+      self.__offset = timedelta()
+      self.__name = 'UTC'
 
   def utcoffset(self, dt):
     return self.__offset
