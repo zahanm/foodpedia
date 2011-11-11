@@ -21,7 +21,7 @@ def list_events(request):
     until = datetime.strptime("%a %b %d %Y %H:%M:%S", request.GET['until'])
     until = until.replace(tzinfo=FixedOffset(PSTOFFSET, 'PST'))
   except:
-    if request.GET['until']:
+    if 'until' in request.GET:
       print("Not able to parse 'until' {0}".format(request.GET['until']))
 
   today = datetime.now(tz=FixedOffset(PSTOFFSET, 'PST'))
