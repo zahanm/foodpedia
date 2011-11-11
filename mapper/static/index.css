@@ -12,6 +12,18 @@ p {
 	font-size: 16px;
 }
 
+div#jqt #add_event form input[type="text"] {
+	color: white;
+}
+
+div#jqt #add_event form textarea {
+	color: white;
+}
+
+div#jqt #settings ul li {
+	color: white;
+}
+
 div#jqt #settings .selected {
 	
 }
