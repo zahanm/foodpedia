@@ -1,6 +1,6 @@
 
-from datetime import datetime
-import json
+from datetime import datetime, timedelta
+import json, logging
 
 from django.http import HttpResponse
 from django.template import Context, loader
@@ -25,8 +25,16 @@ def example(request):
 
 
 def list_events(request):
+	until = datetime.strptime("", request.GET['end'])
 	today = datetime.today()
-	events = Event.objects.all().order_by('when')
+	today += timedelta(hours = -1)
+	
+	
+	events = Event.objects.all().order_by('when').filter(when__gt=today)
+	
+	if not until == None:
+		events.filter(when__lt=until)
+	
 	segmented_events = {}
 	for event in events:
 		event_details = {}
@@ -34,22 +42,20 @@ def list_events(request):
 		event_details['pk'] = event.pk
 		event_details['lat'] = event.where.latitude
 		event_details['lng'] = event.where.longitude
-		event_details['date'] = event.when.date().strftime("%m/%d/%Y")
-
+	
 		if event.when.date() not in segmented_events:
 			segmented_events[event.when.date()] = []
 		segmented_events[event.when.date()].append(event_details)
 	# the list is only needed because of the format required clientside
 
 	split_list = []
-
+	
 	for segment in segmented_events:
+
 		dateString = segment.strftime("%m/%d/%Y")
 		if segment == datetime.now().date():
 			dateString = "Today"
-		if segment < datetime.now().date():
-			continue
-		
+
 		split_list.append({
 			'date': dateString,
 			'd': segment.strftime("%m/%d/%Y"),
@@ -70,7 +76,7 @@ def event_details(request):
 def add_event(request):
   to_add = Event()
   to_add.name = request.POST['name']
-  to_add.when = datetime.strptime(request.POST['time'],"%H:%M %Y-%m-%d")
+  to_add.when = datetime.strptime(request.POST['time'],"%I:%M %p %m/%d/%Y")
 
   where = Location()
 
