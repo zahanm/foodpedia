@@ -2,9 +2,23 @@
 	color:red;
 }
 
-.formEntry {
-}
+/*#jqt ul li input#add_location, #jqt ul li input#add_name, 
+#jqt ul li input#add_description, .formEntry {	
+	background-color: white;
+	width: 150px;
+	padding: 10px;
+	font-size: 16px;
+	border: 1px solid #ccc;
+	height: 30px;
+	color:#DC143C;
+} */
 
 .secondary {
   color: gray;
+}
+
+p {
+	text-align: center;
+	font-family: arial;
+	font-size: 16px;
 }
