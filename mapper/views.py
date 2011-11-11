@@ -72,8 +72,8 @@ def list_events(request):
 		
 		
 	split_list.sort(key=lambda x: x['d'])
-	response = HttpResponse(content= str(today), content_type='application/json')
-	#json.dump({ 'days': split_list }, response)
+	response = HttpResponse(content_type='application/json')
+	json.dump({ 'days': split_list }, response)
 	return response
 
 def event_details(request):
