@@ -59,7 +59,7 @@ def list_events(request):
 
     split_list.append({
       'date': dateString,
-      'd': segment.strftime("%m/%d/%Y"),
+      'd': str(segment),
       'details': segmented_events[segment]
     })
 
