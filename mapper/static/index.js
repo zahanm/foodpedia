@@ -79,34 +79,41 @@ function validateDateTime(){
 	
 	
 	var today = new Date();
-
+	console.log("today year: " + today.getFullYear() + " entered year: " + year);
 	if (year > today.getFullYear()){
 		return true;
 	} else if (year < today.getFullYear()){
 		return false;
 	}
-	
+	console.log("today month: " + (today.getMonth + 1) + " entered month: " + month);
 	if (month > (today.getMonth() + 1)){
 		return true;
 	} else if (month < (today.getMonth() + 1)){
 		return false;
 	}
+	console.log("today day: " + today.getDate() + " entered day: " + day);
 	if (day > today.getDate()){
 		return true;
 	} else if (day < today.getDate()){
 		return false;
+	}
+	console.log("today hour: " + today.getHours() + " entered hour: " + hour);
+	if (hour != 23){
+		hour++;
 	}
 	if (hour > today.getHours()){
 		return true;
 	} else if (hour < today.getHours()){
 		return false;
 	}
+	console.log("today minute: " + today.getMinutes() + " entered minute: " + minute);
+	/*
 	if (minute > today.getMinutes()){
 		return true;
 	} else if (minute < today.getMinutes()){
 		return false;
 	}
-	
+	*/
 	return true;
 }
 
@@ -316,8 +323,8 @@ function click_addEvent (el) {
   $('#add_location').val('Loading current location');
   // location
   $.location('update', function(loc) {
-    $('#location_lat').val(loc.latitude);
-    $('#location_lng').val(loc.longitude);
+    $('#add_location_lat').val(loc.latitude);
+    $('#add_location_lng').val(loc.longitude);
     $.location('revgeocode', loc, function(address) {
       $('#add_location').val(address);
     });
@@ -345,6 +352,7 @@ function click_submit (el) {
   var date= $('#add_event #add_date').val();
   var time= $('#add_event #add_time').val();
   var description = $('#add_event #add_description').val();
+  
 
   if (name==''){
     $('#add_event #errorName').html('This is a required field.');
