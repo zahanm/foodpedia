@@ -32,7 +32,6 @@ def list_events(request):
   now += timedelta(hours = -1)
 
   events = Event.objects.order_by('when').filter(when__gt=now)
-
   if until:
     events = events.filter(when__lte=until)
 

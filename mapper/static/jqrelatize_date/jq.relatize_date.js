@@ -1,13 +1,8 @@
 // All credit goes to Rick Olson.
 (function($) {
-  $.fn.relatizeDate = function() {
-    return $(this).each(function() {
-      $(this).text( $.relatizeDate(this) );
-    });
-  }
 
-  $.relatizeDate = function(element) {
-    return $.relatizeDate.timeFromNowInWords( new Date($(element).text()) );
+  $.relatizeDate = function(ds) {
+    return $.relatizeDate.timeFromNowInWords( new Date(ds) );
   }
 
   // shortcut

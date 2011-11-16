@@ -6,8 +6,10 @@ LIST_VIEW = '' +
                 '<a class="listEvent" href="#event" data-pk="{{pk}}" ' +
                 ' data-lat="{{lat}}" data-lng="{{lng}}" ' +
                 ' ontouchstart="loadFoodEvent(this)" onclick="loadFoodEvent(this)">' +
-                '<span>{{name}}</span><br/>' +
-                '<span class="secondary">{{dist}} m</span>' +
+                '<table>' +
+                  '<tr class="upperrow"><td class="leftcol">{{datetime-figure}}</td><td>{{name}}</td></tr>' +
+                  '<tr class="lowerrow"><td class="leftcol">{{datetime-unit}}</td><td>{{dist}} m</td></tr>' +
+                '</table>' +
                 '</a>' +
               '</li>' +
             '{{/details}}' +
@@ -203,12 +205,18 @@ function refreshList (el) {
     }
     $.getJSON('/api/event/list', options, function(event_list) {
       event_list.details.forEach(function(ev) {
+        // calculate location
         var loc = {
           latitude: ev.lat,
           longitude: ev.lng
         };
         ev.dist = $.location('distance', me, loc);
         ev.dist = ev.dist.toFixed(2);
+
+        //relatize datetime
+        var rel_datetime = $.relatizeDate( ev.datetime );
+        ev['datetime-figure'] = rel_datetime.figure;
+        ev['datetime-unit'] = rel_datetime.unit;
       });
       var storage = window.sessionStorage;
       storage.setItem('event_list', JSON.stringify(event_list));
