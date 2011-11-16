@@ -28,44 +28,28 @@ def list_events(request):
     except:
       sys.stderr.write("Not able to parse 'until' {0}\n".format(request.GET['until']))
 
-  today = datetime.now(tz=FixedOffset(PSTOFFSET, 'PST'))
-  today += timedelta(hours = -1)
+  now = datetime.now(tz=FixedOffset(PSTOFFSET, 'PST'))
+  now += timedelta(hours = -1)
 
-  events = Event.objects.all().filter(when__gt=today)
+  events = Event.objects.order_by('when').filter(when__gt=now)
 
   if until:
     events = events.filter(when__lte=until)
 
-  segmented_events = {}
+  event_list = []
+
   for event in events:
     event_details = {}
     event_details['name'] = event.name
     event_details['pk'] = event.pk
     event_details['lat'] = event.where.latitude
     event_details['lng'] = event.where.longitude
+    event_details['datetime'] = event.when.isoformat()
+    event_list.append(event_details)
 
-    if event.when.date() not in segmented_events:
-      segmented_events[event.when.date()] = []
-    segmented_events[event.when.date()].append(event_details)
-  # the list is only needed because of the format required clientside
-
-  split_list = []
-
-  for segment in segmented_events:
-
-    dateString = segment.strftime("%m/%d/%Y")
-    if segment == datetime.now(tz=FixedOffset(PSTOFFSET, 'PST')).date():
-      dateString = "Today"
-
-    split_list.append({
-      'date': dateString,
-      'd': str(segment),
-      'details': segmented_events[segment]
-    })
-
-  split_list.sort(key=lambda x: x['d'])
+  # event_list.sort(key=lambda x: x['datetime'])
   response = HttpResponse(content_type='application/json')
-  json.dump({ 'days': split_list }, response)
+  json.dump({ 'details': event_list }, response)
   return response
 
 def event_details(request):

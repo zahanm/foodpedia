@@ -1,22 +1,19 @@
 
 LIST_VIEW = '' +
             '<ul class="edgetoedge">' +
-            '{{#days}}' +
-              '<li class="sep">{{date}}</li>' +
-              '{{#details}}' +
-                '<li class="slide arrow">' +
-                  '<a class="listEvent" href="#event" data-pk="{{pk}}" ' +
-                  ' data-lat="{{lat}}" data-lng="{{lng}}" ' +
-                  ' ontouchstart="loadFoodEvent(this)" onclick="loadFoodEvent(this)">' +
-                  '<span>{{name}}</span><br/>' +
-                  '<span class="secondary">{{dist}} m</span>' +
-                  '</a>' +
-                '</li>' +
-              '{{/details}}' +
-            '{{/days}}' +
-            '{{^days}}' +
+            '{{#details}}' +
+              '<li class="slide arrow">' +
+                '<a class="listEvent" href="#event" data-pk="{{pk}}" ' +
+                ' data-lat="{{lat}}" data-lng="{{lng}}" ' +
+                ' ontouchstart="loadFoodEvent(this)" onclick="loadFoodEvent(this)">' +
+                '<span>{{name}}</span><br/>' +
+                '<span class="secondary">{{dist}} m</span>' +
+                '</a>' +
+              '</li>' +
+            '{{/details}}' +
+            '{{^details}}' +
               '<li class="slide"><h3>No events. :(</h3></li>' +
-            '{{/days}}' +
+            '{{/details}}' +
             '</ul>' +
             '';
 
@@ -204,19 +201,17 @@ function refreshList (el) {
     if (time_window) {
       options['until'] = time_window;
     }
-    $.getJSON('/api/event/list', options, function(day_list) {
-      day_list.days.forEach(function(day_events) {
-        day_events.details.forEach(function(ev) {
-          var loc = {
-            latitude: ev.lat,
-            longitude: ev.lng
-          };
-          ev.dist = $.location('distance', me, loc);
-          ev.dist = ev.dist.toFixed(2);
-        });
+    $.getJSON('/api/event/list', options, function(event_list) {
+      event_list.details.forEach(function(ev) {
+        var loc = {
+          latitude: ev.lat,
+          longitude: ev.lng
+        };
+        ev.dist = $.location('distance', me, loc);
+        ev.dist = ev.dist.toFixed(2);
       });
       var storage = window.sessionStorage;
-      storage.setItem('day_list', JSON.stringify(day_list));
+      storage.setItem('event_list', JSON.stringify(event_list));
       resort_list();
     });
   });
@@ -227,9 +222,9 @@ function refreshList (el) {
 function resort_list () {
   var storage = window.sessionStorage;
   try {
-    var day_list = JSON.parse(storage.getItem('day_list'));
+    var event_list = JSON.parse(storage.getItem('event_list'));
   } catch (err) {
-    console.log('day_list not loaded before sort attempted');
+    console.log('event_list not loaded before sort attempted');
     return;
   }
   var sort_type = $('#listview').data('sorttype')
@@ -237,7 +232,7 @@ function resort_list () {
   switch(sort_type) {
     case 'time':
       // now must sort by time
-      $('#listview').html($.mustache(LIST_VIEW, day_list));
+      $('#listview').html($.mustache(LIST_VIEW, event_list));
       // set the button
       sort_button.innerText = 'Sort by distance';
       break;
@@ -245,10 +240,8 @@ function resort_list () {
     default:
       dist_bins = {}
       // now must sort by distance
-      day_list.days.forEach(function(day_events) {
-        day_events.details.forEach(function(ev) {
-          bin_dist(dist_bins, ev);
-        });
+      event_list.details.forEach(function(ev) {
+        bin_dist(dist_bins, ev);
       });
       dist_list = [];
       $.each(dist_bins, function(bin, v) {
