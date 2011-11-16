@@ -127,8 +127,8 @@ function loadFoodEvent(el) {
   $('#event_title').html('Loading...');
   $('#event_body').html('');
   var pk = $(el).data('pk');
-  $.getJSON('/api/event/' + pk, function(event) {
-      $('#event').html($.mustache(EVENT, event));
+  $.getJSON('/api/event/' + pk, function(evt) {
+      $('#event').html($.mustache(EVENT, evt));
   });
 }
 

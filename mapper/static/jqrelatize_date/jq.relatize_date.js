@@ -67,34 +67,36 @@
      */
     distanceOfTimeInWords: function(fromTime, toTime, includeTime) {
       var delta = parseInt((toTime.getTime() - fromTime.getTime()) / 1000);
+      var figure, unit;
       if (delta < -120) {
-          return (parseInt(delta / 60)).toString() + ' minutes ago';
-      } else if (delta < -60) {
-          return 'about a minute ago';
+        figure = (parseInt(delta / 60)).toString();
+        unit = 'minutes';
       } else if (delta < 0) {
-          return 'less than a minute ago'
-      } else if (delta < 60) {
-          return 'less than a minute from now';
+        figure = '-1';
+        unit = 'minute';
       } else if (delta < 120) {
-          return 'about a minute from now';
+        figure = '1';
+        unit = 'minute';
       } else if (delta < (45*60)) {
-          return (parseInt(delta / 60)).toString() + ' minutes from now';
+        figure = (parseInt(delta / 60)).toString();
+        unit = ' minutes';
       } else if (delta < (120*60)) {
-          return 'about an hour from now';
+        figure = '1';
+        unit = 'hour';
       } else if (delta < (24*60*60)) {
-          return 'about ' + (parseInt(delta / 3600)).toString() + ' hours from now';
+        figure = (parseInt(delta / 3600)).toString();
+        unit = 'hours';
       } else if (delta < (48*60*60)) {
-          return '1 day from now';
+        figure = '1';
+        unit = 'day';
       } else {
-        var days = (parseInt(delta / 86400)).toString();
-        if (days > 5) {
-          var fmt  = '%B %d, %Y'
-          if (includeTime) fmt += ' %I:%M %p'
-          return $r.strftime(fromTime, fmt);
-        } else {
-          return days + " days from now"
-        }
+        figure = (parseInt(delta / 86400)).toString();
+        unit = 'days';
       }
+      return {
+        figure: figure,
+        unit: unit
+      };
     }
   })
 })(jQuery);
