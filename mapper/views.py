@@ -13,6 +13,9 @@ from mapper.utils import FixedOffset
 
 def index(request):
   return render(request, 'index.html')
+  
+def b_index(request):
+  return render(request, 'index_b.html')
 
 PSTOFFSET = -8
 
@@ -49,6 +52,63 @@ def list_events(request):
   response = HttpResponse(content_type='application/json')
   json.dump({ 'details': event_list }, response)
   return response
+  
+def list_events_b(request):
+
+  until = None
+  if 'until' in request.GET:
+    d = request.GET['until']
+    d = d.split('GMT')[0].strip()
+    try:
+      until = datetime.strptime(d, '%a %b %d %Y %H:%M:%S')
+      until = until.replace(tzinfo=FixedOffset(PSTOFFSET, 'PST'))
+    except:
+      sys.stderr.write("Not able to parse 'until' {0}\n".format(request.GET['until']))
+
+  today = datetime.now(tz=FixedOffset(PSTOFFSET, 'PST'))
+  today += timedelta(hours = -1)
+
+  events = Event.objects.all().filter(when__gt=today)
+
+  if until:
+    events = events.filter(when__lte=until)
+
+  segmented_events = {}
+  for event in events:
+    event_details = {}
+    event_details['name'] = event.name
+    event_details['pk'] = event.pk
+    event_details['lat'] = event.where.latitude
+    event_details['lng'] = event.where.longitude
+
+    if event.when.date() not in segmented_events:
+      segmented_events[event.when.date()] = []
+    segmented_events[event.when.date()].append(event_details)
+  # the list is only needed because of the format required clientside
+
+  split_list = []
+
+  for segment in segmented_events:
+
+    dateString = segment.strftime("%m/%d/%Y")
+    if segment == datetime.now(tz=FixedOffset(PSTOFFSET, 'PST')).date():
+      dateString = "Today"
+
+    split_list.append({
+      'date': dateString,
+      'd': segment.strftime("%m/%d/%Y"),
+      'details': segmented_events[segment]
+    })
+
+  split_list.sort(key=lambda x: x['d'])
+  response = HttpResponse(content_type='application/json')
+  json.dump({ 'days': split_list }, response)
+  return response
+  
+  
+  
+  
+  
 
 def event_details(request):
   return render_to_response('eventdetails.html', {})
