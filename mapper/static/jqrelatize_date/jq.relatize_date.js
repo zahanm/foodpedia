@@ -2,12 +2,12 @@
 (function($) {
   $.fn.relatizeDate = function() {
     return $(this).each(function() {
-      $(this).text( $.relatizeDate(this) )
-    })
+      $(this).text( $.relatizeDate(this) );
+    });
   }
 
   $.relatizeDate = function(element) {
-    return $.relatizeDate.timeAgoInWords( new Date($(element).text()) )
+    return $.relatizeDate.timeFromNowInWords( new Date($(element).text()) );
   }
 
   // shortcut
@@ -54,8 +54,8 @@
       })
     },
   
-    timeAgoInWords: function(targetDate, includeTime) {
-      return $r.distanceOfTimeInWords(targetDate, new Date(), includeTime);
+    timeFromNowInWords: function(targetDate, includeTime) {
+      return $r.distanceOfTimeInWords(new Date(), targetDate, includeTime);
     },
   
     /**
@@ -67,18 +67,24 @@
      */
     distanceOfTimeInWords: function(fromTime, toTime, includeTime) {
       var delta = parseInt((toTime.getTime() - fromTime.getTime()) / 1000);
-      if (delta < 60) {
-          return 'less than a minute ago';
-      } else if (delta < 120) {
-          return 'about a minute ago';
-      } else if (delta < (45*60)) {
+      if (delta < -120) {
           return (parseInt(delta / 60)).toString() + ' minutes ago';
+      } else if (delta < -60) {
+          return 'about a minute ago';
+      } else if (delta < 0) {
+          return 'less than a minute ago'
+      } else if (delta < 60) {
+          return 'less than a minute from now';
+      } else if (delta < 120) {
+          return 'about a minute from now';
+      } else if (delta < (45*60)) {
+          return (parseInt(delta / 60)).toString() + ' minutes from now';
       } else if (delta < (120*60)) {
-          return 'about an hour ago';
+          return 'about an hour from now';
       } else if (delta < (24*60*60)) {
-          return 'about ' + (parseInt(delta / 3600)).toString() + ' hours ago';
+          return 'about ' + (parseInt(delta / 3600)).toString() + ' hours from now';
       } else if (delta < (48*60*60)) {
-          return '1 day ago';
+          return '1 day from now';
       } else {
         var days = (parseInt(delta / 86400)).toString();
         if (days > 5) {
@@ -86,7 +92,7 @@
           if (includeTime) fmt += ' %I:%M %p'
           return $r.strftime(fromTime, fmt);
         } else {
-          return days + " days ago"
+          return days + " days from now"
         }
       }
     }
