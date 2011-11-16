@@ -43,10 +43,9 @@ def list_events(request):
     event_details['pk'] = event.pk
     event_details['lat'] = event.where.latitude
     event_details['lng'] = event.where.longitude
-    event_details['datetime'] = event.when.isoformat()
+    event_details['datetime'] = event.when.strftime("%a, %d %b %Y %H:%M:%S GMT%z") # IETF syntax
     event_list.append(event_details)
 
-  # event_list.sort(key=lambda x: x['datetime'])
   response = HttpResponse(content_type='application/json')
   json.dump({ 'details': event_list }, response)
   return response
