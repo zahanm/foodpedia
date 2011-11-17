@@ -14,8 +14,11 @@ from mapper.utils import FixedOffset
 def index(request):
   return render(request, 'index.html')
   
-def b_index(request):
+def index_b(request):
   return render(request, 'index_b.html')
+
+def index_with_settings(req):
+  return render(req, 'index_settings.html')
 
 PSTOFFSET = -8
 
