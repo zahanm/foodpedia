@@ -65,10 +65,10 @@
       var figure, unit;
       if (delta < 120) {
         figure = '0';
-        unit = 'minutes';
+        unit = 'min';
       } else if (delta < (45*60)) {
         figure = (parseInt(delta / 60)).toString();
-        unit = 'minutes';
+        unit = 'mins';
       } else if (delta < (120*60)) {
         figure = '1';
         unit = 'hour';
