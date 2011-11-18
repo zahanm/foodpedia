@@ -203,7 +203,7 @@ function until_time () {
   return until.toString();
 }
 
-function refreshList (el) {
+function refresh_list (el) {
   $.location('update', function(me) {
     var options = {};
     var time_window = until_time();
@@ -299,17 +299,21 @@ function insert_sorted (arr, key, elem) {
   --- Setup button handlers
 */
 
-function click_sortList (el) {
+function click_sortChange (el) {
   var cur_sort_type = $('#listview').data('sorttype');
   switch(cur_sort_type) {
     case 'distance':
       $('#listview').data('sorttype', 'time');
+      $('#listview').data('timewindow', 'all');
+      $('#sortChange').html('Events Now');
       break;
     case 'time':
     default:
       $('#listview').data('sorttype', 'distance');
+      $('#listview').data('timewindow', 'hour');
+      $('#sortChange').html('All Events');
   }
-  resort_list();
+  refresh_list();
 }
 
 function click_timeWindow (el) {
@@ -427,7 +431,7 @@ $(document).ready(function() {
 
   $('#list').bind('pageAnimationEnd', function(e, info) {
     if (info.direction == 'in') {
-      refreshList();
+      refresh_list();
     }
   });
 
@@ -444,6 +448,6 @@ $(document).ready(function() {
   });
 
   // -- init events
-  refreshList();
+  refresh_list();
   
 });
