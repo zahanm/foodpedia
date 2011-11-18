@@ -63,18 +63,12 @@
     distanceOfTimeInWords: function(fromTime, toTime, includeTime) {
       var delta = parseInt((toTime.getTime() - fromTime.getTime()) / 1000);
       var figure, unit;
-      if (delta < -120) {
-        figure = (parseInt(delta / 60)).toString();
+      if (delta < 120) {
+        figure = '0';
         unit = 'minutes';
-      } else if (delta < 0) {
-        figure = '-1';
-        unit = 'minute';
-      } else if (delta < 120) {
-        figure = '1';
-        unit = 'minute';
       } else if (delta < (45*60)) {
         figure = (parseInt(delta / 60)).toString();
-        unit = ' minutes';
+        unit = 'minutes';
       } else if (delta < (120*60)) {
         figure = '1';
         unit = 'hour';
