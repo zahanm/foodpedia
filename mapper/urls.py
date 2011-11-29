@@ -8,6 +8,7 @@ urlpatterns = patterns('mapper.views',
   (r'^eventdetails', 'event_details'),
   (r'^api/event/add', 'add_event'),
   (r'^api/event/(?P<event_id>\d+)', 'event'),
+  (r'^api/event/reset', 'reset_db'),
 
   # A/B Testing
   # list view inlining changes
