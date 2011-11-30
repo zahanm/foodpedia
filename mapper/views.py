@@ -12,18 +12,31 @@ from django.shortcuts import render, redirect
 from mapper.models import Event, Location
 from mapper.utils import FixedOffset
 
-def index(request):
-  return render(request, 'index.html')
-  
-def index_b(request):
-  return render(request, 'index_b.html')
+def index(req):
+  # pick a random event happening soon and close and pass it as context
+  event = Event.objects.order_by('when')[0]
+  return render(req, 'index.html', { 'event': event_for_client(event) })
 
-def index_with_settings(req):
-  return render(req, 'index_settings.html')
+def all_events(req):
+  # give back a json_array with all the events
+  db_evs = Event.objects.all()
+  events = [ event_for_client(db_ev) for db_ev in db_evs ]
+  res = HttpResponse(content_type='application/json')
+  json.dump({ 'events': events }, res)
+  return res
+
+def event_for_client(event):
+  d = {}
+  d['name'] = event.name
+  d['when'] = event.when.strftime("%a, %d %b %Y %H:%M:%S GMT%z") # ITEF, js parsable
+  d['description'] = event.description
+  d['where'] = event.where.address.split(',')[0] # event.where.building
+  d['address'] = event.where.address
+  d['lat'] = event.where.latitude
+  d['long'] = event.where.longitude
+  return d
 
 PSTOFFSET = -8
-
-
 
 def reset_db(request):
 	Event.objects.all().delete()
@@ -144,6 +157,12 @@ def event(request, event_id):
 # --- OLD CODE
 #
 ###
+
+def index_b(request):
+  return render(request, 'index_b.html')
+
+def index_with_settings(req):
+  return render(req, 'index_settings.html')
 
 def list_events_b(request):
 

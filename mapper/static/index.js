@@ -447,7 +447,11 @@ $(document).ready(function() {
     }
   });
 
+  // -- initialize event details
+  // reletivize date in #ev_when
+  // get all the other events and store them
+
   // -- init events
-  refresh_list();
+  
   
 });

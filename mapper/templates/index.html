@@ -17,6 +17,11 @@
             #jqt.fullscreen #home .info {
                 display: none;
             }
+
+            div#jqt ul li {
+                color: white;
+            }
+
             div#jqt #about {
                 padding: 100px 10px 40px;
                 text-shadow: rgba(255, 255, 255, 0.3) 0px -1px 0;
@@ -51,7 +56,7 @@
     </head>
     <body>
         <div id="jqt">
-            <div id="list" class="current">
+            <div id="list">
                 <div class="toolbar">
                     <a id="sortChange" class="button leftButton flip" href="#" ontouchstart="click_sortChange(this)">Events Now</a>
                     <h1>Foodpedia &alpha;</h1>
@@ -81,16 +86,26 @@
 				</ul>
 			</div>
             
-            <div id="event">
+            <div id="event" class="current" >
                 <div class="toolbar">
                     <a class="back" href="#" >Back</a>
-                    <h1 id="event_title">Event View</h1>
+                    <h1>Foodpedia &alpha;</h1>
                 </div>
-                <div id="event_body" class="scroll">
-                    <ul>
-                        <li>Loading..</li>
-                    </ul>
+
+                <div id="eventdetails" >
+                  <ul class="edgetoedge scroll">
+                    <li id="ev_name">{{ event.name }}</li>
+                    <li id="ev_when">{{ event.when }}</li>
+                    <li id="ev_where">
+                        <a class="whiteButton" href="http://maps.google.com/maps?q={{event.address}}">
+                            {{ event.where }}
+                        </a>
+                    </li>
+                    <li id="ev_description">{{ event.description }}</li>
+
+                  </ul>
                 </div>
+
             </div>
                 
             <div id="add_event">
