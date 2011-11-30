@@ -49,8 +49,8 @@
       })
     },
   
-    timeFromNowInWords: function(targetDate, includeTime) {
-      return $r.distanceOfTimeInWords(new Date(), targetDate, includeTime);
+    timeFromNowInWords: function(targetDate) {
+      return $r.distanceOfTimeInWords(new Date(), targetDate);
     },
   
     /**
@@ -58,9 +58,8 @@
      * Example: '5 days ago', 'about an hour ago'
      * @param {Date} fromTime The start date to use in the calculation
      * @param {Date} toTime The end date to use in the calculation
-     * @param {Boolean} Include the time in the output
      */
-    distanceOfTimeInWords: function(fromTime, toTime, includeTime) {
+    distanceOfTimeInWords: function(fromTime, toTime) {
       var delta = parseInt((toTime.getTime() - fromTime.getTime()) / 1000);
       var figure, unit;
       if (delta < 120) {
