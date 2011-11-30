@@ -96,8 +96,11 @@
                   <ul class="edgetoedge scroll">
                     <li id="ev_name">{{ event.name }}</li>
                     <li id="ev_when">{{ event.when }}</li>
+                    <li id="image">
+                        <img src="{{ event.image_url }}" width="100%">
+                    </li>
                     <li id="ev_where">
-                        <a class="whiteButton" href="http://maps.google.com/maps?q={{event.address}}">
+                        <a class="whiteButton" href="http://maps.google.com/maps?q={{ event.address }}">
                             {{ event.where }}
                         </a>
                     </li>
