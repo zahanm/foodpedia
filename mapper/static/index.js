@@ -441,6 +441,9 @@ function shuffle_event() {
   var events = JSON.parse(storage.getItem('events'));
   var current = Number($('#eventdetails').data('index'));
   current++;
+  if (current >= events.length) {
+    current = 0;
+  }
   set_homepage(events[current]);
   $('#eventdetails').data('index', current.toString());
 }
