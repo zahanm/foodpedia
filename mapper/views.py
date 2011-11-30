@@ -66,9 +66,6 @@ def reset_db(request):
 	return redirect('/')
 
 
-
-
-
 def list_events(request):
 
   until = None
@@ -103,6 +100,53 @@ def list_events(request):
   json.dump({ 'details': event_list }, response)
   return response
   
+
+def add_event(request):
+  to_add = Event()
+  to_add.name = request.POST['name']
+  to_add.when = datetime.strptime(request.POST['time'],"%H:%M %Y-%m-%d")
+  to_add.when = to_add.when.replace(tzinfo=FixedOffset(PSTOFFSET, 'PST'))
+
+  where = Location()
+
+  where.latitude = float(request.POST['lat'])
+  where.longitude = float(request.POST['long'])
+  where.address = request.POST['address']
+  where.save()
+  to_add.where = where
+
+  to_add.description = request.POST['description']
+
+  to_add.save()
+
+  return HttpResponse(to_add.pk, status=201)
+
+def event(request, event_id):
+  e = Event.objects.get(pk=event_id)
+  tags = e.tags.split(';')[:-1]
+  tag_list = []
+  for t in tags:
+    tag_list.append({"tag":t})
+  #cannot use json or django.core.serializers because location object, so must do manually
+  json_event = {}
+  json_event['pk'] = e.pk
+  json_event['name'] = e.name
+  json_event['description'] = e.description
+  json_event['when'] = e.when.strftime("%I:%M %p %m/%d/%Y") # "%a, %d %b %Y %H:%M:%S GMT%z" ITEF, js parsable
+  json_event['where'] = {"latitude":e.where.latitude, "longitude":e.where.longitude, "address":e.where.address, "building":e.where.building}
+  #json_event['tags'] = tag_list
+  json_event['image'] = e.image_url
+  response = HttpResponse(content_type='application/json')
+  json.dump({'event':json_event}, response)
+
+  return response
+
+###
+# -----------------------------------------------
+# --- OLD CODE
+#
+###
+
 def list_events_b(request):
 
   until = None
@@ -154,47 +198,6 @@ def list_events_b(request):
   response = HttpResponse(content_type='application/json')
   json.dump({ 'days': split_list }, response)
   return response
-  
 
 def event_details(request):
   return render_to_response('eventdetails.html', {})
-  
-def add_event(request):
-  to_add = Event()
-  to_add.name = request.POST['name']
-  to_add.when = datetime.strptime(request.POST['time'],"%H:%M %Y-%m-%d")
-  to_add.when = to_add.when.replace(tzinfo=FixedOffset(PSTOFFSET, 'PST'))
-
-  where = Location()
-
-  where.latitude = float(request.POST['lat'])
-  where.longitude = float(request.POST['long'])
-  where.address = request.POST['address']
-  where.save()
-  to_add.where = where
-
-  to_add.description = request.POST['description']
-
-  to_add.save()
-
-  return HttpResponse(to_add.pk, status=201)
-
-def event(request, event_id):
-  e = Event.objects.get(pk=event_id)
-  tags = e.tags.split(';')[:-1]
-  tag_list = []
-  for t in tags:
-    tag_list.append({"tag":t})
-  #cannot use json or django.core.serializers because location object, so must do manually
-  json_event = {}
-  json_event['pk'] = e.pk
-  json_event['name'] = e.name
-  json_event['description'] = e.description
-  json_event['when'] = e.when.strftime("%I:%M %p %m/%d/%Y")
-  json_event['where'] = {"latitude":e.where.latitude, "longitude":e.where.longitude, "address":e.where.address, "building":e.where.building}
-  #json_event['tags'] = tag_list
-  json_event['image'] = e.image_url
-  response = HttpResponse(content_type='application/json')
-  json.dump({'event':json_event}, response)
-
-  return response
