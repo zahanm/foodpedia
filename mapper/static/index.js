@@ -412,11 +412,14 @@ function shuffle_event() {
 function set_homepage(ev) {
   $('#ev_name').text(ev.name);
   $('#ev_when').data('when', ev.when);
-  relatize_homepage_date();
   $('#ev_image').attr('src', ev.image);
   $('#ev_where').attr('href', "http://maps.google.com/maps?q=" + ev.address);
   $('#ev_where').text(ev.where);
+  $('#ev_dist').data('lat', ev.lat);
+  $('#ev_dist').data('lon', ev.lon);
   $('#ev_description').text(ev.description);
+  relatize_homepage_date();
+  calc_homapage_dist();
 }
 
 function relatize_homepage_date() {
