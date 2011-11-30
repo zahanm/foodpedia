@@ -14,12 +14,20 @@ from mapper.utils import FixedOffset
 
 def index(req):
   # pick a random event happening soon and close and pass it as context
-  event = Event.objects.order_by('when')[0]
-  return render(req, 'index.html', { 'event': event_for_client(event) })
+  now = datetime.now(tz=FixedOffset(PSTOFFSET, 'PST'))
+  now += timedelta(hours = -1)
+  event = Event.objects.order_by('when').filter(when__gt=now)[:1]
+  if len(event):
+    event = event_for_client(event[0])
+  else:
+    event = None
+  return render(req, 'index.html', { 'event': event })
 
 def all_events(req):
   # give back a json_array with all the events
-  db_evs = Event.objects.order_by('when')
+  now = datetime.now(tz=FixedOffset(PSTOFFSET, 'PST'))
+  now += timedelta(hours = -1)
+  db_evs = Event.objects.order_by('when').filter(when__gt=now)
   events = [ event_for_client(db_ev) for db_ev in db_evs ]
   res = HttpResponse(content_type='application/json')
   json.dump({ 'events': events }, res)
