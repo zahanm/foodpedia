@@ -34,7 +34,7 @@ def event_for_client(event):
   d['where'] = event.where.building
   d['address'] = event.where.address
   d['lat'] = event.where.latitude
-  d['long'] = event.where.longitude
+  d['lon'] = event.where.longitude
   return d
 
 PSTOFFSET = -8
