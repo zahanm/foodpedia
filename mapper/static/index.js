@@ -405,8 +405,44 @@ function click_submit (el) {
   return false;
 }
 
+/* -------------------------------------
+ * Post-Pandorification code
+ * Save us all.
+ *               .     _///_,
+ *             .      / ` ' '>
+ *               )   o'o __/_'>
+ *              (   /  _/  )_\'>
+ *               ' "__/   /_/\_>
+ *                   ____/_/_/_/
+ *                  /,---, _/ /
+ *                 ""  /_/_/_/
+ *                    /_(_(_(_                 \
+ *                   (   \_\_\\_               )\
+ *                    \'__\_\_\_\__            ).\
+ *                    //____|___\__)           )_/
+ *                    |  _  \'___'_(           /'
+ *                     \_ (-'\'___'_\      __,'_'
+ *                     __) \  \\___(_   __/.__,'
+ *                  ,((,-,__\  '", __\_/. __,'
+ *                               '"./_._._-'
+ */
+
+function fetch_all_events() {
+  var storage = window.sessionStorage;
+  $.getJSON('/api/event/all', function(r) {
+    var events = r['events'];
+    storage.setItem('events', JSON.stringify(events));
+    $('#nextbutton').removeAttr('disabled');
+  });
+}
+
 function shuffle_event() {
-  
+  var storage = window.sessionStorage;
+  var events = JSON.parse(storage.getItem('events'));
+  var current = Number($('#eventdetails').data('index'));
+  current++;
+  set_homepage(events[current]);
+  $('#eventdetails').data('index', current.toString());
 }
 
 function set_homepage(ev) {
@@ -483,12 +519,9 @@ $(document).ready(function() {
   });
 
   // -- initialize event details
-  // relatize date in #ev_when
-  relatize_homepage_date()
-  calc_homapage_dist()
+  relatize_homepage_date();
+  calc_homapage_dist();
   // get all the other events and store them
-
-  // -- init events
-  
+  fetch_all_events();
   
 });

@@ -19,7 +19,7 @@ def index(req):
 
 def all_events(req):
   # give back a json_array with all the events
-  db_evs = Event.objects.all()
+  db_evs = Event.objects.order_by('when')
   events = [ event_for_client(db_ev) for db_ev in db_evs ]
   res = HttpResponse(content_type='application/json')
   json.dump({ 'events': events }, res)
