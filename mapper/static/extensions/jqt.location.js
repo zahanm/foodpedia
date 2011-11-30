@@ -122,7 +122,10 @@
   function distance (loc1, loc2) {
     var latlng1 = new google.maps.LatLng(loc1.latitude, loc1.longitude)
       , latlng2 = new google.maps.LatLng(loc2.latitude, loc2.longitude);
-    return google.maps.geometry.spherical.computeDistanceBetween(latlng1, latlng2);
+    return {
+      figure: google.maps.geometry.spherical.computeDistanceBetween(latlng1, latlng2),
+      unit: 'meters'
+    };
   }
 
   /**
