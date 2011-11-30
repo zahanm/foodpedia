@@ -63,8 +63,8 @@
       var delta = parseInt((toTime.getTime() - fromTime.getTime()) / 1000);
       var figure, unit;
       if (delta < 120) {
-        figure = '0';
-        unit = 'min';
+        figure = 'Now';
+        unit = '';
       } else if (delta < (45*60)) {
         figure = (parseInt(delta / 60)).toString();
         unit = 'mins';
