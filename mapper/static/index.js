@@ -405,6 +405,38 @@ function click_submit (el) {
   return false;
 }
 
+function shuffle_event() {
+  
+}
+
+function set_homepage(ev) {
+  $('#ev_name').text(ev.name);
+  $('#ev_when').data('when', ev.when);
+  relatize_homepage_date();
+  $('#ev_image').attr('src', ev.image);
+  $('#ev_where').attr('href', "http://maps.google.com/maps?q=" + ev.address);
+  $('#ev_where').text(ev.where);
+  $('#ev_description').text(ev.description);
+}
+
+function relatize_homepage_date() {
+  var offset = $.relatizeDate($('#ev_when').data('when'))
+  $('#ev_when_figure').text(offset.figure);
+  $('#ev_when_unit').text(offset.unit);
+}
+
+function calc_homapage_dist() {
+  $.location('update', function(myloc) {
+    var ev_location = {
+      latitude: $('#ev_dist').data('lat'),
+      longitude: $('#ev_dist').data('lon')
+    };
+    var dist = $.location('distance', myloc, ev_location);
+    $('#ev_dist_figure').text(dist.figure.toFixed(2));
+    $('#ev_dist_unit').text(dist.unit);
+  });
+}
+
 $(document).ready(function() {
 
   window.jQT = new $.jQTouch({
@@ -448,7 +480,9 @@ $(document).ready(function() {
   });
 
   // -- initialize event details
-  // reletivize date in #ev_when
+  // relatize date in #ev_when
+  relatize_homepage_date()
+  calc_homapage_dist()
   // get all the other events and store them
 
   // -- init events

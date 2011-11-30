@@ -1,42 +1,92 @@
+#jqt.fullscreen #home .info {
+  display: none;
+}
+
+div#jqt ul li {
+  color: white;
+}
+
+div#jqt whiteButton {
+  margin: 0 10px;
+  color: rgba(0,0,0,.9);
+}
+
 .formError {
-	color:red;
+  color:red;
 }
 
 p {
-	text-align: center;
-	font-family: arial;
-	font-size: 16px;
+  text-align: center;
+  font-family: arial;
+  font-size: 16px;
 }
 
 div#jqt #list .upperrow {
-	height: 36px;
-	font-size: 24px;
+  height: 36px;
+  font-size: 24px;
 }
 
 div#jqt #list .lowerrow {
-	height: 16px;
-	color: gray;
-	font-size: 16px;
+  height: 16px;
+  color: gray;
+  font-size: 16px;
 }
 
 div#jqt #list .leftcol {
-	width: 62px;
-	text-align: center;
+  width: 62px;
+  text-align: center;
 }
 
 div#jqt #add_event form input[type="text"] {
-	color: white;
+  color: white;
 }
 
 div#jqt #add_event form textarea {
-	color: white;
+  color: white;
 }
 
 div#jqt #settings ul li {
-	color: white;
+  color: white;
 }
 
 div#jqt #settings .selected {
-	background: black;
-	border: white solid 1px;
+  background: black;
+  border: white solid 1px;
+}
+
+div#jqt #event #ev_name {
+  font-size: 1.3em;
+  text-align: center;
+  overflow: ellipsis;
+}
+
+div#jqt #event #ev_when {
+  text-align: center;
+}
+
+div#jqt #event #ev_dist {
+  text-align: center;
+}
+
+div#jqt #event #ev_when_figure {
+  font-size: 1.2em;
+}
+
+div#jqt #event #ev_when_unit {
+  font-size: 0.8em;
+  color: #aaa;
+}
+
+div#jqt #event #ev_dist_figure {
+  font-size: 1.2em;
+}
+
+div#jqt #event #ev_dist_unit {
+  font-size: 0.8em;
+  color: #aaa;
+}
+
+div#jqt #event #ev_description {
+  font-size: 0.85em;
+  color: #aaa;
 }

@@ -13,35 +13,6 @@
         <style type="text/css" media="screen">@import "/static/jqtouch/jqtouch.css";</style>
         <style type="text/css" media="screen">@import "/static/themes/jqt/theme.css";</style>
         <link rel="stylesheet" href="/static/index.css" type="text/css" media="all" />
-        <style type="text/css" media="screen">
-            #jqt.fullscreen #home .info {
-                display: none;
-            }
-
-            div#jqt ul li {
-                color: white;
-            }
-
-            div#jqt #about {
-                padding: 100px 10px 40px;
-                text-shadow: rgba(255, 255, 255, 0.3) 0px -1px 0;
-                font-size: 13px;
-                text-align: center;
-                background: #161618;
-            }
-            div#jqt #about p {
-                margin-bottom: 8px;
-            }
-            div#jqt #about a {
-                color: #fff;
-                font-weight: bold;
-                text-decoration: none;
-            }
-            div#jqt whiteButton {
-                margin: 0 10px;
-                color: rgba(0,0,0,.9);
-            }
-        </style>
 
         <!-- Javascripts -->
         <script src="http://code.jquery.com/jquery-1.4.3.min.js"></script>
@@ -94,12 +65,26 @@
                 <div id="eventdetails" >
                   <ul class="edgetoedge scroll">
                     <li id="ev_name">{{ event.name }}</li>
-                    <li id="ev_when">{{ event.when }}</li>
-                    <li id="image">
-                        <img src="{{ event.image }}" width="100%">
+                    <li>
+                        <table width="100%">
+                            <tr>
+                                <td id="ev_when" data-when="{{ event.when }}" width="50%">
+                                    <span id="ev_when_figure"></span>
+                                    <span id="ev_when_unit" ></span>
+                                </td>
+                                <td id="ev_dist" data-lat="{{ event.lat }}" data-lon="{{ event.lon }}">
+                                    <span id="ev_dist_figure"></span>
+                                    <span id="ev_dist_unit" ></span>
+                                </td>
+                            </tr>
+                        </table>
                     </li>
-                    <li id="ev_where">
-                        <a class="whiteButton" href="http://maps.google.com/maps?q={{ event.address }}">
+                    <li>
+                        <img id="ev_image" src="{{ event.image }}" width="100%">
+                    </li>
+                    <li>
+                        <a id="ev_where" class="whiteButton"
+                        href="http://maps.google.com/maps?q={{ event.address }}">
                             {{ event.where }}
                         </a>
                     </li>
