@@ -451,12 +451,15 @@ function shuffle_event() {
 function set_homepage(ev) {
   $('#ev_name').text(ev.name);
   $('#ev_when').data('when', ev.when);
-  $('#ev_image').attr('src', ev.image);
+  $('#ev_image').attr('src', '/static/themes/jqt/img/loading.gif');
   $('#ev_where').attr('href', "http://maps.google.com/maps?q=" + ev.address);
   $($('#ev_where > span')[0]).text(ev.where);
   $('#ev_dist').data('lat', ev.lat);
   $('#ev_dist').data('lon', ev.lon);
   $('#ev_description').text(ev.description);
+  $.get(ev.image, function(data) {
+    $('#ev_image').attr('src', ev.image);
+  });
   relatize_homepage_date();
   calc_homapage_dist();
 }
