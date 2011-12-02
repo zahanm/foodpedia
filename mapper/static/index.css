@@ -86,6 +86,16 @@ div#jqt #event #ev_dist_unit {
   color: #aaa;
 }
 
+div#jqt #event #ev_where {
+  text-align: center;
+  vertical-align: center;
+}
+
+div#jqt #event #ev_where .limage {
+  text-align: center;
+  vertical-align: center;
+}
+
 div#jqt #event #ev_description {
   font-size: 0.85em;
   color: #aaa;
