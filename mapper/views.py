@@ -84,7 +84,6 @@ def reset_db(request):
 		
 		E.where = L 
 		E.save()
-	
 	return redirect('/')
 
 
