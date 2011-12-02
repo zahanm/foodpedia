@@ -453,15 +453,12 @@ function shuffle_event() {
 function set_homepage(ev) {
   $('#ev_name').text(ev.name);
   $('#ev_when').data('when', ev.when);
-  $('#ev_image').attr('src', '/static/themes/jqt/img/loading.gif');
+  $('#ev_image').attr('src', ev.image);
   $('#ev_where').attr('href', "http://maps.google.com/maps?q=" + ev.address);
   $($('#ev_where > span')[0]).text(ev.where);
   $('#ev_dist').data('lat', ev.lat);
   $('#ev_dist').data('lon', ev.lon);
   $('#ev_description').text(ev.description);
-  $.get(ev.image, function(data) {
-    $('#ev_image').attr('src', ev.image);
-  });
   relatize_homepage_date();
   calc_homapage_dist();
 }
@@ -495,14 +492,22 @@ $(document).ready(function() {
       '/static/themes/jqt/img/activeButton.png',
       '/static/themes/jqt/img/back_button.png',
       '/static/themes/jqt/img/back_button_clicked.png',
-      '/static/themes/jqt/img/blueButton.png',
       '/static/themes/jqt/img/button.png',
       '/static/themes/jqt/img/button_clicked.png',
-      '/static/themes/jqt/img/grayButton.png',
-      '/static/themes/jqt/img/greenButton.png',
-      '/static/themes/jqt/img/redButton.png',
       '/static/themes/jqt/img/whiteButton.png',
-      '/static/themes/jqt/img/loading.gif'
+      '/static/themes/jqt/img/loading.gif',
+      '/static/imgs/1.png',
+      '/static/imgs/2.png',
+      '/static/imgs/3.png',
+      '/static/imgs/4.png',
+      '/static/imgs/5.png',
+      '/static/imgs/6.png',
+      '/static/imgs/7.png',
+      '/static/imgs/8.png',
+      '/static/imgs/9.png',
+      '/static/imgs/10.png',
+      '/static/imgs/11.png',
+      '/static/imgs/12.png'
       ]
   });
 
