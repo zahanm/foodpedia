@@ -2,3 +2,8 @@ cron:
 - description: keep alive
   url: /
   schedule: every 2 minutes
+
+- description: reset db
+  url: /api/event/reset
+  schedule: every 4 hours
+
