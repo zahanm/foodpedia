@@ -59,6 +59,7 @@
             
             <div id="event" class="current" >
                 <div class="toolbar">
+                    <a href="#" class="back">Back</a>
                     <h1>Foodpedia &alpha;</h1>
                     <a href="#" id="nextbutton" class="button" ontouchstart="shuffle_event(this)" disabled>Next</a>
                 </div>
@@ -86,8 +87,8 @@
                     <li>
                         <a id="ev_where" class="whiteButton"
                         href="http://maps.google.com/maps?q={{ event.address }}">
-                            {{ event.where }}
-                        	<span style='float:right' z-index='2'><img src='/static/imgs/map.png'></span>
+                            <span>{{ event.where }}</span>
+                            <span class='limage' style="float:right;"><img src='/static/imgs/map.png'></span>
                         </a>
                     </li>
                     <li id="ev_description">{{ event.description }}</li>

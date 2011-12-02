@@ -453,7 +453,7 @@ function set_homepage(ev) {
   $('#ev_when').data('when', ev.when);
   $('#ev_image').attr('src', ev.image);
   $('#ev_where').attr('href', "http://maps.google.com/maps?q=" + ev.address);
-  $('#ev_where').text(ev.where);
+  $($('#ev_where > span')[0]).text(ev.where);
   $('#ev_dist').data('lat', ev.lat);
   $('#ev_dist').data('lon', ev.lon);
   $('#ev_description').text(ev.description);
