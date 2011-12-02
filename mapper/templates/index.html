@@ -59,9 +59,9 @@
             
             <div id="event" class="current" >
                 <div class="toolbar">
-                    <a href="#" class="button leftButton"><img src='/static/imgs/left.png'></a>
+                    <a id="backButton" href="#" class="button leftButton" ontouchstart="shuffle_event(this, true)" style="display: none"><img src='/static/imgs/left.png'></a>
                     <h1>Foodpedia &alpha;</h1>
-                    <a href="#" id="nextbutton" class="button" ontouchstart="shuffle_event(this)" disabled><img src='/static/imgs/right.png'></a>
+                    <a href="#" id="nextbutton" class="button" ontouchstart="shuffle_event(this)"><img src='/static/imgs/right.png'></a>
                 </div>
 
                 <div id="eventdetails" data-index="0" >

@@ -438,15 +438,16 @@ function fetch_all_events() {
   });
 }
 
-function shuffle_event() {
+function shuffle_event(el, rev) {
   var storage = window.sessionStorage;
   var events = JSON.parse(storage.getItem('events'));
   var current = Number($('#eventdetails').data('index'));
-  current++;
-  if (current >= events.length) {
+  (rev) ? current-- : current++;
+  if (current < 0 || current >= events.length) {
     current = 0;
   }
   set_homepage(events[current]);
+  (current == 0) ? $('#backButton').hide() : $('#backButton').show();
   $('#eventdetails').data('index', current.toString());
 }
 
