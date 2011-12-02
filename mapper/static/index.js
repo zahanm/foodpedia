@@ -426,6 +426,8 @@ function click_submit (el) {
  *                  ,((,-,__\  '", __\_/. __,'
  *                               '"./_._._-'
  */
+ 
+ 
 
 function fetch_all_events() {
   var storage = window.sessionStorage;
@@ -531,3 +533,28 @@ $(document).ready(function() {
   fetch_all_events();
   
 });
+
+ if (typeof window.DeviceMotionEvent != 'undefined') {
+    // Shake sensitivity (a lower number is more)
+    var sensitivity = 20;
+
+    var x1 = 0, y1 = 0, z1 = 0, x2 = 0, y2 = 0, z2 = 0;
+
+    window.addEventListener('devicemotion', function (e) {
+        x1 = e.accelerationIncludingGravity.x;
+        y1 = e.accelerationIncludingGravity.y;
+        z1 = e.accelerationIncludingGravity.z;
+    }, false);
+
+    setInterval(function () {
+        var change = Math.abs(x1-x2+y1-y2+z1-z2);
+
+        if (change > sensitivity) {
+            shuffle_event();
+        }
+
+        x2 = x1;
+        y2 = y1;
+        z2 = z1;
+    }, 150);
+}
