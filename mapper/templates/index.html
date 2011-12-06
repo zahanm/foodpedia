@@ -86,11 +86,11 @@
                         <img id="ev_image" src="{{ event.image }}" width="100%">
                     </li>
                     <li>
-                        <a id="ev_where" class="whiteButton"
-                        href="http://maps.google.com/maps?q={{ event.address }}">
+                        <div id="ev_where" class="whiteButton"
+                        ontouchstart="document.location.href='http://maps.google.com/maps?q={{ event.address }}'">
                             <span>{{ event.where }}</span>
-                            <span class='limage' style="float:right;"><img src='/static/imgs/map.png'></span>
-                        </a>
+                            <img style="float:right;" src='/static/imgs/map.png'>
+                        </div>
                     </li>
                     <li id="ev_description">{{ event.description }}</li>
 
