@@ -100,3 +100,7 @@ div#jqt #event #ev_description {
   font-size: 0.85em;
   color: #aaa;
 }
+
+div#jqt .toolbar .button {
+  padding: 2px;
+}
