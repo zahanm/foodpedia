@@ -60,9 +60,9 @@
             
             <div id="event" class="current" >
                 <div class="toolbar">
-                    <a id="backButton" href="#" class="button leftButton" ontouchstart="shuffle_event(this, true)" style="display: none"><img style="padding: 3px" src='/static/imgs/left.png'></a>
+                    <a id="backButton" href="#" class="button leftButton" ontouchstart="shuffle_event(this, true)" style="display: none"><img style="padding: 3px" src='/static/imgs/left.png' width="15px"></a>
                     <h1>Foodpedia &alpha;</h1>
-                    <a href="#" id="nextbutton" class="button" ontouchstart="shuffle_event(this)"><img style="padding: 3px" src='/static/imgs/right.png'></a>
+                    <a href="#" id="nextbutton" class="button" ontouchstart="shuffle_event(this)"><img style="padding: 3px" src='/static/imgs/right.png' width="15px"></a>
                 </div>
 
                 <div id="eventdetails" data-index="0" >
@@ -89,7 +89,7 @@
                         <div id="ev_where" class="whiteButton"
                         ontouchstart="document.location.href='http://maps.google.com/maps?q={{ event.address }}'">
                             <span>{{ event.where }}</span>
-                            <img style="float:right;" src='/static/imgs/map.png'>
+                            <img style="float:right;" src='/static/imgs/map.png' width="25px">
                         </div>
                     </li>
                     <li id="ev_description">{{ event.description }}</li>
